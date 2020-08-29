@@ -9,6 +9,7 @@
 
 # dependencies
 /node_modules
+/startbootstrap-sb-admin-gh-pages
 
 # profiling files
 chrome-profiler-events*.json
