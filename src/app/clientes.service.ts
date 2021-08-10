@@ -5,7 +5,7 @@ import { HttpClient, HttpParams } from '@angular/common/http'
 import { Cliente } from './clientes/cliente';
 import { Observable } from 'rxjs';
 import { environment } from '../environments/environment'
-import { TotalClientes } from './clientes/TotalClientes';
+import { TotalClientes } from './clientes/totalClientes';
 
 @Injectable({
   providedIn: 'root'

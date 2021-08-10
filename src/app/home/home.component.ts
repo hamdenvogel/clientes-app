@@ -4,7 +4,7 @@ import { UsuariosService } from './../usuarios.service';
 import { TotalServicos } from './../clientes/totalServicos';
 import { Component, OnInit } from '@angular/core';
 import { ClientesService } from '../clientes.service';
-import { TotalClientes } from '../clientes/TotalClientes';
+import { TotalClientes } from '../clientes/totalClientes';
 import { ServicoPrestadoService } from '../servico-prestado.service';
 
 @Component({
