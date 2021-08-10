@@ -5,4 +5,5 @@ export class ServicoPrestadoBusca {
     valor: number;
     data: string;
     cliente: Cliente;
+    status: string;
 }

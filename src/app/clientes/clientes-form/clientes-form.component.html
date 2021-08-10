@@ -1,33 +1,64 @@
 <h1 class="mt-4">Clientes</h1>
 <ol class="breadcrumb mb-4">
-    <li class="breadcrumb-item active">Cadastro</li>
+    <li class="breadcrumb-item active">{{ cliente.id ? 'Alteração' : 'Novo' }}</li>
 </ol>
 <div class="container">
-    <form #clienteForm="ngForm" (ngSubmit)="onSubmit()">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="alert alert-success" role="alert" *ngIf="success == true">
-                    Cliente salvo/atualizado com sucesso!
-                </div>
-                <div class="alert alert-danger" role="alert" *ngFor="let erro of errors">
-                    {{erro}}
-                </div>
+   <form #clienteForm="ngForm" (ngSubmit)="onSubmit()" >
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex justify-content-between px-md-1">
+              <div>
+                <h3 class="text-success">{{ cliente.id ? cliente.nome : 'Novo Cliente' }}</h3>
+                <p class="mb-0">Ficha cadastro dados pessoais.</p>
+              </div>
+              <div class="align-self-center">
+                <i class="far fa-user text-success fa-3x"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <div class="container bootstrap snippets bootdeys">
+    <div class="row">
+        <div class="col-md-4 col-sm-6 content-card">
+            <div class="card-big-shadow">
+                <div class="card card-just-text" data-background="color" data-color="blue" data-radius="none">
+                    <div class="content">
+                        <h6 class="category">Módulo de Clientes</h6>
+                        <h4 class="title"><a href="#">{{ cliente.id ? cliente.nome : 'Novo Cliente' }}</a></h4>
+                        <p class="description">Clientes são responsáveis por executar um serviço.</p>
+                    </div>
+                </div> <!-- end card -->
             </div>
         </div>
+        </div>
+        </div>
+        &nbsp;
+
+      <div>
+        <div class="row">
+            <div class="col-md-12">
+            </div>
+        </div>
+      </div>
 
         <div class="row" *ngIf="cliente.id">
             <div class="col-md-6">
                 <div class="form-group">
-                    <label>Id:</label>
-                    <input type="text" class="form-control"  
-                    name="id" [ngModel]="cliente.id"  disabled/>
+                    <label>ID:</label>
+                    <input type="text" [ngModel]="cliente.id" name="id" class="form-control" disabled="true" />
                 </div>
             </div>
+
             <div class="col-md-6">
                 <div class="form-group">
                     <label>Data Cadastro:</label>
-                    <input type="text" class="form-control" 
-                    name="dataCadastro" [ngModel]="cliente.dataCadastro" disabled />
+                    <input type="text" class="form-control" name="dataCadastro"
+                           [ngModel]="cliente.dataCadastro" disabled="true"  />
                 </div>
             </div>
         </div>
@@ -36,34 +67,118 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label>Nome: *</label>
-                    <input type="text" class="form-control" 
-                    [(ngModel)]="cliente.nome" name="nome" />
+                    <input type="text" class="form-control"
+                           [(ngModel)]="cliente.nome" name="nome"   />
                 </div>
             </div>
+
             <div class="col-md-6">
-                <div class="form-grup">
+                <div class="form-group">
                     <label>CPF: *</label>
-                    <input type="text" class="form-control" 
-                    [(ngModel)]="cliente.cpf" name="cpf"  />
+                    <input type="text" class="form-control"
+                            [(ngModel)]="cliente.cpf" name="cpf"  />
                 </div>
             </div>
         </div>
 
         <div class="row">
+          <div class="col-md-6">
+              <div class="form-group">
+                  <label>PIX:</label>
+                  <input type="text" class="form-control"
+                         [(ngModel)]="cliente.pix" name="pix"   />
+              </div>
+          </div>
+
+          <div class="col-md-6">
+              <div class="form-group">
+                  <label>CEP:</label>
+                  <input type="text" class="form-control"
+                          [(ngModel)]="cliente.cep" name="cep" #cep />
+              </div>
+          </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label>Endereço:</label>
+                <input type="text" class="form-control"
+                       [(ngModel)]="cliente.endereco" name="endereco"   />
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-4">
+          <div class="form-group">
+              <label>Complemento:</label>
+              <input type="text" class="form-control"
+                     [(ngModel)]="cliente.complemento" name="complemento"   />
+          </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label>UF:</label>
+          <select class="form-control"
+                  [ngModelOptions]="{standalone: true}"
+                  [(ngModel)]="cliente.uf" name="uf" #inputUf
+                  >
+              <option value="">Selecione...</option>
+              <option *ngFor="let estado of uf"
+                      [ngValue]="estado.sigla">
+                  {{ estado.nome }}
+              </option>
+          </select>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="form-group">
+          <label>Cidade:</label>
+          <select class="form-control"
+                 [ngModelOptions]="{standalone: true}"
+                 [(ngModel)]="cliente.cidade" name="cidade" [disabled]="cidadeDesabilitado"
+                 #inputCidade>
+             <option value="">Selecione...</option>
+             <option *ngFor="let cidades of cidade"
+                     [ngValue]="cidades.nome">
+                 {{ cidades.nome }}
+             </option>
+         </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+      <div class="col-md-4">
+        <div class="form-group">
+          <re-captcha (resolved)="resolved($event)" #captcha
+              siteKey="6LfWbsEbAAAAAHULqvnjRg_V5oInPHdy6jeyP8ZR">
+          </re-captcha>
+      </div>
+    </div>
+  </div>
+
+        <div class="row">
             <div class="col-md-3">
-                <button type="submit" class="btn btn-success" *ngIf="!cliente.id" >
-                    <i class="fa fa-save mr-1"></i>Salvar
+                <button type="submit" class="btn btn-success" *ngIf="!cliente.id">
+                    <i class="fa fa-save" ></i> Salvar
                 </button>
 
-                <button type="submit" class="btn btn-primary" *ngIf="cliente.id" >
-                    <i class="fa fa-sync-alt mr-1"></i>Atualizar
+                <button type="submit" class="btn btn-primary" *ngIf="cliente.id">
+                    <i class="fa fa-sync-alt" ></i> Atualizar
                 </button>
 
-                <button type="button" class="btn btn-danger ml-1" (click)="voltarParaListagem()" >
-                    <i class="fa fa-arrow-alt-circle-left mr-1"></i>Voltar
+                <button type="button" class="btn btn-danger ml-1" (click)="voltarParaListagem()">
+                    <i class="fa fa-arrow-alt-circle-left" ></i> Voltar
                 </button>
             </div>
-       
+
         </div>
     </form>
 </div>
+
+
+

@@ -1,82 +1,105 @@
 <h1 class="mt-4">Clientes</h1>
 <ol class="breadcrumb mb-4">
-    <li class="breadcrumb-item active">Consulta</li>
+    <li class="breadcrumb-item active">Gerenciamento de Clientes</li>
 </ol>
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <div class="alert alert-success" role="alert" *ngIf="mensagemSucesso">
-                {{ mensagemSucesso }}
-            </div>
-            <div class="alert alert-danger" role="alert" *ngIf="mensagemErro">
-                {{ mensagemErro }}
-            </div>
+
         </div>
     </div>
+
     <div class="row">
         <div class="col-md-2">
-            <button class="btn btn-warning" (click)="novoCadastro()">
-                <i class="fa fa-plus"></i>Novo
-            </button> 
+            <button class="btn btn-warning" (click)="novoCadastro()" >
+                <i class="fa fa-plus"></i> Novo
+            </button>
         </div>
     </div>
     <br />
-    <div class="row">   
-        <div class="col-md-12">
-            <table class="table table-condensed table-hover">
+    <div class="row">
+      <div  class="list row">
+          <div class="col-md-10">
+            <div class="input-group mb-3">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Pesquisar por Nome"
+                (keyup)="onKeyUp($event)"
+                (change)="onChange($event)"
+                [(ngModel)]="campoPesquisa"/>
+              <div class="input-group-append">
+                <button
+                  class="btn btn-primary"
+                  (click)="pesquisarNome()"
+                  type="button">
+                  Pesquisar
+                </button>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="row">
+              <div class="col-md-12">
+              <table class="table table-condensed table-hover">
                 <thead>
-                    <tr>
-                        <th>Id</th>
-                        <th>Nome</th>
-                        <th>CPF</th>
-                        <th>Data Cadastro</th>
-                        <th></th>
-                    </tr>
+                  <tr>
+                    <th>Nome</th>
+                    <th>CPF</th>
+                    <th>Data Cadastro</th>
+                    <th></th>
+                  </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let cliente of clientes">
-                        <td>{{ cliente.id }}</td>
-                        <td>{{ cliente.nome }}</td>
-                        <td>{{ cliente.cpf }}</td>
-                        <td>{{ cliente.dataCadastro }}</td>
-                        <td>
-                            <button class="btn btn-primary mr-1" 
-                                routerLink="/clientes/form/{{ cliente.id }}">
-                                <i class="fa fa-edit"></i>
-                            </button>
-
-                            <button class="btn btn-danger mr-1"
-                            (click)="preparaDelecao(cliente)"
-                             data-toggle="modal" data-target="#modalDelecao">
-                                <i class="fa fa-trash"></i>
-                            </button>
-
-                        </td>
-                    </tr>
+                  <tr *ngFor="let item of collectionCustomPagination.data | paginate: configCustomPagination">
+                    <td>{{ item.nome }} </td>
+                    <td>{{ item.cpf }} </td>
+                    <td>{{ item.dataCadastro }} </td>
+                    <td>
+                      <button class="btn btn-primary"
+                              routerLink="/clientes/form/{{ item.id }}">
+                          <i class="fa fa-edit"></i>
+                      </button>
+                        &nbsp;
+                     <button class="btn btn-danger"
+                              routerLink="/clientes/remover/{{ item.id }}">
+                        <i class="fa fa-trash"></i>
+                     </button>
+                     &nbsp;
+                     <button class="btn btn-success"
+                        >
+                         <i class="fa fa-money-bill-alt"></i>
+                    </button>
+                  </td>
+                  </tr>
                 </tbody>
-            </table>
-        </div>
+              </table>
+              <pagination-controls id="customPaginate" [maxSize]="maxSize" (pageChange)="onPageChange($event)"
+                [previousLabel]="labels.previousLabel" [nextLabel]="labels.nextLabel">
+              </pagination-controls>
+            </div>
+          </div>
+
     </div>
+
     <div id="modalDelecao" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
-
                 <div class="modal-header">
                     <h4>Confirmação</h4>
                 </div>
 
                 <div class="modal-body" *ngIf="clienteSelecionado">
-                   Confirma a deleção do cliente {{ clienteSelecionado.nome }} ?
+                    Confirma a deleção do(a) Cliente {{ clienteSelecionado.nome }}?
                 </div>
 
                 <div class="modal-footer">
-                    <button class="btn btn-success" (click)="deletarCliente()" 
-                        data-dismiss="modal">Confirmar</button>
-                    <button class="btn btn-default"
-                        data-dismiss="modal">Cancelar</button>
+                    <button class="btn btn-success" (click)="deletarCliente()"
+                            data-dismiss="modal">Confirmar</button>
+                    <button class="btn btn-default" data-dismiss="modal">Cancelar</button>
                 </div>
-
             </div>
         </div>
     </div>
 </div>
+

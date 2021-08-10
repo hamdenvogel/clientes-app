@@ -3,4 +3,10 @@ export class Cliente {
     nome: string;
     cpf: string;
     dataCadastro: string;
+    pix: string;
+    cep: string;
+    endereco: string;
+    complemento: string;
+    uf: string;
+    cidade: string;
 }

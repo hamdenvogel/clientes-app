@@ -1,41 +1,48 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Usuario } from './usuario';
+import { UsuarioCadastro } from './usuarioCadastro';
 import { AuthService } from '../auth.service';
+import { NotificationService } from '../notification.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
+export class LoginComponent  {
 
   username: string;
   password: string;
   cadastrando: boolean;
   mensagemSucesso: string;
-  errors: String[];
+  errors: string[];
 
   constructor(
     private router: Router,
-    private authService: AuthService
-  ) { }
+    private authService: AuthService,
+    private notificationService: NotificationService
+  ) {}
 
-  onSubmit() {
-    //console.log(`User: ${this.username}, Password: ${this.password}`);
+  onSubmit(){
+    const usuario: Usuario = new Usuario();
+    usuario.login = this.username;
+    usuario.senha = this.password;
     this.authService
-          .tentarLogar(this.username, this.password)
+          .tentarLogar2(usuario)
           .subscribe(response => {
-             //console.log('response subscribe tentarLogar() ' + response);
-             const access_token = JSON.stringify(response);
-             localStorage.setItem('access_token', access_token);
-             this.router.navigate(['/home'])
+            const access_token = JSON.stringify(response);
+            localStorage.setItem('access_token', access_token);
+			localStorage.setItem('username', usuario.login);
+            this.router.navigate(['/home'])
           }, errorResponse => {
-            this.errors = ['Usuário e/ou senha incorreto(s).']
+            //this.errors = ['Usuário e/ou senha incorreto(s).']
+            this.notificationService.showToasterError("Usuário e/ou senha incorreto(s)",
+             "Erro");
           })
   }
 
-  preparaCadastrar(event) {
+  preparaCadastrar(event){
     event.preventDefault();
     this.cadastrando = true;
   }
@@ -44,22 +51,26 @@ export class LoginComponent {
     this.cadastrando = false;
   }
 
-  cadastrar() {
-    const usuario: Usuario = new Usuario();
-    usuario.username = this.username;
-    usuario.password = this.password;
+  cadastrar(){
+    const usuarioCadastro: UsuarioCadastro = new UsuarioCadastro();
+    usuarioCadastro.username = this.username;
+    usuarioCadastro.password = this.password;
     this.authService
-        .salvar(usuario) 
-        .subscribe(response => {
-            this.mensagemSucesso = "Cadastro realizado com sucesso. Efetue o Login!";
+        .salvar(usuarioCadastro)
+        .subscribe( response => {
+            this.mensagemSucesso = "Cadastro realizado com sucesso! Efetue o login.";
+            this.notificationService.showToasterSuccess(this.mensagemSucesso,"Informação");
             this.cadastrando = false;
             this.username = '';
             this.password = '';
-            this.errors = [];
+            this.errors = []
         }, errorResponse => {
-          this.mensagemSucesso = null;
-          this.errors = errorResponse.error.errors;          
+            this.mensagemSucesso = null;
+            this.errors = errorResponse.error.errors;
+            this.errors.forEach( (erro) =>{
+              this.notificationService.showToasterError(erro, "erro");
+            })
         })
   }
-  
+
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ServicoPrestadoBusca } from './servicoPrestadoBusca';
 import { ServicoPrestadoService } from '../../servico-prestado.service';
+import { NotificationService } from './../../notification.service';
 
 @Component({
   selector: 'app-servico-prestado-lista',
@@ -8,7 +9,7 @@ import { ServicoPrestadoService } from '../../servico-prestado.service';
   styleUrls: ['./servico-prestado-lista.component.css']
 })
 export class ServicoPrestadoListaComponent implements OnInit {
-  
+
   nome: string;
   mes: number;
   meses: number[];
@@ -16,27 +17,27 @@ export class ServicoPrestadoListaComponent implements OnInit {
   message: string;
 
   constructor(
-    private service: ServicoPrestadoService
-  ) { 
-      this.meses = [1,2,3,4,5,6,7,8,9,10,11,12];
+    private service: ServicoPrestadoService,
+    private notificationService: NotificationService
+  ) {
+    this.meses = [1,2,3,4,5,6,7,8,9,10,11,12];
   }
 
   ngOnInit(): void {
   }
 
   consultar(){
-    //console.log(this.nome, this.mes)
     this.service
-        .buscar(this.nome, this.mes)
-        .subscribe(response => {
-          this.lista = response;
-          if (this.lista.length <= 0) {
-            this.message = "Nenhum Registro encontrado.";
-          }
-          else {
-            this.message = null;
-          }
-        });
+      .buscar(this.nome, this.mes)
+      .subscribe(response => {
+         this.lista = response;
+        console.log('this.lista ' + this.lista);
+        if( this.lista.length <= 0 ){
+          this.message = "Nenhum Registro encontrado.";
+          this.notificationService.showToasterInfo(this.message, "Informação");
+        }else{
+          this.message = null;
+        }
+      });
   }
-
 }
