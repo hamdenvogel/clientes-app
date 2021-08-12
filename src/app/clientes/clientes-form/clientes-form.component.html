@@ -1,6 +1,6 @@
 <h1 class="mt-4">Clientes</h1>
 <ol class="breadcrumb mb-4">
-    <li class="breadcrumb-item active">{{ cliente.id ? 'Alteração' : 'Novo' }}</li>
+    <li class="breadcrumb-item active">{{ cliente.id ? 'Altera&ccedil;&atilde;o' : 'Novo' }}</li>
 </ol>
 <div class="container">
    <form #clienteForm="ngForm" (ngSubmit)="onSubmit()" >
@@ -28,9 +28,9 @@
             <div class="card-big-shadow">
                 <div class="card card-just-text" data-background="color" data-color="blue" data-radius="none">
                     <div class="content">
-                        <h6 class="category">Módulo de Clientes</h6>
+                        <h6 class="category">M&oacute;dulo de Clientes</h6>
                         <h4 class="title"><a href="#">{{ cliente.id ? cliente.nome : 'Novo Cliente' }}</a></h4>
-                        <p class="description">Clientes são responsáveis por executar um serviço.</p>
+                        <p class="description">Clientes s&atilde;o responsáveis por executar um serviço.</p>
                     </div>
                 </div> <!-- end card -->
             </div>
@@ -102,7 +102,7 @@
       <div class="row">
         <div class="col-md-12">
             <div class="form-group">
-                <label>Endereço:</label>
+                <label>Endere&ccedil;o:</label>
                 <input type="text" class="form-control"
                        [(ngModel)]="cliente.endereco" name="endereco"   />
             </div>
