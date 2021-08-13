@@ -1,7 +1,7 @@
-<h1 class="mt-4">Clientes - Confirmação de Deleção</h1>
+<h1 class="mt-4">Clientes - Confirma&ccedil;&atilde;o de Dele&ccedil;ão</h1>
 <ol class="breadcrumb mb-4">
     <li class="breadcrumb-item active">
-      {{ bExistemServicosProCliente ? 'Existem Serviços Cadastrados pro cliente ' + cliente.nome + '. ' +
+      {{ bExistemServicosProCliente ? 'Existem Servi&ccedil;os Cadastrados pro cliente ' + cliente.nome + '. ' +
       'O Cliente não poderá ser deletado.': 'Removendo o Cliente ' + cliente.nome + '. ' }}</li>
 </ol>
 
@@ -50,7 +50,7 @@
   <hr *ngIf="bExistemServicosProCliente" />
   <div *ngIf="bExistemServicosProCliente" class="row" >
     <div class="col-md-12">
-        Serviços Cadastrados:
+        Servi&ccedil;os Cadastrados:
     </div>
 </div>
 <br />
@@ -61,7 +61,7 @@
       <input
         type="text"
         class="form-control"
-        placeholder="Pesquisar por Descrição"
+        placeholder="Pesquisar por Descri&ccedil;&atilde;o"
         (keyup)="onKeyUp($event)"
         (change)="onChange($event)"
         [(ngModel)]="campoPesquisa"/>
@@ -82,8 +82,8 @@
         <thead>
           <tr>
             <th>Cliente</th>
-            <th>Descrição</th>
-            <th>Preço</th>
+            <th>Descri&ccedil;&atilde;o</th>
+            <th>Pre&ccedil;o</th>
             <th>Data</th>
             <th>Status</th>
           </tr>

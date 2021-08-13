@@ -1,3 +1,4 @@
+import { SistemaInfoModule } from './sistema-info/sistema-info.module';
 import { RecaptchaModule } from "ng-recaptcha";
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA  } from '@angular/core';
@@ -27,6 +28,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
     HomeComponent,
     LoginComponent,
     LayoutComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -39,7 +41,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
     ClientesModule,
     ServicoPrestadoModule,
     BrowserAnimationsModule, // required animations module
-    ToastrModule.forRoot() // ToastrModule added
+    ToastrModule.forRoot(), // ToastrModule added
+    SistemaInfoModule
   ],
 
   providers: [

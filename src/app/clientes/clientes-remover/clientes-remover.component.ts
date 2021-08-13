@@ -35,10 +35,10 @@ export class ClientesRemoverComponent implements OnInit {
   maxSize: number = 7;
   labels: any = {
     previousLabel: '<-Anterior',
-    nextLabel: 'Próxima-->',
-    screenReaderPaginationLabel: 'Paginação',
-    screenReaderPageLabel: 'página',
-    screenReaderCurrentLabel: `Você está na página`
+    nextLabel: 'Proxima-->',
+    screenReaderPaginationLabel: 'Paginacao',
+    screenReaderPageLabel: 'pagina',
+    screenReaderCurrentLabel: `Voce esta na pagina`
   };
 
   constructor(private service: ClientesService,

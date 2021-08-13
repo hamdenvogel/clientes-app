@@ -27,10 +27,10 @@ export class ClientesListaComponent implements OnInit {
   maxSize: number = 7;
   labels: any = {
     previousLabel: '<-Anterior',
-    nextLabel: 'Pr&oacute;xima-->',
-    screenReaderPaginationLabel: 'Pagina&ccedil;&atilde;o',
-    screenReaderPageLabel: 'p&agrave;gina',
-    screenReaderCurrentLabel: `Voc&ecirc; est&agrave; na p&agrave;gina`
+    nextLabel: 'Proxima-->',
+    screenReaderPaginationLabel: 'Paginacao',
+    screenReaderPageLabel: 'pagina',
+    screenReaderCurrentLabel: `Voce esta na pagina`
   };
 
   constructor(
