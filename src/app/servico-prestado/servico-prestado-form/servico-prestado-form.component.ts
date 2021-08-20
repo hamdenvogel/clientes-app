@@ -78,7 +78,7 @@ export class ServicoPrestadoFormComponent implements OnInit {
       && this.servico.status != null && this.servico.status != undefined
       &&
       this.captcha == null) {
-        this.notificationService.showToasterError("É necessário validar o Captcha.",
+        this.notificationService.showToasterError("\É necessário validar o Captcha.",
                "Erro");
         return false;
       }
@@ -88,8 +88,8 @@ export class ServicoPrestadoFormComponent implements OnInit {
       .subscribe(response => {
         this.success = true;
         this.router.navigate(['/servicos-prestados/lista']);
-        this.notificationService.showToasterSuccess('Serviço cadastrado com sucesso.',
-         'Informação');
+        this.notificationService.showToasterSuccess('Servi\ço cadastrado com sucesso.',
+         'Informa\ç\ão');
         this.errors = null;
         this.servico = new ServicoPrestado();
        } , errorResponse => {

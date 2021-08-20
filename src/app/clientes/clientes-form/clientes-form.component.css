@@ -137,3 +137,8 @@ a:hover, a:focus {
 .card[data-color="orange"] .category {
     color: #e95e37;
 }
+
+.container_img2 {
+  width: 100%;
+  height: 240px !important;
+}

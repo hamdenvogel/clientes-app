@@ -40,8 +40,9 @@
           </div>
           <div>
             <div class="row">
-              <div class="col-md-12">
-              <table class="table table-condensed table-hover">
+              <div class="col-md-10">
+                <div class="table-responsive">
+                <table class="table">
                 <thead>
                   <tr>
                     <th>Nome</th>
@@ -74,6 +75,7 @@
                   </tr>
                 </tbody>
               </table>
+          </div>
               <pagination-controls id="customPaginate" [maxSize]="maxSize" (pageChange)="onPageChange($event)"
                 [previousLabel]="labels.previousLabel" [nextLabel]="labels.nextLabel">
               </pagination-controls>

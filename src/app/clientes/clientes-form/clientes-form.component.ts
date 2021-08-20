@@ -125,7 +125,7 @@ export class ClientesFormComponent implements OnInit {
     if (this.cliente.nome != "" && this.cliente.nome != undefined
       && this.cliente.cpf != "" && this.cliente.cpf != undefined &&
       this.captcha == null) {
-        this.notificationService.showToasterError("É necessário validar o Captcha.",
+        this.notificationService.showToasterError("\É necess\ário validar o Captcha.",
                "Erro");
         return false;
       }
@@ -137,7 +137,7 @@ export class ClientesFormComponent implements OnInit {
             this.success = true;
             this.router.navigate(['/clientes/lista']);
             this.notificationService.showToasterSuccess("Cliente atualizado com sucesso!",
-              "Informação");
+              "Informa\ç\ão");
             this.errors = null;
         }, errorResponse => {
           this.errors = errorResponse.error.errors;
@@ -152,7 +152,7 @@ export class ClientesFormComponent implements OnInit {
             this.success = true;
             this.router.navigate(['/clientes/lista']);
             this.notificationService.showToasterSuccess("Cliente salvo com sucesso!",
-              "Informação");
+              "Informa\ç\ão");
             this.errors = null;
             this.cliente = response;
           }, errorResponse => {

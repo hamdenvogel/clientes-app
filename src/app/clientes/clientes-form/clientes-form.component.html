@@ -22,29 +22,21 @@
       </div>
     </div>
 
-  <div class="container bootstrap snippets bootdeys">
     <div class="row">
-        <div class="col-md-4 col-sm-6 content-card">
-            <div class="card-big-shadow">
-                <div class="card card-just-text" data-background="color" data-color="blue" data-radius="none">
-                    <div class="content">
-                        <h6 class="category">M&oacute;dulo de Clientes</h6>
-                        <h4 class="title"><a href="#">{{ cliente.id ? cliente.nome : 'Novo Cliente' }}</a></h4>
-                        <p class="description">Clientes s&atilde;o respons&aacute;veis por executar um servi&ccedil;o.</p>
-                    </div>
-                </div> <!-- end card -->
-            </div>
-        </div>
-        </div>
-        </div>
-        &nbsp;
+      <div class="col-md-12">
+      <div class="badge bg-primary text-wrap" style="width: 20rem;">
+        Clientes s&atilde;o respons&aacute;veis por executar um servi&ccedil;o.
+      </div>
+    </div>
+  </div>
+      &nbsp;
 
-      <div>
+    <div>
         <div class="row">
             <div class="col-md-12">
             </div>
         </div>
-      </div>
+    </div>
 
         <div class="row" *ngIf="cliente.id">
             <div class="col-md-6">

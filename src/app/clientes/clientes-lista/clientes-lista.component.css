@@ -1,0 +1,12 @@
+@media screen and (max-width: 800px) {
+	.table td, .table tr th {
+		display: block;
+		width: 33%;
+		float: left;
+	}
+
+	.table .table tr {
+		display: block;
+		width: 100%
+	}
+}
