@@ -16,7 +16,8 @@ const routes: Routes = [
     { path: 'lista', component: ClientesListaComponent },
     { path: 'remover/', component: ClientesRemoverComponent },
     { path: 'remover/:id', component: ClientesRemoverComponent },
-    { path: '', redirectTo : '/clientes/lista', pathMatch: 'full' }
+    { path: '', redirectTo : '/clientes/lista', pathMatch: 'full' },
+    { path: '**', component: ClientesListaComponent }
 
   ]}
 

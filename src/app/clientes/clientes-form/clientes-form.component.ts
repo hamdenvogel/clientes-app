@@ -110,7 +110,6 @@ export class ClientesFormComponent implements OnInit {
           this.cidade = cidades,
           this.cidadeDesabilitado = false });
 
-
      this.googleCaptchaService.zerarTentativasMalSucedidas()
         .subscribe(response => {});
 
@@ -136,8 +135,7 @@ export class ClientesFormComponent implements OnInit {
         .subscribe(response => {
             this.success = true;
             this.router.navigate(['/clientes/lista']);
-            this.notificationService.showToasterSuccess("Cliente atualizado com sucesso!",
-              "Informa\ç\ão");
+            this.notificationService.showToasterSuccess("Cliente atualizado com sucesso!");
             this.errors = null;
         }, errorResponse => {
           this.errors = errorResponse.error.errors;
@@ -151,8 +149,7 @@ export class ClientesFormComponent implements OnInit {
           .subscribe( response => {
             this.success = true;
             this.router.navigate(['/clientes/lista']);
-            this.notificationService.showToasterSuccess("Cliente salvo com sucesso!",
-              "Informa\ç\ão");
+            this.notificationService.showToasterSuccess("Cliente salvo com sucesso!");
             this.errors = null;
             this.cliente = response;
           }, errorResponse => {

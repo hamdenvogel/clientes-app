@@ -5,11 +5,15 @@ import { ToastrService } from 'ngx-toastr';
   providedIn: 'root'
 })
 export class NotificationService {
+  titleSuccess: string[];
 
-  constructor(private toastr: ToastrService) {}
+  constructor(private toastr: ToastrService) {
+    this.titleSuccess = [];
+    this.titleSuccess.push('Informação');
+  }
 
-  showToasterSuccess(Message: string, Title: string){
-    this.toastr.success(Message, Title,
+  showToasterSuccess(Message: string){
+    this.toastr.success(Message, this.titleSuccess[0],
     { progressBar: true,
       closeButton: true });
   }

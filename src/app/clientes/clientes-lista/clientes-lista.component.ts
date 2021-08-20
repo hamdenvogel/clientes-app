@@ -123,8 +123,7 @@ export class ClientesListaComponent implements OnInit {
       .subscribe(
         response => {
           //this.mensagemSucesso = 'Cliente deletado com sucesso!'
-          this.notificationService.showToasterSuccess('Cliente deletado com sucesso!',
-          'Informação');
+          this.notificationService.showToasterSuccess('Cliente deletado com sucesso!');
           this.ngOnInit();
         },
         erro => {this.mensagemErro = 'Ocorreu um erro ao deletar o cliente.',

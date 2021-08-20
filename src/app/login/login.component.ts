@@ -59,7 +59,7 @@ export class LoginComponent  {
         .salvar(usuarioCadastro)
         .subscribe( response => {
             this.mensagemSucesso = "Cadastro realizado com sucesso! Efetue o login.";
-            this.notificationService.showToasterSuccess(this.mensagemSucesso,"Informação");
+            this.notificationService.showToasterSuccess(this.mensagemSucesso);
             this.cadastrando = false;
             this.username = '';
             this.password = '';

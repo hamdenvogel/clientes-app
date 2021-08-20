@@ -88,8 +88,7 @@ export class ServicoPrestadoFormComponent implements OnInit {
       .subscribe(response => {
         this.success = true;
         this.router.navigate(['/servicos-prestados/lista']);
-        this.notificationService.showToasterSuccess('Servi\ço cadastrado com sucesso.',
-         'Informa\ç\ão');
+        this.notificationService.showToasterSuccess('Servi\ço cadastrado com sucesso.');
         this.errors = null;
         this.servico = new ServicoPrestado();
        } , errorResponse => {
