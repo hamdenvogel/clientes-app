@@ -1,34 +1,33 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
-import jQuery from 'jquery'
+declare var jQuery:any;
+declare var $ :any;
 
 @Component({
   selector: 'app-layout',
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.css']
 })
-export class LayoutComponent implements AfterViewInit {
-
+export class LayoutComponent implements OnInit {
+  url = "assets/start.js";
+  loadAPI : any;
   constructor() { }
 
-  ngAfterViewInit(){
-    (function($) {
-        "use strict";
-    
-        // Add active state to sidbar nav links
-        var path = window.location.href; // because the 'href' property of the DOM element is the absolute path
-            $("#layoutSidenav_nav .sb-sidenav a.nav-link").each(function() {
-                if (this.href === path) {
-                    $(this).addClass("active");
-                }
-            });
-    
-        // Toggle the side navigation
-        $("#sidebarToggle").on("click", function(e) {
-            e.preventDefault();
-            $("body").toggleClass("sb-sidenav-toggled");
-        });
-    })(jQuery);
+  ngOnInit(){
+    this.loadAPI = new Promise(resolve => {
+      console.log("resolving promise...");
+      this.loadScript();
+    });
   }
+
+  public loadScript() {
+    console.log("preparing to load...");
+    let node = document.createElement("script");
+    node.src = this.url;
+    node.type = "text/javascript";
+    node.async = true;
+    node.charset = "utf-8";
+    document.getElementsByTagName("head")[0].appendChild(node);
+}
 
 }
