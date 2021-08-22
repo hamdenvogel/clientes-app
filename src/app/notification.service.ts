@@ -18,6 +18,12 @@ export class NotificationService {
       closeButton: true });
   }
 
+  showToasterSuccessWithTitle(Message: string, Title: string){
+    this.toastr.success(Message, Title,
+    { progressBar: true,
+      closeButton: true });
+  }
+
   showToasterError(Message: string, Title: string){
     this.toastr.error(Message, Title,
     { progressBar: true,

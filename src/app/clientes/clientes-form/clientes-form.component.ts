@@ -135,7 +135,10 @@ export class ClientesFormComponent implements OnInit {
         .subscribe(response => {
             this.success = true;
             this.router.navigate(['/clientes/lista']);
-            this.notificationService.showToasterSuccess("Cliente atualizado com sucesso!");
+            //this.notificationService.showToasterSuccess("Cliente atualizado com sucesso!");
+            console.log(response.mensagem + ' ' + response.titulo);
+            this.notificationService.showToasterSuccessWithTitle(response.mensagem,
+              response.titulo);
             this.errors = null;
         }, errorResponse => {
           this.errors = errorResponse.error.errors;
