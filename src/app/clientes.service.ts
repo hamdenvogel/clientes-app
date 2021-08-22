@@ -6,6 +6,7 @@ import { Cliente } from './clientes/cliente';
 import { Observable } from 'rxjs';
 import { environment } from '../environments/environment'
 import { TotalClientes } from './clientes/totalClientes';
+import { InfoResponse } from './infoResponse';
 
 @Injectable({
   providedIn: 'root'
