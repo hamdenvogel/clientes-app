@@ -14,6 +14,16 @@ console.log('start2.js file: Starting JQuery');
         $("#sidebarToggle").on("click", function(e) {
             e.preventDefault();
             $("body").toggleClass("sb-sidenav-toggled");
-            $("body").toggleClass("sb-sidenav-toggled");
+            if ($("#layoutSidenav_nav").is(":visible")) {
+              $("#layoutSidenav_nav").show();
+            }
+            else {
+             $("#layoutSidenav_nav").hide();
+            }
         });
+
+        $(".nav-link").on('click', function(event){
+          $("body").toggleClass("sb-sidenav-toggled");
+        });
+
     })(jQuery);

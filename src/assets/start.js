@@ -15,4 +15,5 @@ console.log('start.js file: Starting JQuery');
             e.preventDefault();
             $("body").toggleClass("sb-sidenav-toggled");
         });
+
     })(jQuery);

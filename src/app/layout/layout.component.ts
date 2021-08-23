@@ -10,8 +10,8 @@ declare var $ :any;
   styleUrls: ['./layout.component.css']
 })
 export class LayoutComponent implements OnInit {
-  url = "assets/start.js";
-  url2 = "assets/start2.js";
+  urlDesktop = "assets/start.js";
+  urlMobile = "assets/start2.js";
   loadAPI : any;
   deviceInfo: DeviceInfo;
 
@@ -32,9 +32,9 @@ export class LayoutComponent implements OnInit {
   }
 
   public loadScript() {
-    console.log("preparing to load...");
+    console.log("preparing to load jquery script on desktop...");
     let node = document.createElement("script");
-    node.src = this.url;
+    node.src = this.urlDesktop;
     node.type = "text/javascript";
     node.async = true;
     node.charset = "utf-8";
@@ -42,9 +42,9 @@ export class LayoutComponent implements OnInit {
 }
 
 public loadScript2() {
-  console.log("preparing to load 2...");
+  console.log("preparing to load jquery script on mobile...");
   let node = document.createElement("script");
-  node.src = this.url2;
+  node.src = this.urlMobile;
   node.type = "text/javascript";
   node.async = true;
   node.charset = "utf-8";
