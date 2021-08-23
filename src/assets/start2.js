@@ -1,4 +1,4 @@
-console.log('start.js file: Starting JQuery');
+console.log('start2.js file: Starting JQuery');
     (function($) {
         "use strict";
 
@@ -13,6 +13,7 @@ console.log('start.js file: Starting JQuery');
         // Toggle the side navigation
         $("#sidebarToggle").on("click", function(e) {
             e.preventDefault();
+            $("body").toggleClass("sb-sidenav-toggled");
             $("body").toggleClass("sb-sidenav-toggled");
         });
     })(jQuery);

@@ -30,6 +30,7 @@
     "jw-angular-pagination": "^1.2.0",
     "ng-recaptcha": "^8.0.1",
     "ngx-bootstrap": "^6.2.0",
+    "ngx-device-detector": "^2.1.1",
     "ngx-pagination": "^5.1.1",
     "ngx-toastr": "^13.2.1",
     "popper.js": "^1.16.1",
