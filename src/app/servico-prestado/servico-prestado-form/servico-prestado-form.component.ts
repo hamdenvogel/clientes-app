@@ -52,7 +52,7 @@ export class ServicoPrestadoFormComponent implements OnInit {
     params.subscribe( urlParams => {
         this.id = urlParams['id'];
         if (this.id) {
-          this.status = "Alteração";
+          this.status = "'Altera&ccedil;&atilde;o";
           this.service.obterServicoPorId(this.id)
           .subscribe(
             response => {
@@ -94,7 +94,7 @@ export class ServicoPrestadoFormComponent implements OnInit {
       && this.servico.status != null && this.servico.status != undefined
       &&
       this.captcha == null) {
-        this.notificationService.showToasterError("\É necessário validar o Captcha.",
+        this.notificationService.showToasterError("&Eacute; necess&aacute;rio validar o Captcha.",
                "Erro");
         return false;
       }
@@ -105,7 +105,7 @@ export class ServicoPrestadoFormComponent implements OnInit {
           .subscribe(response => {
               this.success = true;
               this.router.navigate(['/servicos-prestados/lista']);
-              //this.notificationService.showToasterSuccess("Servi\ço atualizado com sucesso!");
+              //this.notificationService.showToasterSuccess("Servi\?o atualizado com sucesso!");
               this.notificationService.showToasterSuccessWithTitle(response.mensagem,
                 response.titulo);
               this.errors = null;
@@ -121,7 +121,7 @@ export class ServicoPrestadoFormComponent implements OnInit {
         .subscribe(response => {
           this.success = true;
           this.router.navigate(['/servicos-prestados/lista']);
-          //this.notificationService.showToasterSuccess('Servi\ço cadastrado com sucesso.');
+          //this.notificationService.showToasterSuccess('Servi\?o cadastrado com sucesso.');
           this.notificationService.showToasterSuccessWithTitle(response.infoResponseDTO.mensagem,
             response.infoResponseDTO.titulo);
           this.errors = null;
@@ -140,7 +140,7 @@ export class ServicoPrestadoFormComponent implements OnInit {
     var data = new Date(this.tempDate),
         dia  = data.getDate().toString(),
         diaF = (dia.length == 1) ? '0'+dia : dia,
-        mes  = (data.getMonth()+1).toString(), //+1 pois no getMonth Janeiro começa com zero.
+        mes  = (data.getMonth()+1).toString(), //+1 pois no getMonth Janeiro come?a com zero.
         mesF = (mes.length == 1) ? '0'+mes : mes,
         anoF = data.getFullYear();
     return diaF+"/"+mesF+"/"+anoF;
@@ -161,7 +161,7 @@ export class ServicoPrestadoFormComponent implements OnInit {
         this.errors = null;
         this.googlecaptcha = response;
         //this.notificationService.showToasterSuccess("Token validado com sucesso!",
-        //      "Informação");
+        //      "Informa??o");
       }, errorResponse => {
         this.success = false;
         this.errors = errorResponse.error.errors;

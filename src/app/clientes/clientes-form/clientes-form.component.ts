@@ -99,7 +99,7 @@ export class ClientesFormComponent implements OnInit {
     this.cepService.obterUF()
       .subscribe(dados => this.uf = dados);
 
-    /*this.cepService.obterCidadesNome("Apiacá")
+    /*this.cepService.obterCidadesNome("Apiac?")
       .subscribe(dados => this.cidade = dados); */
 
    fromEvent(this.inputUf.nativeElement, 'change').pipe(
@@ -126,7 +126,7 @@ export class ClientesFormComponent implements OnInit {
     if (this.cliente.nome != "" && this.cliente.nome != undefined
       && this.cliente.cpf != "" && this.cliente.cpf != undefined &&
       this.captcha == null) {
-        this.notificationService.showToasterError("\É necess\ário validar o Captcha.",
+        this.notificationService.showToasterError("&Eacute; necess&aacute;rio validar o Captcha.",
                "Erro");
         return false;
       }
@@ -177,7 +177,7 @@ export class ClientesFormComponent implements OnInit {
         this.googlecaptcha = response;
         //console.log(`this.googlecaptcha: ${this.googlecaptcha}`);
         //this.notificationService.showToasterSuccess("Token validado com sucesso!",
-        //      "Informação");
+        //      "Informa??o");
       }, errorResponse => {
         this.success = false;
         this.errors = errorResponse.error.errors;
