@@ -25,8 +25,8 @@ export class ClientesRemoverComponent implements OnInit {
   bExistemServicosProCliente: boolean;
   servicos: ServicoPrestado[] = [];
   statusDetalhado = {'E': 'Em Atendimento', 'C': 'Cancelado', 'F': 'Finalizado' };
-  campoPesquisa: string = "";
 
+  campoPesquisa: string = "";
   config: any;
   collection = { count: 0, data: [] };
   configCustomPagination: any;
@@ -108,13 +108,16 @@ export class ClientesRemoverComponent implements OnInit {
       .deletar(this.cliente)
       .subscribe(
         response => {
-          //this.mensagemSucesso = 'Cliente deletado com sucesso!'
-          this.notificationService.showToasterSuccess('Cliente deletado com sucesso!');
+          this.notificationService.showToasterSuccessWithTitle(response.mensagem,
+            response.titulo);
+          this.errors = null;
           this.voltarParaListagem();
         },
-        erro => {this.mensagemErro = 'Ocorreu um erro ao deletar o cliente.',
-          this.notificationService.showToasterError(this.mensagemErro,
-          'Erro')
+        errorResponse => {
+          this.errors = errorResponse.error.errors;
+            this.errors.forEach( (erro) =>{
+              this.notificationService.showToasterError(erro, "erro");
+            })
         }
       )
   }

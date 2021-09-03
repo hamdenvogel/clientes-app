@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../environments/environment'
 import { TotalClientes } from './clientes/totalClientes';
 import { InfoResponse } from './infoResponse';
+import { ListaNomes } from './listaNomes';
 
 @Injectable({
   providedIn: 'root'
@@ -17,12 +18,12 @@ export class ClientesService {
 
   constructor( private http: HttpClient ) {}
 
-  salvar( cliente: Cliente ) : Observable<Cliente> {
-    return this.http.post<Cliente>( `${this.apiURL}` , cliente);
+  salvar(cliente: Cliente) : Observable<Cliente> {
+    return this.http.post<Cliente>(`${this.apiURL}`, cliente);
   }
 
-  atualizar( cliente: Cliente ) : Observable<InfoResponse> {
-    return this.http.put<InfoResponse>(`${this.apiURL}/${cliente.id}` , cliente);
+  atualizar(cliente: Cliente) : Observable<InfoResponse> {
+    return this.http.put<InfoResponse>(`${this.apiURL}/${cliente.id}`, cliente);
   }
 
   getClientes() : Observable<Cliente[]> {
@@ -33,8 +34,8 @@ export class ClientesService {
     return this.http.get<any>(`${this.apiURL}/${id}`);
   }
 
-  deletar(cliente: Cliente) : Observable<any> {
-    return this.http.delete<any>(`${this.apiURL}/${cliente.id}`);
+  deletar(cliente: Cliente) : Observable<InfoResponse> {
+    return this.http.delete<InfoResponse>(`${this.apiURL}/${cliente.id}`);
   }
 
   totalClientes(): Observable<TotalClientes>{
@@ -46,6 +47,10 @@ export class ClientesService {
     .set('page', page)
     .set('size', size);
     return this.http.get<any>(`${this.apiURL}/pesquisa-paginada?${params.toString()}`);
+  }
+
+  getListaNomes(): Observable<ListaNomes[]>{
+    return this.http.get<ListaNomes[]>(`${this.apiURL}/lista-nomes`);
   }
 
 }

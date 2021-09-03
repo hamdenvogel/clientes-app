@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Cliente } from '../../clientes/cliente';
 import { ClientesService } from '../../clientes.service'
 import { ServicoPrestado } from '../servicoPrestado';
@@ -25,9 +25,11 @@ export class ServicoPrestadoFormComponent implements OnInit {
   id: number;
   success: boolean = false;
   errors: string[];
-  previousDate: Date;
+  tempDate: Date;
   captcha: string;
   googlecaptcha: GoogleCaptcha;
+  @ViewChild('inputData', {static: true}) inputData: ElementRef;
+  status: string;
 
   constructor(
     private clienteService: ClientesService,
@@ -49,11 +51,24 @@ export class ServicoPrestadoFormComponent implements OnInit {
     let params : Observable<Params> = this.activatedRoute.params;
     params.subscribe( urlParams => {
         this.id = urlParams['id'];
-        if(this.id){
-          console.log(`id: ${this.id}`);
+        if (this.id) {
+          this.status = "Alteração";
+          this.service.obterServicoPorId(this.id)
+          .subscribe(
+            response => {
+              this.servico.id =  this.id,
+              this.servico.descricao = response.descricao,
+              this.servico.preco = response.valor.toString().replace(".",","),
+              this.servico.data = response.data,
+              this.servico.idCliente = response.cliente.id,
+              this.servico.status = response.status
+           },
+            errorResponse => this.servico = new ServicoPrestado()
+          );
         }
         else {
-          console.log('não tem id.');
+          this.status = "Novo";
+          console.log('on init this.servico.data ' + this.inputData.nativeElement.value);
         }
     });
 
@@ -67,9 +82,10 @@ export class ServicoPrestadoFormComponent implements OnInit {
   }
 
   onSubmit(){
-    let date = new Date(this.servico.data).toLocaleDateString();
-    this.servico.data = date;
-    if (this.servico.data == 'Invalid Date') { this.servico.data = ""};
+    if (this.servico.data == 'Invalid Date' || this.servico.data == null)
+       { this.servico.data = ""};
+
+    this.servico.preco = this.servico.preco.toString().replace(".",",");
 
     if (this.servico.idCliente != undefined
       && this.servico.descricao != "" && this.servico.descricao != undefined
@@ -83,31 +99,58 @@ export class ServicoPrestadoFormComponent implements OnInit {
         return false;
       }
 
-    this.service
-      .salvar(this.servico)
-      .subscribe(response => {
-        this.success = true;
-        this.router.navigate(['/servicos-prestados/lista']);
-        this.notificationService.showToasterSuccess('Servi\ço cadastrado com sucesso.');
-        this.errors = null;
-        this.servico = new ServicoPrestado();
-       } , errorResponse => {
-        this.success = false;
-        this.errors = errorResponse.error.errors;
-        this.errors.forEach( (erro) =>{
-          this.notificationService.showToasterError(erro, "erro");
+      if (this.id) {
+        this.service
+          .atualizar(this.servico)
+          .subscribe(response => {
+              this.success = true;
+              this.router.navigate(['/servicos-prestados/lista']);
+              //this.notificationService.showToasterSuccess("Servi\ço atualizado com sucesso!");
+              this.notificationService.showToasterSuccessWithTitle(response.mensagem,
+                response.titulo);
+              this.errors = null;
+          }, errorResponse => {
+            this.errors = errorResponse.error.errors;
+              this.errors.forEach( (erro) =>{
+                this.notificationService.showToasterError(erro, "erro");
+              })
+          })
+      } else {
+      this.service
+        .salvar(this.servico)
+        .subscribe(response => {
+          this.success = true;
+          this.router.navigate(['/servicos-prestados/lista']);
+          //this.notificationService.showToasterSuccess('Servi\ço cadastrado com sucesso.');
+          this.notificationService.showToasterSuccessWithTitle(response.infoResponseDTO.mensagem,
+            response.infoResponseDTO.titulo);
+          this.errors = null;
+          this.servico = new ServicoPrestado();
+        } , errorResponse => {
+          this.success = false;
+          this.errors = errorResponse.error.errors;
+          this.errors.forEach( (erro) =>{
+            this.notificationService.showToasterError(erro, "erro");
+          })
         })
-      })
+      }
   }
 
-  getDate(){
-    let date = new Date(this.servico.data).toLocaleDateString();
-    console.log('Data selecionada é: ' + date);
-  }
+  dataServicoFormatada(){
+    var data = new Date(this.tempDate),
+        dia  = data.getDate().toString(),
+        diaF = (dia.length == 1) ? '0'+dia : dia,
+        mes  = (data.getMonth()+1).toString(), //+1 pois no getMonth Janeiro começa com zero.
+        mesF = (mes.length == 1) ? '0'+mes : mes,
+        anoF = data.getFullYear();
+    return diaF+"/"+mesF+"/"+anoF;
+}
 
   onValueChange(value: Date): void {
-    // this.servico.data = value;
-    this.previousDate = new Date(value);
+    if (this.inputData.nativeElement.value != "") {
+      this.tempDate = new Date(value);
+      this.servico.data = this.dataServicoFormatada();
+    }
   }
 
   resolved(captchaResponse: string) {
@@ -117,7 +160,6 @@ export class ServicoPrestadoFormComponent implements OnInit {
         this.success = true;
         this.errors = null;
         this.googlecaptcha = response;
-        //console.log(`this.googlecaptcha: ${this.googlecaptcha}`);
         //this.notificationService.showToasterSuccess("Token validado com sucesso!",
         //      "Informação");
       }, errorResponse => {

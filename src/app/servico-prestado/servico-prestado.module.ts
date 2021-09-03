@@ -9,6 +9,8 @@ import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { RecaptchaModule, RecaptchaFormsModule } from "ng-recaptcha";
+import { NgxPaginationModule } from 'ngx-pagination';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,9 @@ import { RecaptchaModule, RecaptchaFormsModule } from "ng-recaptcha";
     BrowserAnimationsModule,
     BsDatepickerModule.forRoot(),
     RecaptchaModule,
-    RecaptchaFormsModule
+    RecaptchaFormsModule,
+    NgxPaginationModule,
+    ModalModule.forRoot()
   ], exports : [
     ServicoPrestadoFormComponent,
     ServicoPrestadoListaComponent

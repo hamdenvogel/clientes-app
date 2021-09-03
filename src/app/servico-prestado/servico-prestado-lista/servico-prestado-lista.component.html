@@ -4,29 +4,48 @@
 </ol>
 <div class="container">
     <form #consultaForm="ngForm" (submit)="consultar()">
-        <div class="row">
-            <div class="col-md-6">
-                <label for="inputNome">Nome Cliente:</label>
-                <input type="text" [(ngModel)]="nome"
-                       name="nome" class="form-control"
-                       id="inputNome">
-            </div>
-
-            <div class="col-md-6">
-                <label for="inputMes">Mês:</label>
-                <select [(ngModel)]="mes" class="form-control" name="mes">
-                    <option value="">Selecione...</option>
-                    <option *ngFor="let mes of meses" [value]="mes">
-                        {{ mes }}
+      <div class="row">
+          <div class="col-md-6">
+              <div class="form-group">
+                <label>Cliente:</label>
+                <select class="form-control"
+                        [ngModelOptions]="{standalone: true}"
+                        [(ngModel)]="servicoPrestado.idCliente">
+                    <option value="-1">Todos</option>
+                    <option *ngFor="let cliente of clientes"
+                            [ngValue]="cliente.id">
+                        {{ cliente.nome }}
                     </option>
                 </select>
             </div>
-        </div>
+          </div>
 
+            <div class="col-md-6">
+              <label for="inputStatus">Status:</label>
+               <select class="form-control"
+                     [ngModelOptions]="{standalone: true}"
+                     [(ngModel)]="servicoPrestado.status">
+                 <option value="">Todos</option>
+                 <option value="E">Em Atendimento</option>
+                 <option value="C">Cancelado</option>
+                 <option value="F">Finalizado</option>
+             </select>
+            </div>
+
+    </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <label for="inputDescricao">Descrição:</label>
+                <input type="text" [(ngModel)]="servicoPrestado.descricao"
+                       name="descricao" class="form-control"
+                       id="inputDescricao">
+            </div>
+        </div>
         <br />
 
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <button type="submit" class="btn btn-primary">
                     <i class="fa fa-search"></i> Consultar
                 </button>
@@ -36,6 +55,18 @@
                         class="btn btn-warning ml-1">
                     <i class="fa fa-plus"></i> Novo
                 </button>
+
+                <button type="button"
+                        class="btn btn-danger ml-1"
+                        (click)="apagar()">
+                    <i class="fa fa-eraser"></i> Limpar
+                </button>
+
+                <button type="button"
+                        class="btn btn-success ml-1"
+                        routerLink="/home">
+                    <i class="fa fa-home"></i> Voltar
+                </button>
             </div>
         </div>
     </form>
@@ -43,25 +74,79 @@
     <br />
     <div class="row">
         <div class="col-md-12">
-            <table class="table">
-                <thead>
+          <br />
+          <div class="list row">
+            <div class="col-md-10">
+              <div class="input-group mb-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Pesquisar por Descri&ccedil;&atilde;o"
+                  (keyup)="onKeyUp($event)"
+                  [(ngModel)]="campoPesquisa"/>
+                <div class="input-group-append">
+                  <button
+                    class="btn btn-primary"
+                    (click)="pesquisarDescricao()"
+                    type="button">
+                    Pesquisar
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="row">
+                <div class="col-md-12">
+                <table class="table">
+                  <thead>
                     <tr>
-                        <th>Cliente</th>
-                        <th>Descri&ccedil;&atilde;o</th>
-                        <th>Pre&ccedil;o</th>
-                        <th>Data</th>
+                      <th>Cliente</th>
+                      <th>Descri&ccedil;&atilde;o</th>
+                      <th>Pre&ccedil;o</th>
+                      <th>Data</th>
+                      <th>Status</th>
+                      <th></th>
                     </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let s of lista" >
-                        <td>{{ s.cliente.nome }} </td>
-                        <td>{{ s.descricao }} </td>
-                        <td>{{ s.valor }} </td>
-                        <td>{{ s.data }} </td>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of collectionCustomPagination.data | paginate: configCustomPagination">
+                      <td>{{ item.cliente.nome }} </td>
+                      <td>{{ item.descricao }} </td>
+                      <td>{{ item.valor }} </td>
+                      <td>{{ item.data }} </td>
+                      <td>{{ statusDetalhado[item.status] }}</td>
+                      <td>
+                        <button class="btn btn-primary"
+                                routerLink="/servicos-prestados/form/{{ item.id }}">
+                            <i class="fa fa-edit"></i>
+                        </button>
+                          &nbsp;
+                       <button class="btn btn-danger"
+                          (click)="openModal(template, item.id)">
+                          <i class="fa fa-trash"></i>
+                       </button>
+                      </td>
                     </tr>
-                </tbody>
-            </table>
-
+                  </tbody>
+                </table>
+                <pagination-controls id="customPaginate" [maxSize]="maxSize" (pageChange)="onPageChange($event)"
+                  [previousLabel]="labels.previousLabel" [nextLabel]="labels.nextLabel">
+                </pagination-controls>
+              </div>
+            </div>
+            </div>
         </div>
     </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <ng-template #template>
+      <div class="modal-body text-center">
+        <p>Confirma a exclus&atilde;o?</p>
+        <button type="button" class="btn btn-default" (click)="confirm()" >Sim</button>
+        <button type="button" class="btn btn-primary" (click)="decline()" >N&atilde;o</button>
+      </div>
+    </ng-template>
+  </div>
 </div>

@@ -21,7 +21,7 @@ import { TokenInterceptor } from './token.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { NgxPaginationModule } from 'ngx-pagination';
-import {LocationStrategy, HashLocationStrategy} from '@angular/common';
+import {LocationStrategy, HashLocationStrategy, DatePipe} from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -55,7 +55,8 @@ import {LocationStrategy, HashLocationStrategy} from '@angular/common';
       useClass: TokenInterceptor,
       multi: true
     },
-    {provide: LocationStrategy, useClass: HashLocationStrategy}
+    {provide: LocationStrategy, useClass: HashLocationStrategy},
+    DatePipe
   ],
   bootstrap: [AppComponent]
 })

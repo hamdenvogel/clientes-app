@@ -1,3 +1,5 @@
+import { InfoResponse } from "../infoResponse";
+
 export class Cliente {
     id: number;
     nome: string;
@@ -9,4 +11,5 @@ export class Cliente {
     complemento: string;
     uf: string;
     cidade: string;
+    infoResponseDTO: InfoResponse;
 }

@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { SistemaInfoRoutingModule } from './sistema-info-routing.module';
 import { SistemaInfoFormComponent } from './sistema-info-form/sistema-info-form.component';
 import { FormsModule } from '@angular/forms';
+import { CarouselModule } from 'ngx-bootstrap/carousel';
 
 
 @NgModule({
@@ -11,7 +12,8 @@ import { FormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     SistemaInfoRoutingModule,
-    FormsModule
+    FormsModule,
+    CarouselModule.forRoot()
   ], exports: [
     SistemaInfoFormComponent
   ]

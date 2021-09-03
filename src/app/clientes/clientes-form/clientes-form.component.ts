@@ -1,4 +1,3 @@
-import { GoogleCaptcha } from './../../googleCaptcha';
 import { Cidade } from './../../cidade';
 import { UF } from './../../uf';
 import { CepService } from './../../cep.service';
@@ -13,6 +12,7 @@ import { NotificationService } from '../../notification.service';
 import { EMPTY } from 'rxjs';
 import { Endereco } from 'src/app/endereco';
 import GoogleCaptchaService from 'src/app/google-captcha.service';
+import { GoogleCaptcha } from 'src/app/googleCaptcha';
 
 @Component({
   selector: 'app-clientes-form',
@@ -53,7 +53,7 @@ export class ClientesFormComponent implements OnInit {
     let params : Observable<Params> = this.activatedRoute.params;
     params.subscribe( urlParams => {
         this.id = urlParams['id'];
-        if(this.id){
+        if (this.id) {
           this.service
             .getClienteById(this.id)
             .subscribe(
@@ -67,6 +67,9 @@ export class ClientesFormComponent implements OnInit {
               },
               errorResponse => this.cliente = new Cliente()
             );
+        } else {
+          this.cliente.uf = "";
+          this.cliente.cidade = "";
         }
     });
 
@@ -98,7 +101,6 @@ export class ClientesFormComponent implements OnInit {
 
     /*this.cepService.obterCidadesNome("Apiacá")
       .subscribe(dados => this.cidade = dados); */
-
 
    fromEvent(this.inputUf.nativeElement, 'change').pipe(
         tap(estado => console.log('Novo estado: ', this.cliente.uf)),
@@ -136,7 +138,6 @@ export class ClientesFormComponent implements OnInit {
             this.success = true;
             this.router.navigate(['/clientes/lista']);
             //this.notificationService.showToasterSuccess("Cliente atualizado com sucesso!");
-            console.log(response.mensagem + ' ' + response.titulo);
             this.notificationService.showToasterSuccessWithTitle(response.mensagem,
               response.titulo);
             this.errors = null;
@@ -152,7 +153,9 @@ export class ClientesFormComponent implements OnInit {
           .subscribe( response => {
             this.success = true;
             this.router.navigate(['/clientes/lista']);
-            this.notificationService.showToasterSuccess("Cliente salvo com sucesso!");
+            //this.notificationService.showToasterSuccess("Cliente salvo com sucesso!");
+            this.notificationService.showToasterSuccessWithTitle(response.infoResponseDTO.mensagem,
+              response.infoResponseDTO.titulo);
             this.errors = null;
             this.cliente = response;
           }, errorResponse => {
@@ -183,5 +186,19 @@ export class ClientesFormComponent implements OnInit {
         })
       })
     }
+
+    apagar() {
+      this.cliente.cep = "";
+      this.cliente.cidade = "";
+      this.cliente.complemento = "";
+      this.cliente.cpf = "";
+      this.cliente.dataCadastro = "";
+      this.cliente.endereco = "";
+      this.cliente.pix = "";
+      this.cliente.uf = "";
+      if (!this.id) {
+        this.cliente.nome = "";
+      }
+   }
 
     }

@@ -1,6 +1,6 @@
 <h1 class="mt-4">Serviços Prestados</h1>
 <ol class="breadcrumb mb-4">
-    <li class="breadcrum-bitem active">Novo</li>
+    <li class="breadcrum-bitem active">{{ status }}</li>
 </ol>
 <div class="container">
     <form #form="ngForm" (submit)="onSubmit()" >
@@ -79,7 +79,8 @@
                             (bsValueChange)="onValueChange($event)"
                             [(ngModel)]="servico.data"
                             name="data"
-                            id="inputData">
+                            id="inputData"
+                            #inputData>
 
                 </div>
             </div>

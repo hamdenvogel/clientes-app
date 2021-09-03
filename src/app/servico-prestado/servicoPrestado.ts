@@ -1,3 +1,5 @@
+import { InfoResponse } from "../infoResponse";
+
 export class ServicoPrestado {
     id: number;
     descricao:  string;
@@ -5,4 +7,5 @@ export class ServicoPrestado {
     data: string;
     idCliente:  number;
     status: string;
+    infoResponseDTO: InfoResponse;
 }

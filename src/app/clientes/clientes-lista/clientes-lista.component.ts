@@ -54,7 +54,7 @@ export class ClientesListaComponent implements OnInit {
       .getClientes()
       .subscribe(resposta => this.clientes = resposta); */
 
-      this.carregaClientes(0,10);
+    this.carregaClientes(0,10);
 
     this.collectionCustomPagination = this.collection;
     this.config = {

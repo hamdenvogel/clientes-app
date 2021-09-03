@@ -60,6 +60,7 @@ body {
 .container_img {
   width: 100%;
   height: 300px !important;
+  display: block;
 }
 
 .container_img2 {
