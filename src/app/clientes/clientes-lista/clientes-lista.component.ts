@@ -4,6 +4,7 @@ import { Router } from '@angular/router'
 
 import { Cliente } from '../cliente';
 import { ClientesService } from '../../clientes.service';
+import { TotalClientes } from '../totalClientes';
 
 
 @Component({
@@ -32,21 +33,31 @@ export class ClientesListaComponent implements OnInit {
     screenReaderPageLabel: 'pagina',
     screenReaderCurrentLabel: `Voce esta na pagina`
   };
+  totalClientes: TotalClientes;
+  totalClientesCadastrados: number;
 
   constructor(
     private service: ClientesService,
     private router: Router,
-    private notificationService: NotificationService) {}
+    private notificationService: NotificationService) {
+      this.totalClientes = new TotalClientes();
+    }
 
   carregaClientes( pagina = 0, tamanho = 10){
-      this.service.obterPesquisaPaginada(pagina, tamanho)
-      .subscribe(response => {
-        this.clientes = response.content;
-        this.collection.data = this.clientes;
-        this.collection.count = response.totalElements;
-        this.collectionCopy = {...this.collection};
-        //this.pagina = response.number;
-       })
+      this.service
+        .totalClientes()
+        .subscribe(resposta => {
+          this.totalClientes = resposta;
+          this.totalClientesCadastrados = this.totalClientes.totalClientes;
+          this.service.obterPesquisaPaginada(pagina,  this.totalClientesCadastrados)
+          .subscribe(response => {
+            this.clientes = response.content;
+            this.collection.data = this.clientes;
+            this.collection.count = response.totalElements;
+            this.collectionCopy = {...this.collection};
+            //this.pagina = response.number;
+           })
+        });
     }
 
   ngOnInit(): void {
