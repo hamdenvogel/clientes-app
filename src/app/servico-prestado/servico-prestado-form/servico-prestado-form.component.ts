@@ -29,8 +29,7 @@ export class ServicoPrestadoFormComponent implements OnInit {
   captcha: string;
   googlecaptcha: GoogleCaptcha;
   @ViewChild('inputData', {static: true}) inputData: ElementRef;
-  status: string;
-
+ 
   constructor(
     private clienteService: ClientesService,
     private service: ServicoPrestadoService,
@@ -52,7 +51,6 @@ export class ServicoPrestadoFormComponent implements OnInit {
     params.subscribe( urlParams => {
         this.id = urlParams['id'];
         if (this.id) {
-          this.status = "'Altera&ccedil;&atilde;o";
           this.service.obterServicoPorId(this.id)
           .subscribe(
             response => {
@@ -67,7 +65,6 @@ export class ServicoPrestadoFormComponent implements OnInit {
           );
         }
         else {
-          this.status = "Novo";
           console.log('on init this.servico.data ' + this.inputData.nativeElement.value);
         }
     });
@@ -105,8 +102,7 @@ export class ServicoPrestadoFormComponent implements OnInit {
           .subscribe(response => {
               this.success = true;
               this.router.navigate(['/servicos-prestados/lista']);
-              //this.notificationService.showToasterSuccess("Servi\?o atualizado com sucesso!");
-              this.notificationService.showToasterSuccessWithTitle(response.mensagem,
+                           this.notificationService.showToasterSuccessWithTitle(response.mensagem,
                 response.titulo);
               this.errors = null;
           }, errorResponse => {
@@ -121,8 +117,7 @@ export class ServicoPrestadoFormComponent implements OnInit {
         .subscribe(response => {
           this.success = true;
           this.router.navigate(['/servicos-prestados/lista']);
-          //this.notificationService.showToasterSuccess('Servi\?o cadastrado com sucesso.');
-          this.notificationService.showToasterSuccessWithTitle(response.infoResponseDTO.mensagem,
+            this.notificationService.showToasterSuccessWithTitle(response.infoResponseDTO.mensagem,
             response.infoResponseDTO.titulo);
           this.errors = null;
           this.servico = new ServicoPrestado();
@@ -140,7 +135,7 @@ export class ServicoPrestadoFormComponent implements OnInit {
     var data = new Date(this.tempDate),
         dia  = data.getDate().toString(),
         diaF = (dia.length == 1) ? '0'+dia : dia,
-        mes  = (data.getMonth()+1).toString(), //+1 pois no getMonth Janeiro come?a com zero.
+        mes  = (data.getMonth()+1).toString(),
         mesF = (mes.length == 1) ? '0'+mes : mes,
         anoF = data.getFullYear();
     return diaF+"/"+mesF+"/"+anoF;
@@ -159,9 +154,7 @@ export class ServicoPrestadoFormComponent implements OnInit {
       .subscribe( response => {
         this.success = true;
         this.errors = null;
-        this.googlecaptcha = response;
-        //this.notificationService.showToasterSuccess("Token validado com sucesso!",
-        //      "Informa??o");
+        this.googlecaptcha = response;       
       }, errorResponse => {
         this.success = false;
         this.errors = errorResponse.error.errors;

@@ -99,9 +99,6 @@ export class ClientesFormComponent implements OnInit {
     this.cepService.obterUF()
       .subscribe(dados => this.uf = dados);
 
-    /*this.cepService.obterCidadesNome("Apiac?")
-      .subscribe(dados => this.cidade = dados); */
-
    fromEvent(this.inputUf.nativeElement, 'change').pipe(
         tap(estado => console.log('Novo estado: ', this.cliente.uf)),
         map(estado => this.uf.filter(e => e.sigla === this.cliente.uf)),
@@ -174,10 +171,7 @@ export class ClientesFormComponent implements OnInit {
       .subscribe( response => {
         this.success = true;
         this.errors = null;
-        this.googlecaptcha = response;
-        //console.log(`this.googlecaptcha: ${this.googlecaptcha}`);
-        //this.notificationService.showToasterSuccess("Token validado com sucesso!",
-        //      "Informa??o");
+        this.googlecaptcha = response;       
       }, errorResponse => {
         this.success = false;
         this.errors = errorResponse.error.errors;
