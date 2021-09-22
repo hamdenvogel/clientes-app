@@ -1,6 +1,6 @@
 import { ServicoPrestado } from './../../servico-prestado/servicoPrestado';
 import { ServicoPrestadoBusca } from './../../servico-prestado/servico-prestado-lista/servicoPrestadoBusca';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router'
 
 import { Cliente } from '../cliente'
@@ -8,6 +8,7 @@ import { ClientesService } from '../../clientes.service'
 import { Observable } from 'rxjs';
 import { NotificationService } from '../../notification.service';
 import { ServicoPrestadoService } from 'src/app/servico-prestado.service';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-clientes-remover',
@@ -25,6 +26,7 @@ export class ClientesRemoverComponent implements OnInit {
   bExistemServicosProCliente: boolean;
   servicos: ServicoPrestado[] = [];
   statusDetalhado = {'E': 'Em Atendimento', 'C': 'Cancelado', 'F': 'Finalizado' };
+  modalRef?: BsModalRef;
 
   campoPesquisa: string = "";
   config: any;
@@ -45,7 +47,8 @@ export class ClientesRemoverComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private notificationService: NotificationService,
-    private servicoPrestadoService: ServicoPrestadoService
+    private servicoPrestadoService: ServicoPrestadoService,
+    private modalService: BsModalService
     ) {
       this.cliente = new Cliente(); { }
       this.bExistemServicosProCliente = false;
@@ -65,7 +68,7 @@ export class ClientesRemoverComponent implements OnInit {
     let params : Observable<Params> = this.activatedRoute.params
     params.subscribe( urlParams => {
         this.id = urlParams['id'];
-        if(this.id){
+        if (this.id) {
           this.service
             .getClienteById(this.id)
             .subscribe(
@@ -102,10 +105,9 @@ export class ClientesRemoverComponent implements OnInit {
     };
   }
 
-  deletarCliente(clienteSelecionado: Cliente){
-    this.cliente = clienteSelecionado;
+  deletarCliente(id: number){
     this.service
-      .deletar(this.cliente)
+      .deletar(id)
       .subscribe(
         response => {
           this.notificationService.showToasterSuccessWithTitle(response.mensagem,
@@ -172,5 +174,19 @@ export class ClientesRemoverComponent implements OnInit {
 
   onPageChange(event) {
     this.configCustomPagination.currentPage = event;
+  }
+
+  openModal(template: TemplateRef<any>, idCliente: number) {
+    this.modalRef = this.modalService.show(template, {class: 'modal-sm'});
+  }
+
+  confirm(): void {
+    if (!this.id) { return };     
+    this.deletarCliente(this.id);
+    this.modalRef?.hide();
+  }
+
+  decline(): void {
+    this.modalRef?.hide();
   }
 }

@@ -34,8 +34,8 @@ export class ClientesService {
     return this.http.get<any>(`${this.apiURL}/${id}`);
   }
 
-  deletar(cliente: Cliente) : Observable<InfoResponse> {
-    return this.http.delete<InfoResponse>(`${this.apiURL}/${cliente.id}`);
+  deletar(idCliente: number) : Observable<InfoResponse> {
+    return this.http.delete<InfoResponse>(`${this.apiURL}/${idCliente}`);
   }
 
   totalClientes(): Observable<TotalClientes>{

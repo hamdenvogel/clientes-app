@@ -128,9 +128,9 @@ export class ClientesListaComponent implements OnInit {
     console.log('teste');
   }
 
-  deletarCliente(){
+  deletarCliente(idCliente: number){
     this.service
-      .deletar(this.clienteSelecionado)
+      .deletar(idCliente)
       .subscribe(
         response => {
           //this.mensagemSucesso = 'Cliente deletado com sucesso!'

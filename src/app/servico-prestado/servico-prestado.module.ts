@@ -1,3 +1,4 @@
+import { RecaptchaModule, RecaptchaFormsModule } from "ng-recaptcha";
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms'
@@ -8,7 +9,6 @@ import { ServicoPrestadoListaComponent } from './servico-prestado-lista/servico-
 import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
-import { RecaptchaModule, RecaptchaFormsModule } from "ng-recaptcha";
 import { NgxPaginationModule } from 'ngx-pagination';
 import { ModalModule } from 'ngx-bootstrap/modal';
 

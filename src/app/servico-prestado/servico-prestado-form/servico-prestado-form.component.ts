@@ -29,7 +29,7 @@ export class ServicoPrestadoFormComponent implements OnInit {
   captcha: string;
   googlecaptcha: GoogleCaptcha;
   @ViewChild('inputData', {static: true}) inputData: ElementRef;
- 
+
   constructor(
     private clienteService: ClientesService,
     private service: ServicoPrestadoService,
@@ -82,7 +82,9 @@ export class ServicoPrestadoFormComponent implements OnInit {
     if (this.servico.data == 'Invalid Date' || this.servico.data == null)
        { this.servico.data = ""};
 
-    this.servico.preco = this.servico.preco.toString().replace(".",",");
+    if (this.servico.preco != undefined) {
+      this.servico.preco = this.servico.preco.toString().replace(".",",");
+    }
 
     if (this.servico.idCliente != undefined
       && this.servico.descricao != "" && this.servico.descricao != undefined
@@ -154,7 +156,7 @@ export class ServicoPrestadoFormComponent implements OnInit {
       .subscribe( response => {
         this.success = true;
         this.errors = null;
-        this.googlecaptcha = response;       
+        this.googlecaptcha = response;
       }, errorResponse => {
         this.success = false;
         this.errors = errorResponse.error.errors;
