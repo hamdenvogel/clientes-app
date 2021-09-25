@@ -8,4 +8,5 @@ export class ServicoPrestado {
     idCliente:  number;
     status: string;
     infoResponseDTO: InfoResponse;
+    captcha: string;
 }

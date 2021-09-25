@@ -43,7 +43,7 @@ export class ServicoPrestadoFormComponent implements OnInit {
     defineLocale('custom locale', ptBrLocale);
     this.localeService.use('custom locale');
     this.servico = new ServicoPrestado();
-    this.captcha = null;
+    this.captcha = "";
   }
 
   ngOnInit(): void {
@@ -86,19 +86,10 @@ export class ServicoPrestadoFormComponent implements OnInit {
       this.servico.preco = this.servico.preco.toString().replace(".",",");
     }
 
-    if (this.servico.idCliente != undefined
-      && this.servico.descricao != "" && this.servico.descricao != undefined
-      && this.servico.data != "" && this.servico.data != undefined
-      && this.servico.preco != "" && this.servico.preco != undefined
-      && this.servico.status != null && this.servico.status != undefined
-      &&
-      this.captcha == null) {
-        this.notificationService.showToasterError("&Eacute; necess&aacute;rio validar o Captcha.",
-               "Erro");
-        return false;
-      }
+    console.log('this.captcha ' + this.captcha);
+    this.servico.captcha = this.captcha;
 
-      if (this.id) {
+     if (this.id) {
         this.service
           .atualizar(this.servico)
           .subscribe(response => {

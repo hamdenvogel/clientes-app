@@ -45,8 +45,10 @@ export class ClientesFormComponent implements OnInit {
       private googleCaptchaService: GoogleCaptchaService
       ) {
     this.cliente = new Cliente();
+    this.cliente.nome = "";
+    this.cliente.cpf = "";
     this.cidadeDesabilitado = false;
-    this.captcha = null;
+    this.captcha = "";
   }
 
   ngOnInit(): void {
@@ -111,7 +113,6 @@ export class ClientesFormComponent implements OnInit {
 
      this.googleCaptchaService.zerarTentativasMalSucedidas()
         .subscribe(response => {});
-
   }
 
   voltarParaListagem(){
@@ -119,14 +120,8 @@ export class ClientesFormComponent implements OnInit {
   }
 
   onSubmit(){
-
-    if (this.cliente.nome != "" && this.cliente.nome != undefined
-      && this.cliente.cpf != "" && this.cliente.cpf != undefined &&
-      this.captcha == null) {
-        this.notificationService.showToasterError("&Eacute; necess&aacute;rio validar o Captcha.",
-               "Erro");
-        return false;
-      }
+    console.log('this.captcha ' + this.captcha);
+    this.cliente.captcha = this.captcha;
 
     if (this.id) {
       this.service
@@ -168,10 +163,10 @@ export class ClientesFormComponent implements OnInit {
    resolved(captchaResponse: string) {
     this.captcha = captchaResponse;
     this.googleCaptchaService.verificar(this.captcha)
-      .subscribe( response => {
+      .subscribe(response => {
         this.success = true;
         this.errors = null;
-        this.googlecaptcha = response;       
+        this.googlecaptcha = response;
       }, errorResponse => {
         this.success = false;
         this.errors = errorResponse.error.errors;

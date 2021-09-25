@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http'
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { GoogleCaptcha } from './googleCaptcha';
+import { InfoResponse } from './infoResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +20,10 @@ export default class GoogleCaptchaService {
 
   zerarTentativasMalSucedidas(): Observable<any>{
     return this.http.get<any>(this.apiURL);
+  }
+
+  informaValidacao(): Observable<InfoResponse> {
+    return this.http.get<InfoResponse>(`${this.apiURL}/informa-validacao`);
   }
 
 }

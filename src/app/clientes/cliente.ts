@@ -12,4 +12,5 @@ export class Cliente {
     uf: string;
     cidade: string;
     infoResponseDTO: InfoResponse;
+    captcha: string;
 }
