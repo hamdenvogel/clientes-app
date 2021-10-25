@@ -86,7 +86,6 @@ export class ServicoPrestadoFormComponent implements OnInit {
       this.servico.preco = this.servico.preco.toString().replace(".",",");
     }
 
-    console.log('this.captcha ' + this.captcha);
     this.servico.captcha = this.captcha;
 
      if (this.id) {

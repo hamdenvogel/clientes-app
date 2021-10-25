@@ -22,6 +22,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { NgxPaginationModule } from 'ngx-pagination';
 import {LocationStrategy, HashLocationStrategy, DatePipe} from '@angular/common';
+import { ChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import {LocationStrategy, HashLocationStrategy, DatePipe} from '@angular/common'
     ServicoPrestadoModule,
     BrowserAnimationsModule, // required animations module
     ToastrModule.forRoot(), // ToastrModule added
-    SistemaInfoModule
+    SistemaInfoModule,
+    ChartsModule
   ],
 
   providers: [

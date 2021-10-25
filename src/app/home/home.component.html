@@ -101,30 +101,94 @@
               </div>
           </div>
       </div>
+
+      <div class="col-md-12">
+        <div class="row">
+         <!-- Copy the content below until next comment -->
+         <div class="card card-custom bg-white border-white border-0">
+          <div class="card-custom-img" style="background-image: url(http://res.cloudinary.com/d3/image/upload/c_scale,q_auto:good,w_1110/trianglify-v1-cs85g_cc5d2i.jpg);"></div>
+          <div class="card-custom-avatar">
+            <img class="img-fluid" src="http://hvogel.com.br/img/person-icon-blue-7573.png" alt="Avatar" />
+          </div>
+          <div class="card-body" style="overflow-y: auto">
+            <h4 class="card-title">Clientes</h4>
+            <p class="card-text">Clientes &eacute; um sistema para Gerenciamento de Servi&ccedil;os Prestados.</p>
+          </div>
+          <div class="card-footer" style="background: inherit; border-color: inherit;">
+            <a class="btn btn-primary" routerLink="/sistema-info" >Saiba mais</a>&nbsp;
+            <a href="#" class="btn btn-outline-primary">Sobre...</a>
+          </div>
+        </div>
+        <!-- Copy until here -->
+        </div>
+        </div>
+
+      <div class="row">
+        <div class="col-md-6">
+           <div class="card text-white bg-primary flex-md-row mb-4 shadow-sm h-md-250">
+              <div class="card-body d-flex flex-column align-items-start">
+                 <strong class="d-inline-block mb-2 text-white">Controle Serviços</strong>
+                 <h6 class="mb-0">
+                    <a class="text-white" href="#">E administre seu dinheiro</a>
+                 </h6>
+                 <div class="mb-1 text-white-50 small">$$$</div>
+                 <p class="card-text mb-auto">Altere o status desejado do serviço a hora que quiser, para acompanhar seu andamento.</p>
+                 <a class="btn btn-outline-light btn-sm" role="button" href="#">Foque em metas</a>
+              </div>
+              <img class="card-img-right flex-auto d-none d-lg-block" alt="Thumbnail [200x250]" src="http://hvogel.com.br/img/tech1.jpg" style="width: 200px; height: 250px;">
+           </div>
+        </div>
+        <div class="col-md-6">
+           <div class="card text-white bg-info flex-md-row mb-4 shadow-sm h-md-250">
+              <div class="card-body d-flex flex-column align-items-start">
+                 <strong class="d-inline-block mb-2 text-white">Cadastre Clientes</strong>
+                 <h6 class="mb-0">
+                    <a class="text-white" href="#">Gerencie todos seus clientes</a>
+                 </h6>
+                 <div class="mb-1 text-white-50 small">Centralize quem demanda seus serviços</div>
+                 <p class="card-text mb-auto">Clientes podem acompanhar todo o histórico dos seus serviços prestados.</p>
+                 <a class="btn btn-outline-light btn-sm" href="#">Sucesso nas entregas</a>
+              </div>
+              <img class="card-img-right flex-auto d-none d-lg-block" alt="Thumbnail [200x250]" src="http://hvogel.com.br/img/people1.jpg" style="width: 200px; height: 250px;">
+           </div>
+        </div>
+      </div>
+
+
+      <div class="container">
+        <div class="chart-wrapper">
+          <canvas baseChart
+              [datasets]="lineChartData"
+              [labels]="lineChartLabels"
+              [options]="lineChartOptions"
+              [colors]="lineChartColors"
+              [legend]="lineChartLegend"
+              [chartType]="lineChartType"
+              [plugins]="lineChartPlugins">
+          </canvas>
+      </div>
+      </div>
+
+      <div class="container">
+      <div class="chart-wrapper">
+      <canvas baseChart
+        [data]="pieChartData"
+        [labels]="pieChartLabels"
+        [chartType]="pieChartType"
+        [options]="pieChartOptions"
+        [plugins]="pieChartPlugins"
+        [colors]="pieChartColors"
+        [legend]="pieChartLegend">
+      </canvas>
+    </div>
+  </div>
+
   </div>
 </div>
 
+
 &nbsp;&nbsp;
-<div class="col-md-10">
-<div class="row">
- <!-- Copy the content below until next comment -->
- <div class="card card-custom bg-white border-white border-0">
-  <div class="card-custom-img" style="background-image: url(http://res.cloudinary.com/d3/image/upload/c_scale,q_auto:good,w_1110/trianglify-v1-cs85g_cc5d2i.jpg);"></div>
-  <div class="card-custom-avatar">
-    <img class="img-fluid" src="http://hvogel.com.br/img/person-icon-blue-7573.png" alt="Avatar" />
-  </div>
-  <div class="card-body" style="overflow-y: auto">
-    <h4 class="card-title">Clientes</h4>
-    <p class="card-text">Clientes &eacute; um sistema para Gerenciamento de Servi&ccedil;os Prestados.</p>
-  </div>
-  <div class="card-footer" style="background: inherit; border-color: inherit;">
-    <a class="btn btn-primary" routerLink="/sistema-info" >Saiba mais</a>&nbsp;
-    <a href="#" class="btn btn-outline-primary">Sobre...</a>
-  </div>
-</div>
-<!-- Copy until here -->
-</div>
-</div>
+
 
 </div>
 </div>

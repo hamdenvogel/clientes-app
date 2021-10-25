@@ -4,10 +4,32 @@
 </ol>
 <div class="container">
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-10">
 
         </div>
     </div>
+
+
+
+    <div class="col-md-10">
+      <div class="row">
+       <!-- Copy the content below until next comment -->
+       <div class="card card-custom bg-white border-white border-0">
+        <div class="card-custom-img" style="background-image: url(http://res.cloudinary.com/d3/image/upload/c_scale,q_auto:good,w_1110/trianglify-v1-cs85g_cc5d2i.jpg);"></div>
+        <div class="card-custom-avatar">
+          <img class="img-fluid" src="http://hvogel.com.br/img/services-icon-png-2283.png" alt="Avatar" />
+        </div>
+        <div class="card-body" style="overflow-y: auto">
+          <h4 class="card-title">Clientes</h4>
+          <p class="card-text">Gerenciamento de Clientes.</p>
+        </div>
+
+      </div>
+      <!-- Copy until here -->
+      </div>
+      </div>
+
+
 
     <div class="row">
         <div class="col-md-6">
@@ -73,7 +95,7 @@
                      </button>
                      &nbsp;
                      <button class="btn btn-success"
-                        >
+                     (click)="openModal(template, item.id)">
                          <i class="fa fa-money-bill-alt"></i>
                     </button>
                   </td>
@@ -108,5 +130,16 @@
             </div>
         </div>
     </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <ng-template #template>
+      <div class="modal-body text-center">
+        <p>Funcionalidade em Desenvolvimento.</p>
+        <button type="button" class="btn btn-primary" (click)="ok()">OK</button>
+      </div>
+    </ng-template>
+  </div>
 </div>
 

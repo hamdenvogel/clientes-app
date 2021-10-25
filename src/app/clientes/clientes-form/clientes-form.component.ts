@@ -120,7 +120,6 @@ export class ClientesFormComponent implements OnInit {
   }
 
   onSubmit(){
-    console.log('this.captcha ' + this.captcha);
     this.cliente.captcha = this.captcha;
 
     if (this.id) {
