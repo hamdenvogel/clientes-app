@@ -34,6 +34,8 @@
             <p class="text-muted">Utilize esta p&aacute;gina para realizar o cadastro completo de servi&ccedil;os. Um servi&ccedil;o &eacute; uma
               despesa a ser lan&ccedil;ada a uma atividade qualquer, associada a um prestador que vai executar esta atividade.
               Este registro armazenar&aacute; dados como data do cadastro e valor, dentre outros.
+              Um prestador pode ser associado &agrave; este servi&ccedil;o, mas n&atilde;o &eacute; obrigat&oacute;rio, pois um servi&ccedil;o pode ser criado
+              primeiro e depois em outro momento poder&aacute; ter um prestador associado.
             </p>
             </div>
         </div>
@@ -111,7 +113,7 @@
         </div>
 
         <div class="row">
-          <div class="col-md-12">
+          <div class="col-md-6">
               <div class="form-group">
                   <label>Status: *</label>
                   <select class="form-control"
@@ -123,7 +125,21 @@
                   </select>
               </div>
           </div>
+          <div class="col-md-6">
+            <div class="form-group">
+                <label>Prestador:</label>
+                <select class="form-control"
+                        [ngModelOptions]="{standalone: true}"
+                        [(ngModel)]="servico.prestador.id">
+                    <option value="">Selecione...</option>
+                    <option *ngFor="let prestador of prestadores"
+                            [ngValue]="prestador.id">
+                        {{ prestador.nome }}
+                    </option>
+                </select>
+            </div>
         </div>
+    </div>
 
      <div class="row">
         <div class="col-md-4">

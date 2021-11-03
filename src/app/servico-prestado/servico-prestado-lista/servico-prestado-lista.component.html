@@ -25,7 +25,7 @@
 <div class="container">
     <form #consultaForm="ngForm" (submit)="consultar()">
       <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-5">
               <div class="form-group">
                 <label>Cliente:</label>
                 <select class="form-control"
@@ -40,7 +40,7 @@
             </div>
           </div>
 
-            <div class="col-md-6">
+            <div class="col-md-5">
               <label for="inputStatus">Status:</label>
                <select class="form-control"
                      [ngModelOptions]="{standalone: true}"
@@ -55,7 +55,7 @@
     </div>
 
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-10">
                 <label for="inputDescricao">Descrição:</label>
                 <input type="text" [(ngModel)]="servicoPrestado.descricao"
                        name="descricao" class="form-control"
@@ -93,7 +93,7 @@
 
     <br />
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-10">
           <br />
           <div class="list row">
             <div class="col-md-10">
@@ -116,11 +116,11 @@
             </div>
             <div>
               <div class="row">
-                <div class="col-md-10">
+                <div class="col-md-12">
                 <div class="table-responsive">
-                <table class="table">
+                <table class="table table-hover table-striped">
                   <thead>
-                    <tr>
+                    <tr class="thead-dark">
                       <th>Cliente</th>
                       <th>Descri&ccedil;&atilde;o</th>
                       <th>Pre&ccedil;o</th>
@@ -131,7 +131,11 @@
                   </thead>
                   <tbody>
                     <tr *ngFor="let item of collectionCustomPagination.data | paginate: configCustomPagination">
-                      <td>{{ item.cliente.nome }} </td>
+                      <td>
+                        <em class="text-item-grid">
+                          {{ item.cliente.nome }}
+                         </em>
+                       </td>
                       <td>{{ item.descricao }} </td>
                       <td>{{ item.valor }} </td>
                       <td>{{ item.data }} </td>

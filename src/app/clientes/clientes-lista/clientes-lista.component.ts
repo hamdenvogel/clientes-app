@@ -1,6 +1,6 @@
 import { NotificationService } from './../../notification.service';
 import { Component, OnInit, TemplateRef } from '@angular/core';
-import { Router } from '@angular/router'
+import { Router } from '@angular/router';
 
 import { Cliente } from '../cliente';
 import { ClientesService } from '../../clientes.service';

@@ -1,3 +1,4 @@
+import { PrestadorService } from './../prestador.service';
 import { GraficoService } from './../grafico.service';
 import { InfoService } from './../info.service';
 import { TotalUsuarios } from './../clientes/totalUsuarios';
@@ -9,6 +10,7 @@ import { TotalClientes } from '../clientes/totalClientes';
 import { ServicoPrestadoService } from '../servico-prestado.service';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import { Color, Label, SingleDataSet } from 'ng2-charts';
+import { TotalPrestadores } from '../prestador/totalPrestadores';
 
 @Component({
   selector: 'app-home',
@@ -22,6 +24,8 @@ export class HomeComponent implements OnInit {
   totalServicosCadastrados: number;
   totalUsuarios: TotalUsuarios;
   totalUsuariosCadastrados: number;
+  totalPrestadores: TotalPrestadores;
+  totalPrestadoresCadastrados: number;
   nameApp: string;
   versionApp: string;
   authorApp: string;
@@ -75,11 +79,13 @@ export class HomeComponent implements OnInit {
     private servicosPrestadosService: ServicoPrestadoService,
     private usuarioService: UsuariosService,
     private infoService: InfoService,
-    private graficoService: GraficoService
+    private graficoService: GraficoService,
+    private prestadorService: PrestadorService
   ) {
     this.totalClientes = new TotalClientes();
     this.totalServicos = new TotalServicos();
     this.totalUsuarios = new TotalUsuarios();
+    this.totalPrestadores = new TotalPrestadores();
    }
 
   ngOnInit(): void {
@@ -104,6 +110,13 @@ export class HomeComponent implements OnInit {
             this.totalUsuarios = resposta;
             this.totalUsuariosCadastrados = this.totalUsuarios.totalUsuarios;
           });
+
+          this.prestadorService
+            .totalPrestadores()
+            .subscribe(resposta => {
+              this.totalPrestadores = resposta;
+              this.totalPrestadoresCadastrados = this.totalPrestadores.totalPrestadores;
+            })
 
           this.infoService
             .getInfo()

@@ -1,3 +1,4 @@
+import { Prestador } from 'src/app/prestador/prestador';
 import { Cliente } from '../../clientes/cliente';
 
 export class ServicoPrestadoBusca {
@@ -6,4 +7,5 @@ export class ServicoPrestadoBusca {
     data: string;
     cliente: Cliente;
     status: string;
+    prestador: Prestador;
 }

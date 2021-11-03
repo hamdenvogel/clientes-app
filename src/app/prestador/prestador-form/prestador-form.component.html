@@ -1,16 +1,16 @@
-<h1 class="mt-4">Clientes</h1>
+<h1 class="mt-4">Prestador</h1>
 <ol class="breadcrumb mb-4">
-    <li class="breadcrumb-item active">{{ cliente.id ? 'Altera&ccedil;&atilde;o' : 'Novo' }}</li>
+    <li class="breadcrumb-item active">{{ prestador.id ? 'Altera&ccedil;&atilde;o' : 'Novo' }}</li>
 </ol>
 <div class="container">
-   <form #clienteForm="ngForm" (ngSubmit)="onSubmit()" >
+   <form #prestadorForm="ngForm" (ngSubmit)="onSubmit()" >
     <div class="row">
       <div class="col-md-12">
         <div class="card">
           <div class="card-body">
             <div class="d-flex justify-content-between px-md-1">
               <div>
-                <h3 class="text-success">{{ cliente.id ? cliente.nome : 'Novo Cliente' }}</h3>
+                <h3 class="text-success">{{ prestador.id ? prestador.nome : 'Novo Prestador' }}</h3>
                 <p class="mb-0">Ficha cadastro dados pessoais.</p>
               </div>
               <div class="align-self-center">
@@ -25,14 +25,14 @@
     <div class="how-section1">
       <div class="row">
           <div class="col-md-6 how-img">
-              <img src="http://hvogel.com.br/img/Work_Section2_freelance_img1.png" class="rounded-circle img-fluid" alt=""/>
+              <img src="http://hvogel.com.br/img/meeting-icon-260.jpg" class="rounded-circle img-fluid" alt=""/>
           </div>
           <div class="col-md-6">
-              <h4>Gerenciamento de Clientes</h4>
-                          <h4 class="subheading">M&oacute;dulo de Administra&ccedil;&atilde;o de Clientes do Sistema. </h4>
-          <p class="text-muted">Utilize esta p&aacute;gina para realizar o cadastro completo do cliente.
-            O Cliente &eacute; o respons&aacute;vel por gerenciar todo o ciclo de vida de um servi&ccedil;o. Ele pode ter quantos
-            servi&ccedil;os desejar, com diferentes hist&oacute;ricos, associados &aacute; v&aacute;rios prestadores, tudo simultaneamente.
+              <h4>Gerenciamento de Prestadores</h4>
+                          <h4 class="subheading">M&oacute;dulo de Administra&ccedil;&atilde;o de Prestadores do Sistema. </h4>
+          <p class="text-muted">Utilize esta p&aacute;gina para realizar o cadastro completo do prestador.
+            Ele que vai botar a m&atilde;o na massa. O Prestador &eacute; o respons&aacute;vel por executar o servi&ccedil;o a ele atribu&iacute;do.
+            Ele pode ter v&aacute;rios servi&ccedil;os &agrave; ele.
           </p>
           </div>
       </div>
@@ -43,7 +43,7 @@
     <div class="row">
       <div class="col-md-12">
       <div class="badge bg-primary text-wrap" style="width: 20rem;">
-        Cliente &eacute; o dono do servi&ccedil;o.
+        Prestador &eacute; o executor do servi&ccedil;o.
       </div>
     </div>
   </div>
@@ -56,11 +56,11 @@
         </div>
     </div>
 
-        <div class="row" *ngIf="cliente.id">
+        <div class="row" *ngIf="prestador.id">
             <div class="col-md-6">
                 <div class="form-group">
                     <label>ID:</label>
-                    <input type="text" [ngModel]="cliente.id" name="id" class="form-control" disabled="true" />
+                    <input type="text" [ngModel]="prestador.id" name="id" class="form-control" disabled="true" />
                 </div>
             </div>
 
@@ -68,7 +68,7 @@
                 <div class="form-group">
                     <label>Data Cadastro:</label>
                     <input type="text" class="form-control" name="dataCadastro"
-                           [ngModel]="cliente.dataCadastro" disabled="true"  />
+                           [ngModel]="prestador.dataCadastro" disabled="true"  />
                 </div>
             </div>
         </div>
@@ -78,7 +78,7 @@
                 <div class="form-group">
                     <label>Nome: *</label>
                     <input type="text" class="form-control"
-                           [(ngModel)]="cliente.nome" name="nome"   />
+                           [(ngModel)]="prestador.nome" name="nome"   />
                 </div>
             </div>
 
@@ -86,7 +86,7 @@
                 <div class="form-group">
                     <label>CPF: *</label>
                     <input type="text" class="form-control"
-                            [(ngModel)]="cliente.cpf" name="cpf"  />
+                            [(ngModel)]="prestador.cpf" name="cpf"  />
                 </div>
             </div>
         </div>
@@ -96,15 +96,15 @@
               <div class="form-group">
                   <label>PIX:</label>
                   <input type="text" class="form-control"
-                         [(ngModel)]="cliente.pix" name="pix"   />
+                         [(ngModel)]="prestador.pix" name="pix"   />
               </div>
           </div>
 
           <div class="col-md-6">
               <div class="form-group">
-                  <label>CEP:</label>
+                  <label>Avaliação:</label>
                   <input type="text" class="form-control"
-                          [(ngModel)]="cliente.cep" name="cep" #cep />
+                          [(ngModel)]="prestador.avaliacao" name="avaliacao" />
               </div>
           </div>
       </div>
@@ -112,54 +112,19 @@
       <div class="row">
         <div class="col-md-12">
             <div class="form-group">
-                <label>Endere&ccedil;o:</label>
-                <input type="text" class="form-control"
-                       [(ngModel)]="cliente.endereco" name="endereco"   />
+                <label>Profissão: *</label>
+                <select class="form-control"
+                        [ngModelOptions]="{standalone: true}"
+                        [(ngModel)]="prestador.profissao.id">
+                    <option value="">Selecione...</option>
+                    <option *ngFor="let profissao of profissoes"
+                            [ngValue]="profissao.id">
+                        {{ profissao.descricao }}
+                    </option>
+                </select>
             </div>
         </div>
     </div>
-
-    <div class="row">
-      <div class="col-md-4">
-          <div class="form-group">
-              <label>Complemento:</label>
-              <input type="text" class="form-control"
-                     [(ngModel)]="cliente.complemento" name="complemento"   />
-          </div>
-      </div>
-
-      <div class="col-md-4">
-        <div class="form-group">
-          <label>UF:</label>
-          <select class="form-control"
-                  [ngModelOptions]="{standalone: true}"
-                  [(ngModel)]="cliente.uf" name="uf" #inputUf
-                  >
-              <option value="">Selecione...</option>
-              <option *ngFor="let estado of uf"
-                      [ngValue]="estado.sigla">
-                  {{ estado.nome }}
-              </option>
-          </select>
-      </div>
-    </div>
-
-    <div class="col-md-4">
-      <div class="form-group">
-          <label>Cidade:</label>
-          <select class="form-control"
-                 [ngModelOptions]="{standalone: true}"
-                 [(ngModel)]="cliente.cidade" name="cidade" [disabled]="cidadeDesabilitado"
-                 #inputCidade>
-             <option value="">Selecione...</option>
-             <option *ngFor="let cidades of cidade"
-                     [ngValue]="cidades.nome">
-                 {{ cidades.nome }}
-             </option>
-         </select>
-      </div>
-    </div>
-  </div>
 
   <div class="row">
       <div class="col-md-4">
@@ -173,11 +138,11 @@
 
         <div class="row">
             <div class="col-md-6">
-                <button type="submit" class="btn btn-success" *ngIf="!cliente.id">
+                <button type="submit" class="btn btn-success" *ngIf="id == undefined">
                     <i class="fa fa-save" ></i> Salvar
                 </button>
 
-                <button type="submit" class="btn btn-primary" *ngIf="cliente.id">
+                <button type="submit" class="btn btn-primary" *ngIf="prestador.id">
                     <i class="fa fa-sync-alt" ></i> Atualizar
                 </button>
 

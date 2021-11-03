@@ -1,3 +1,4 @@
+import { PrestadorModule } from './prestador/prestador.module';
 import { SistemaInfoModule } from './sistema-info/sistema-info.module';
 import { RecaptchaModule } from "ng-recaptcha";
 import { BrowserModule } from '@angular/platform-browser';
@@ -42,6 +43,7 @@ import { ChartsModule } from 'ng2-charts';
     TemplateModule,
     ClientesModule,
     ServicoPrestadoModule,
+    PrestadorModule,
     BrowserAnimationsModule, // required animations module
     ToastrModule.forRoot(), // ToastrModule added
     SistemaInfoModule,

@@ -9,7 +9,7 @@ export class NotificationService {
 
   constructor(private toastr: ToastrService) {
     this.titleSuccess = [];
-    this.titleSuccess.push('Informação');
+    this.titleSuccess.push('InformaÃ§Ã£o');
   }
 
   showToasterSuccess(Message: string){

@@ -379,3 +379,7 @@ body {
       text-decoration: none;
   opacity: 0.8;
 }
+.text-item-grid{
+  color:#14043f;
+  font-weight: bold;
+}

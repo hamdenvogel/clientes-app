@@ -1,3 +1,4 @@
+import { PrestadorService } from './../../prestador.service';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Cliente } from '../../clientes/cliente';
 import { ClientesService } from '../../clientes.service'
@@ -11,6 +12,7 @@ import { Observable } from 'rxjs';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import GoogleCaptchaService from 'src/app/google-captcha.service';
 import { GoogleCaptcha } from 'src/app/googleCaptcha';
+import { Prestador } from 'src/app/prestador/prestador';
 defineLocale('pt-br', ptBrLocale);
 
 @Component({
@@ -29,6 +31,7 @@ export class ServicoPrestadoFormComponent implements OnInit {
   captcha: string;
   googlecaptcha: GoogleCaptcha;
   @ViewChild('inputData', {static: true}) inputData: ElementRef;
+  prestadores: Prestador[] = [];
 
   constructor(
     private clienteService: ClientesService,
@@ -37,13 +40,15 @@ export class ServicoPrestadoFormComponent implements OnInit {
     private localeService: BsLocaleService,
     private activatedRoute: ActivatedRoute,
     private googleCaptchaService: GoogleCaptchaService,
-    private router: Router
+    private router: Router,
+    private prestadorService: PrestadorService
   ) {
     ptBrLocale.invalidDate = '';
     defineLocale('custom locale', ptBrLocale);
     this.localeService.use('custom locale');
     this.servico = new ServicoPrestado();
     this.captcha = "";
+    this.servico.prestador = new Prestador();
   }
 
   ngOnInit(): void {
@@ -59,7 +64,9 @@ export class ServicoPrestadoFormComponent implements OnInit {
               this.servico.preco = response.valor.toString().replace(".",","),
               this.servico.data = response.data,
               this.servico.idCliente = response.cliente.id,
-              this.servico.status = response.status
+              this.servico.status = response.status,
+              this.servico.idPrestador = response.prestador == null ? undefined:  response.prestador.id,
+              this.servico.prestador.id = this.servico.idPrestador
            },
             errorResponse => this.servico = new ServicoPrestado()
           );
@@ -76,19 +83,31 @@ export class ServicoPrestadoFormComponent implements OnInit {
     this.googleCaptchaService
       .zerarTentativasMalSucedidas()
       .subscribe(response => {});
+
+    this.prestadorService
+      .obterTodos()
+      .subscribe(resposta => {
+        this.prestadores = resposta;
+      });
   }
 
   onSubmit(){
     if (this.servico.data == 'Invalid Date' || this.servico.data == null)
-       { this.servico.data = ""};
+        { this.servico.data = ""};
 
     if (this.servico.preco != undefined) {
-      this.servico.preco = this.servico.preco.toString().replace(".",",");
+       this.servico.preco = this.servico.preco.toString().replace(".",",");
+     }
+
+    if (this.servico.prestador.id === undefined) {
+      this.servico.prestador.id = null;
+      this.servico.idPrestador = null;
     }
+    this.servico.idPrestador = this.servico.prestador.id;
 
     this.servico.captcha = this.captcha;
 
-     if (this.id) {
+    if (this.id) {
         this.service
           .atualizar(this.servico)
           .subscribe(response => {

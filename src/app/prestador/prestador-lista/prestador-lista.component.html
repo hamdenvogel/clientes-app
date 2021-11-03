@@ -1,6 +1,6 @@
-<h1 class="mt-4">Clientes</h1>
+<h1 class="mt-4">Prestadores</h1>
 <ol class="breadcrumb mb-4">
-    <li class="breadcrumb-item active">Gerenciamento de Clientes</li>
+    <li class="breadcrumb-item active">Gerenciamento de Prestadores</li>
 </ol>
 <div class="container">
     <div class="row">
@@ -17,11 +17,11 @@
        <div class="card card-custom bg-white border-white border-0">
         <div class="card-custom-img" style="background-image: url(http://res.cloudinary.com/d3/image/upload/c_scale,q_auto:good,w_1110/trianglify-v1-cs85g_cc5d2i.jpg);"></div>
         <div class="card-custom-avatar">
-          <img class="img-fluid" src="http://hvogel.com.br/img/services-icon-png-2283.png" alt="Avatar" />
+          <img class="img-fluid" src="http://hvogel.com.br/img/person-icon-1687.png" alt="Avatar" />
         </div>
         <div class="card-body" style="overflow-y: auto">
-          <h4 class="card-title">Clientes</h4>
-          <p class="card-text">Gerenciamento de Clientes.</p>
+          <h4 class="card-title">Prestadores</h4>
+          <p class="card-text">Gerenciamento de Prestadores.</p>
         </div>
 
       </div>
@@ -29,9 +29,7 @@
       </div>
       </div>
 
-
-
-    <div class="row">
+      <div class="row">
         <div class="col-md-6">
             <button class="btn btn-warning" (click)="novoCadastro()" >
                 <i class="fa fa-plus"></i> Novo
@@ -95,19 +93,14 @@
                     <td>{{ item.dataCadastro }} </td>
                     <td>
                       <button class="btn btn-primary"
-                              routerLink="/clientes/form/{{ item.id }}">
+                              routerLink="/prestador/form/{{ item.id }}">
                           <i class="fa fa-edit"></i>
                       </button>
                         &nbsp;
-                     <button class="btn btn-danger"
-                              routerLink="/clientes/remover/{{ item.id }}">
+                        <button class="btn btn-danger"
+                        (click)="openModal(template, item.id)">
                         <i class="fa fa-trash"></i>
                      </button>
-                     &nbsp;
-                     <button class="btn btn-success"
-                     (click)="openModal(template, item.id)">
-                         <i class="fa fa-money-bill-alt"></i>
-                    </button>
                   </td>
                   </tr>
                 </tbody>
@@ -120,36 +113,17 @@
           </div>
 
     </div>
-
-    <div id="modalDelecao" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4>Confirmação</h4>
-                </div>
-
-                <div class="modal-body" *ngIf="clienteSelecionado">
-                    Confirma a deleção do(a) Cliente {{ clienteSelecionado.nome }}?
-                </div>
-
-                <div class="modal-footer">
-                    <button class="btn btn-success" (click)="deletarCliente(clienteSelecionado.id)"
-                            data-dismiss="modal">Confirmar</button>
-                    <button class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
+ </div>
 
-<div class="container">
+ <div class="container">
   <div class="row">
     <ng-template #template>
       <div class="modal-body text-center">
-        <p>Funcionalidade em Desenvolvimento.</p>
-        <button type="button" class="btn btn-primary" (click)="ok()">OK</button>
+        <p>Confirma a exclus&atilde;o?</p>
+        <button type="button" class="btn btn-default" (click)="confirm()" >Sim</button>
+        <button type="button" class="btn btn-primary" (click)="decline()" >N&atilde;o</button>
       </div>
     </ng-template>
   </div>
 </div>
-

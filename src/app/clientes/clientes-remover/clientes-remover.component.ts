@@ -9,6 +9,8 @@ import { Observable } from 'rxjs';
 import { NotificationService } from '../../notification.service';
 import { ServicoPrestadoService } from 'src/app/servico-prestado.service';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { TotalServicos } from '../totalServicos';
+import { ServicoFiltro } from 'src/app/servicoFiltro';
 
 @Component({
   selector: 'app-clientes-remover',
@@ -27,6 +29,9 @@ export class ClientesRemoverComponent implements OnInit {
   servicos: ServicoPrestado[] = [];
   statusDetalhado = {'E': 'Em Atendimento', 'C': 'Cancelado', 'F': 'Finalizado' };
   modalRef?: BsModalRef;
+  totalServicos: TotalServicos;
+  totalServicosCadastrados: number;
+  servicoFiltro: ServicoFiltro;
 
   campoPesquisa: string = "";
   config: any;
@@ -52,18 +57,30 @@ export class ClientesRemoverComponent implements OnInit {
     ) {
       this.cliente = new Cliente(); { }
       this.bExistemServicosProCliente = false;
+      this.totalServicos = new TotalServicos();
    }
 
   carregaServicos( pagina = 0, tamanho = 10, sort = 'descricao,asc', id){
-    this.servicoPrestadoService.obterPesquisaPaginada(pagina, tamanho, sort, id)
-    .subscribe(response => {
-      this.servicos = response.content;
-      this.collection.data = this.servicos;
-      this.collection.count = response.totalElements;
-      this.collectionCopy = {...this.collection};
-      //this.pagina = response.number;
-     })
+    this.servicoFiltro = new ServicoFiltro;
+    this.servicoFiltro.cliente = id;
+    console.log('id ' + id);
+    this.servicoPrestadoService
+    .totalServicos()
+    .subscribe(resposta => {
+      this.totalServicos = resposta;
+      this.totalServicosCadastrados = this.totalServicos.totalServicos;
+      this.servicoPrestadoService.obterPesquisaAvancada(pagina, this.totalServicosCadastrados, sort,
+        this.servicoFiltro)
+        .subscribe(response => {
+          this.servicos = response.content;
+          this.collection.data = this.servicos;
+          this.collection.count = response.totalElements;
+          this.collectionCopy = {...this.collection};
+          //this.pagina = response.number;
+        })
+    });
   }
+
   ngOnInit(): void {
     let params : Observable<Params> = this.activatedRoute.params
     params.subscribe( urlParams => {
@@ -145,9 +162,6 @@ export class ClientesRemoverComponent implements OnInit {
 
   pesquisarDescricao(){
     this.collectionCustomPagination = {...this.collectionCopy};
-   /* var data2 =  this.collectionCustomPagination.data.filter(function(data) {
-      return data.descricao == "teste XXX";
-    }); */
 
     if ( this.campoPesquisa.trim() == "") {
       this.collectionCustomPagination = {...this.collectionCopy};
@@ -181,7 +195,7 @@ export class ClientesRemoverComponent implements OnInit {
   }
 
   confirm(): void {
-    if (!this.id) { return };     
+    if (!this.id) { return };
     this.deletarCliente(this.id);
     this.modalRef?.hide();
   }
