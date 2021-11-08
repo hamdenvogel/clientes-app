@@ -10,6 +10,7 @@ import { PrestadorRoutingModule } from './prestador-routing.module';
 import { PrestadorFormComponent } from './prestador-form/prestador-form.component';
 import { PrestadorListaComponent } from './prestador-lista/prestador-lista.component';
 import { BsDatepickerModule } from "ngx-bootstrap/datepicker";
+import { RatingModule } from 'ngx-bootstrap/rating';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { BsDatepickerModule } from "ngx-bootstrap/datepicker";
     RecaptchaModule,
     RecaptchaFormsModule,
     NgxPaginationModule,
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    RatingModule.forRoot()
   ], exports: [
     PrestadorFormComponent,
     PrestadorListaComponent

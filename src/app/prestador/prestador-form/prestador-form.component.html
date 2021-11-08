@@ -100,13 +100,35 @@
               </div>
           </div>
 
+          <!--
           <div class="col-md-6">
-              <div class="form-group">
-                  <label>Avaliação:</label>
-                  <input type="text" class="form-control"
-                          [(ngModel)]="prestador.avaliacao" name="avaliacao" />
-              </div>
+            <rating [(ngModel)]="prestador.avaliacao" name="avaliacao" [readonly]="isReadonly"
+            (keyup)="confirmSelection($event)"></rating>
+          <div class="card">
+            <pre class="card-block card-header" style="margin:15px 0;">Avalia&ccedil;&atilde;o: Modo Leitura: <i>{{isReadonly}} }}</i>;</pre>
           </div>
+          <button class="btn btn-primary" (click)="resetStars($event)">Zerar Avali&ccedil;&atilde;o</button>
+         </div>
+        -->
+
+        <div class="col-md-6">
+          <label>Avaliação: *</label>
+            <rating [max]="5" [(ngModel)]="prestador.avaliacao" name="avaliacao" [readonly]="isReadonly"
+                      (keyup)="confirmSelection($event)" [customTemplate]="tt"></rating>
+             <div class="card">
+                 <pre class="card-block card-header" style="margin:15px 0;">1-Péssimo 2-Ruim 3-Razoável 4-Bom 5-Excelente</pre>
+             </div>
+
+
+            <ng-template #tt let-i="index" let-v="value">
+              <button class="btn btn-{{i < v ? 'warning' : 'default'}}" (click)="confirmClickRating($event)">
+                {{i < v ? '&#9733;' : '&#9734;'}}
+              </button>
+            </ng-template>
+        </div>
+
+
+
       </div>
 
       <div class="row">

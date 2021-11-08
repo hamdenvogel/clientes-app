@@ -25,6 +25,9 @@ export class PrestadorFormComponent implements OnInit {
   profissoes: Profissao[] = [];
   valorValido: string;
 
+  max = 10;
+  isReadonly = false;
+
   constructor(
     private service: PrestadorService,
     private router: Router,
@@ -63,6 +66,25 @@ export class PrestadorFormComponent implements OnInit {
       this.profissoes = resposta;
     });
 
+    if (this.prestador.avaliacao == undefined) {
+      this.prestador.avaliacao = 0;
+    }
+  }
+
+  confirmSelection(event: KeyboardEvent) {
+    if (event.keyCode === 13 || event.key === 'Enter') {
+      this.isReadonly = true;
+    }
+  }
+
+  resetStars($event) {
+    this.isReadonly = !this.isReadonly;
+    this.prestador.avaliacao = 0;
+    $event.preventDefault();
+  }
+
+  confirmClickRating($event) {
+    $event.preventDefault();
   }
 
   voltarParaListagem(){
@@ -148,7 +170,6 @@ export class PrestadorFormComponent implements OnInit {
           })
         })
       }
-
     }
 
     apagar() {
