@@ -77,7 +77,7 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label>Nome: *</label>
-                    <input type="text" class="form-control"
+                    <input type="text" class="form-control" maxlength="150"
                            [(ngModel)]="cliente.nome" name="nome"   />
                 </div>
             </div>
@@ -85,7 +85,7 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label>CPF: *</label>
-                    <input type="text" class="form-control"
+                    <input type="text" class="form-control" maxlength="11"
                             [(ngModel)]="cliente.cpf" name="cpf"  />
                 </div>
             </div>
@@ -95,7 +95,7 @@
           <div class="col-md-6">
               <div class="form-group">
                   <label>PIX:</label>
-                  <input type="text" class="form-control"
+                  <input type="text" class="form-control" maxlength="50"
                          [(ngModel)]="cliente.pix" name="pix"   />
               </div>
           </div>
@@ -103,7 +103,7 @@
           <div class="col-md-6">
               <div class="form-group">
                   <label>CEP:</label>
-                  <input type="text" class="form-control"
+                  <input type="text" class="form-control" maxlength="12"
                           [(ngModel)]="cliente.cep" name="cep" #cep />
               </div>
           </div>
@@ -113,7 +113,7 @@
         <div class="col-md-12">
             <div class="form-group">
                 <label>Endere&ccedil;o:</label>
-                <input type="text" class="form-control"
+                <input type="text" class="form-control" maxlength="100"
                        [(ngModel)]="cliente.endereco" name="endereco"   />
             </div>
         </div>
@@ -123,7 +123,7 @@
       <div class="col-md-4">
           <div class="form-group">
               <label>Complemento:</label>
-              <input type="text" class="form-control"
+              <input type="text" class="form-control" maxlength="50"
                      [(ngModel)]="cliente.complemento" name="complemento"   />
           </div>
       </div>
@@ -133,7 +133,7 @@
           <label>UF:</label>
           <select class="form-control"
                   [ngModelOptions]="{standalone: true}"
-                  [(ngModel)]="cliente.uf" name="uf" #inputUf
+                  [(ngModel)]="cliente.uf" name="uf" maxlength="2" #inputUf
                   >
               <option value="">Selecione...</option>
               <option *ngFor="let estado of uf"
@@ -147,7 +147,7 @@
     <div class="col-md-4">
       <div class="form-group">
           <label>Cidade:</label>
-          <select class="form-control"
+          <select class="form-control" maxlength="200"
                  [ngModelOptions]="{standalone: true}"
                  [(ngModel)]="cliente.cidade" name="cidade" [disabled]="cidadeDesabilitado"
                  #inputCidade>

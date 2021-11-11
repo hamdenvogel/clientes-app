@@ -51,7 +51,7 @@ export class ClientesListaComponent implements OnInit {
         .totalClientes()
         .subscribe(resposta => {
           this.totalClientes = resposta;
-          this.totalClientesCadastrados = this.totalClientes.totalClientes;
+          this.totalClientesCadastrados = (this.totalClientes.totalClientes == 0) ? 1 : this.totalClientes.totalClientes;
           this.service.obterPesquisaPaginada(pagina,  this.totalClientesCadastrados)
           .subscribe(response => {
             this.clientes = response.content;

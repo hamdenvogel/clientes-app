@@ -63,7 +63,6 @@ export class ClientesRemoverComponent implements OnInit {
   carregaServicos( pagina = 0, tamanho = 10, sort = 'descricao,asc', id){
     this.servicoFiltro = new ServicoFiltro;
     this.servicoFiltro.cliente = id;
-    console.log('id ' + id);
     this.servicoPrestadoService
     .totalServicos()
     .subscribe(resposta => {

@@ -8,4 +8,5 @@ export class ServicoPrestadoBusca {
     cliente: Cliente;
     status: string;
     prestador: Prestador;
+    tipo: string;
 }

@@ -66,7 +66,8 @@ export class ServicoPrestadoFormComponent implements OnInit {
               this.servico.idCliente = response.cliente.id,
               this.servico.status = response.status,
               this.servico.idPrestador = response.prestador == null ? undefined:  response.prestador.id,
-              this.servico.prestador.id = this.servico.idPrestador
+              this.servico.prestador.id = this.servico.idPrestador,
+              this.servico.tipo = response.tipo
            },
             errorResponse => this.servico = new ServicoPrestado()
           );

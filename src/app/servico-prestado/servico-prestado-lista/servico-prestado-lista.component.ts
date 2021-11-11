@@ -71,7 +71,7 @@ export class ServicoPrestadoListaComponent implements OnInit {
         .totalServicos()
         .subscribe(resposta => {
           this.totalServicos = resposta;
-          this.totalServicosCadastrados = this.totalServicos.totalServicos;
+          this.totalServicosCadastrados = (this.totalServicos.totalServicos == 0) ? 1: this.totalServicos.totalServicos;
           this.service.obterPesquisaAvancada(pagina, this.totalServicosCadastrados, sort, servicoFiltro)
             .subscribe(response => {
               this.servicoPrestadoLista = response.content;

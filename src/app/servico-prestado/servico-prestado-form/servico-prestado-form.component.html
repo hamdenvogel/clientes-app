@@ -142,6 +142,18 @@
     </div>
 
      <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Tipo *</label>
+                <select class="form-control"
+                        [ngModelOptions]="{standalone: true}"
+                        [(ngModel)]="servico.tipo">
+                    <option value="U">Unitário</option>
+                    <option value="P">Pacote (de serviços)</option>
+                </select>
+            </div>
+        </div>
+
         <div class="col-md-4">
           <div class="form-group">
             <re-captcha (resolved)="resolved($event)" #captcha

@@ -12,4 +12,5 @@ export class ServicoPrestado {
     captcha: string;
     idPrestador: number;
     prestador: Prestador;
+    tipo: string;
 }
