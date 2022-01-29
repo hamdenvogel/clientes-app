@@ -12,4 +12,5 @@ export class Prestador {
   infoResponseDTO: InfoResponse;
   captcha: string;
   profissao: Profissao;
+  email: string;
 }

@@ -1,3 +1,4 @@
+import { PacoteModule } from './pacote/pacote.module';
 import { PrestadorModule } from './prestador/prestador.module';
 import { SistemaInfoModule } from './sistema-info/sistema-info.module';
 import { RecaptchaModule } from "ng-recaptcha";
@@ -25,13 +26,13 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import {LocationStrategy, HashLocationStrategy, DatePipe} from '@angular/common';
 import { ChartsModule } from 'ng2-charts';
 
+
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     LoginComponent,
-    LayoutComponent,
-
+    LayoutComponent
   ],
   imports: [
     BrowserModule,
@@ -47,7 +48,8 @@ import { ChartsModule } from 'ng2-charts';
     BrowserAnimationsModule, // required animations module
     ToastrModule.forRoot(), // ToastrModule added
     SistemaInfoModule,
-    ChartsModule
+    ChartsModule,
+    PacoteModule
   ],
 
   providers: [

@@ -179,6 +179,7 @@ export class PrestadorFormComponent implements OnInit {
       this.prestador.pix = "";
       this.prestador.dataCadastro = "";
       this.prestador.profissao = new Profissao();
+      this.prestador.email = "";
     }
 
 }

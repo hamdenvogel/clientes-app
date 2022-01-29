@@ -1,0 +1,178 @@
+<h1 class="mt-4">Pacote</h1>
+<div class="container">
+  <form #prestadorForm="ngForm" (ngSubmit)="onSubmit()" >
+   <div class="row">
+     <div class="col-md-12">
+       <div class="card">
+         <div class="card-body">
+           <div class="d-flex justify-content-between px-md-1">
+             <div>
+               <h3 class="text-success">{{ pacote.id ? pacote.descricao : 'Novo Pacote' }}</h3>
+               <p class="mb-0">Ficha cadastro do Pacote.</p>
+             </div>
+             <div class="align-self-center">
+               <i class="far fa-user text-success fa-3x"></i>
+             </div>
+           </div>
+         </div>
+       </div>
+     </div>
+   </div>
+
+   <div class="how-section1">
+     <div class="row">
+         <div class="col-md-6 how-img">
+             <img src="http://hvogel.com.br/img/empty-image-icon-png-31187.png" class="rounded-circle img-fluid" alt=""/>
+         </div>
+         <div class="col-md-6">
+             <h4>Gerenciamento de Pacotes</h4>
+                         <h4 class="subheading">M&oacute;dulo de Administra&ccedil;&atilde;o de Pacotes do Sistema. </h4>
+         <p class="text-muted">Utilize esta p&aacute;gina para realizar o cadastro de um Pacote.
+         bla bla bla
+         </p>
+         </div>
+     </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+  <div class="badge bg-primary text-wrap" style="width: 20rem;">
+    Pacote é um conjunto de serviços a ser executados.
+  </div>
+</div>
+</div>
+  &nbsp;
+
+<div>
+    <div class="row">
+        <div class="col-md-12">
+        </div>
+    </div>
+</div>
+
+<div class="row" *ngIf="pacote.id">
+  <div class="col-md-6">
+      <div class="form-group">
+          <label>ID:</label>
+          <input type="text" [ngModel]="pacote.id" name="id" class="form-control" disabled="true" />
+      </div>
+  </div>
+
+  <div class="col-md-6">
+      <div class="form-group">
+          <label>Data Criação:</label>
+          <input type="text" class="form-control" name="data"
+                 [ngModel]="pacote.data" disabled="true"  />
+      </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+      <div class="form-group">
+          <label>Descrição: *</label>
+          <input type="text" class="form-control" maxlength="300"
+                 [(ngModel)]="pacote.descricao" name="descricao"   />
+      </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+      <div class="form-group">
+          <label>Justificativa: *</label>
+          <input type="text" class="form-control" maxlength="100"
+                 [(ngModel)]="pacote.justificativa" name="justificativa"   />
+      </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+      <div class="form-group">
+          <label>Data Previsão:</label>
+              <input type="text"
+                  class="form-control"
+                  placeholder=""
+                  bsDatepicker
+                  [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY',
+                  returnFocusToInput: true,
+                  containerClass: 'theme-dark-blue',
+                  showTodayButton: true,
+                  showClearButton: true,
+                  todayPosition: 'left',
+                  clearPosition: 'right',
+                  isAnimated: true }"
+                  (bsValueChange)="onValueChangeDtPrevisao($event)"
+                  [(ngModel)]="pacote.data_previsao"
+                  name="inputDataPrevisao"
+                  id="inputDataPrevisao"
+                  #inputDataPrevisao>
+
+      </div>
+  </div>
+  <div class="col-md-6">
+    <div class="form-group">
+        <label>Data Conclusão:</label>
+          <input type="text"
+            class="form-control"
+            placeholder=""
+            bsDatepicker
+            [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY',
+            returnFocusToInput: true,
+            containerClass: 'theme-dark-blue',
+            showTodayButton: true,
+            showClearButton: true,
+            todayPosition: 'left',
+            clearPosition: 'right',
+            isAnimated: true }"
+            (bsValueChange)="onValueChangeDtConclusao($event)"
+            [(ngModel)]="pacote.data_conclusao"
+            name="inputDataConclusao"
+            id="inputDataConclusao"
+            #inputDataConclusao>
+
+    </div>
+</div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+      <div class="form-group">
+          <label>Status *</label>
+          <select class="form-control"
+                  [ngModelOptions]="{standalone: true}"
+                  [(ngModel)]="pacote.status">
+              <option value="I">Iniciado</option>
+              <option value="A">Aguardando atendimento</option>
+              <option value="E">Em atendimento</option>
+              <option value="C">Cancelado</option>
+              <option value="F">Finalizado</option>
+          </select>
+      </div>
+  </div>
+ </div>
+
+<div class="row">
+  <div class="col-md-6">
+      <button type="submit" class="btn btn-success" *ngIf="id == undefined">
+          <i class="fa fa-save" ></i> Salvar
+      </button>
+
+      <button type="submit" class="btn btn-primary" *ngIf="pacote.id">
+          <i class="fa fa-sync-alt" ></i> Atualizar
+      </button>
+
+      <button type="button"
+              class="btn btn-warning ml-1"
+              (click)="apagar()">
+          <i class="fa fa-eraser"></i> Limpar
+      </button>
+
+      <button type="button" class="btn btn-danger ml-1" (click)="voltarParaListagem()">
+          <i class="fa fa-arrow-alt-circle-left" ></i> Voltar
+      </button>
+  </div>
+
+</div>
+</form>

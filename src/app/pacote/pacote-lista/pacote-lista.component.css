@@ -1,3 +1,30 @@
+@media screen and (max-width: 800px) {
+	.table td, .table tr th {
+		display: block;
+		width: 33%;
+		float: left;
+	}
+
+	.table .table tr {
+		display: block;
+		width: 100%
+	}
+}
+
+body {
+  overflow-x: hidden !important;
+  width: 100%;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.container {
+  max-width: 100% !important;
+  overflow-x: hidden !important;
+}
+
+
 .card {
   background-color: #fff;
   border-radius: 10px;
@@ -326,158 +353,7 @@ body {
       text-decoration: none;
   opacity: 0.8;
 }
-
-.card-title-style {
-  color: #0066A6 !important;
+.text-item-grid{
+  color:#14043f;
+  font-weight: bold;
 }
-
-tr.border_bottom td {
-  border-bottom: 1pt solid black;
-}
-
-tr.border_top td {
-  border-top: 1pt solid black;
-}
-li {
-  list-style-type: none;
-}
-.listacontrato {
-  /*margin-left: -19px;*/
-  border: 0px;
-  background-color: transparent;
-}
-
-.progresso {
-  margin-left: -33px; margin-right: -34px;
-}
-.cardtitulosegundodados{
-  margin-bottom: -26px !important;
-}
-
-.list-group-item {
-  background-color: transparent;
-  border: 0px;
-}
-
-
-.milhoes {
-  margin-top: 25px;
-  font-weight: 600;
-  font-size: 11px;
-}
-.chartjs-render-monitor {
-  animation: chartjs-render-animation 0.001s;
-  font-family: "Poppins", sans-serif !important;
-}
-.linha {
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  margin-right: -15px;
-  margin-left: -15px;
-}
-
-.janeiro{
-  margin-left: -166px !important;
-}
-
-.bordercol{
-  border-bottom: 1px solid;
-}
-
-.circulo {
-  border: 16px solid #FF6000 !important;
-  border-radius: 55px;
-  width: 100px;
-  height: 100px;
-  justify-content: center;
-  align-items: center;
-  display: flex;
-  font: bold 35px Arial;
-  color: rgb(0, 102, 166);
-}
-
-.alinhamentoMapa {
-  padding-top: 0.5rem !important;
-  padding-left: 0.25rem !important;
-  padding-bottom: 0.25rem !important;
-  padding-right: 0rem !important;
-}
-
-.desempenhoEsquerdo {
-  background-color: #0066A6;
-  color: white;
-  -webkit-box-flex: 0;
-  flex: 0 0 35%;
-  max-width: 35%;
-}
-
-.desempenhoDireito {
-  background-color:#058CE1;
-  color: white;
-  -webkit-box-flex: 0;
-  flex: 0 0 65%;
-  max-width: 65%;
-  padding-top: 15px;
-}
-
-.desempenho-35{
-  -webkit-box-flex: 0;
-  flex: 0 0 35%;
-  max-width: 35%;
-}
-
-.desempenho-30{
-  -webkit-box-flex: 0;
-  flex: 0 0 30%;
-  max-width: 30%;
-}
-
-
-
-table, th, td {
-  border: 0px solid black;
-  border-collapse: collapse;
-  width: 100px
-}
-th, td {
-  padding: 5px;
-  text-align: left;
-
-}
-.bodeleft {
-  border-bottom: 0px solid green !important;
-  border-right: 0px solid  !important;
-  border-top: 0px solid  !important;
-  border-left: 1px solid !important;
-
-  }
-  .bode {
-  border-bottom: 0px solid green !important;
-  border-right: 0px solid  !important;
-  border-top: 0px solid  !important;
-  border-left: 0px solid !important;
-  }
-  .boderight {
-  border-bottom: 0px solid green !important;
-  border-right: 0px solid  !important;
-  border-top: 0px solid  !important;
-  border-left: 0px solid !important;
-  }
-
-  .bordaLateral {
-      border-left: 1px solid #0070C0;
-      border-right: 1px solid #0070C0;
-  }
-
-  .bordaLateralDireita {
-      border-right: 1px solid #0070C0;
-  }
-
-  .bordaLateralEsquerda {
-      border-left: 1px solid #0070C0;
-  }
-  body {
-    overflow-y: hidden; /* Hide vertical scrollbar */
-
-  }

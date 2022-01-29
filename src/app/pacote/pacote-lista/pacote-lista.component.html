@@ -1,0 +1,128 @@
+<h1 class="mt-4">Pacotes</h1>
+<ol class="breadcrumb mb-4">
+    <li class="breadcrumb-item active">Gerenciamento de Pacotes</li>
+</ol>
+<div class="container">
+    <div class="row">
+        <div class="col-md-10">
+
+        </div>
+    </div>
+
+
+
+    <div class="col-md-10">
+      <div class="row">
+       <!-- Copy the content below until next comment -->
+       <div class="card card-custom bg-white border-white border-0">
+        <div class="card-custom-img" style="background-image: url(http://res.cloudinary.com/d3/image/upload/c_scale,q_auto:good,w_1110/trianglify-v1-cs85g_cc5d2i.jpg);"></div>
+        <div class="card-custom-avatar">
+          <img class="img-fluid" src="http://hvogel.com.br/img/empty-image-icon-png-31187.png" alt="Avatar" />
+        </div>
+        <div class="card-body" style="overflow-y: auto">
+          <h4 class="card-title">Pacotes</h4>
+          <p class="card-text">Gerenciamento de Pacotes.</p>
+        </div>
+
+      </div>
+      <!-- Copy until here -->
+      </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+            <button class="btn btn-warning" (click)="novoCadastro()" >
+                <i class="fa fa-plus"></i> Novo
+            </button>
+            <button type="button"
+                        class="btn btn-success ml-1"
+                        routerLink="/home">
+                    <i class="fa fa-home"></i> Voltar
+                </button>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+      <div  class="list row">
+          <div class="col-md-10">
+            <div class="input-group mb-3">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Pesquisar por Descri&ccedil;&atilde;o"
+                (keyup)="onKeyUp($event)"
+                (change)="onChange($event)"
+                [(ngModel)]="campoPesquisa"/>
+              <div class="input-group-append">
+                <button
+                  class="btn btn-primary"
+                  (click)="pesquisarDescricao()"
+                  type="button">
+                  Pesquisar
+                </button>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="row">
+              <div class="col-md-10">
+                <div class="table-responsive">
+                <table class="table table-hover table-striped">
+                <thead>
+                  <tr class="thead-dark">
+                    <th>ID</th>
+                    <th>Descri&ccedil;&atilde;o</th>
+                    <th>Status</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of collectionCustomPagination.data | paginate: configCustomPagination">
+                    <td>
+                      <em class="text-item-grid">
+                       {{ item.id }}
+                      </em>
+                    </td>
+                    <td>{{ item.descricao }}<br>
+                      <span class="text-twitter">Justificativa:</span>
+                      <em class="text-facebook">
+                        {{ item.justificativa }}
+                      </em>
+                    </td>
+                    <td>{{ statusDetalhado[item.status] }} </td>
+                    <td>
+                      <button class="btn btn-primary"
+                              routerLink="/pacote/form/{{ item.id }}">
+                          <i class="fa fa-edit"></i>
+                      </button>
+                        &nbsp;
+                        <button class="btn btn-danger"
+                        (click)="openModal(template, item.id)">
+                        <i class="fa fa-trash"></i>
+                     </button>
+                  </td>
+                  </tr>
+                </tbody>
+              </table>
+          </div>
+              <pagination-controls id="customPaginate" [maxSize]="maxSize" (pageChange)="onPageChange($event)"
+                [previousLabel]="labels.previousLabel" [nextLabel]="labels.nextLabel">
+              </pagination-controls>
+            </div>
+          </div>
+
+    </div>
+</div>
+ </div>
+
+ <div class="container">
+  <div class="row">
+    <ng-template #template>
+      <div class="modal-body text-center">
+        <p>Confirma a exclus&atilde;o?</p>
+        <button type="button" class="btn btn-default" (click)="confirm()" >Sim</button>
+        <button type="button" class="btn btn-primary" (click)="decline()" >N&atilde;o</button>
+      </div>
+    </ng-template>
+  </div>
+</div>
