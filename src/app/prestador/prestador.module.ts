@@ -11,7 +11,7 @@ import { PrestadorFormComponent } from './prestador-form/prestador-form.componen
 import { PrestadorListaComponent } from './prestador-lista/prestador-lista.component';
 import { BsDatepickerModule } from "ngx-bootstrap/datepicker";
 import { RatingModule } from 'ngx-bootstrap/rating';
-
+import { NgMultiSelectDropDownModule } from "ng-multiselect-dropdown";
 
 @NgModule({
   declarations: [
@@ -29,7 +29,8 @@ import { RatingModule } from 'ngx-bootstrap/rating';
     RecaptchaFormsModule,
     NgxPaginationModule,
     ModalModule.forRoot(),
-    RatingModule.forRoot()
+    RatingModule.forRoot(),
+    NgMultiSelectDropDownModule.forRoot(),
   ], exports: [
     PrestadorFormComponent,
     PrestadorListaComponent

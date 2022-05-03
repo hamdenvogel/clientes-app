@@ -29,6 +29,7 @@
     "chart.js": "^2.9.4",
     "jquery": "^3.6.0",
     "jw-angular-pagination": "^1.2.0",
+    "ng-multiselect-dropdown": "^0.3.8",
     "ng-recaptcha": "^8.0.1",
     "ng2-charts": "^2.4.2",
     "ngx-bootstrap": "^6.2.0",

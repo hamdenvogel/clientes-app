@@ -9,6 +9,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Prestador } from '../prestador';
 import { Observable } from 'rxjs';
 import { Profissao } from 'src/app/profissao';
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
 
 @Component({
   selector: 'app-prestador-form',
@@ -22,11 +23,13 @@ export class PrestadorFormComponent implements OnInit {
   id: number;
   captcha: string;
   googlecaptcha: GoogleCaptcha;
-  profissoes: Profissao[] = [];
+  profissao: Profissao[] = [];
   valorValido: string;
 
   max = 10;
   isReadonly = false;
+  dropdownSettings: IDropdownSettings = {};
+  profissaoSelecionada = [];
 
   constructor(
     private service: PrestadorService,
@@ -51,7 +54,15 @@ export class PrestadorFormComponent implements OnInit {
           .obterPorId(this.id)
           .subscribe(
             response => {
-                this.prestador = response
+                this.prestador = response,
+                this.profissaoService.obterProfissaoPorId(this.prestador.profissao.id)
+                  .subscribe(resposta => {
+                     this.prestador.profissao.id = resposta.id;
+                     this.profissaoSelecionada = [{ id: resposta.id,
+                          descricao: resposta.descricao
+                        }];
+                     
+                  })
             },
             errorResponse => this.prestador = new Prestador()
           );
@@ -60,15 +71,24 @@ export class PrestadorFormComponent implements OnInit {
       }
   });
 
-  this.profissaoService
-    .obterProfissoes()
-    .subscribe(resposta => {
-      this.profissoes = resposta;
-    });
-
     if (this.prestador.avaliacao == undefined) {
       this.prestador.avaliacao = 0;
     }
+
+    this.dropdownSettings = {
+      singleSelection: true,
+      idField: 'id',
+      textField: 'descricao',
+      selectAllText: 'Selecionar Tudo',
+      unSelectAllText: 'Tirar seleção de Tudo',
+      searchPlaceholderText: 'Procurar',
+      noDataAvailablePlaceholderText: 'Nenhum Registro Encontrado',
+      closeDropDownOnSelection: true,
+      maxHeight: 300,
+      itemsShowLimit: 3,
+      allowSearchFilter: true,
+      allowRemoteDataSearch: true
+    };
   }
 
   confirmSelection(event: KeyboardEvent) {
@@ -107,69 +127,51 @@ export class PrestadorFormComponent implements OnInit {
       })
     }
 
+   validaCampoProfissao(){
+      this.prestador.profissao.id = this.profissaoSelecionada[0].id;
+      this.prestador.idProfissao = this.prestador.profissao.id;
+   }
+
     onSubmit(){
       this.prestador.captcha = this.captcha;
-      if (this.prestador.profissao.id === undefined) {
-         this.prestador.profissao.id = null;
+      if (this.profissaoSelecionada[0] == undefined) {
+          this.notificationService.showToasterError("Favor selecionar uma Profissão", "Erro");
       }
-      this.prestador.idProfissao = this.prestador.profissao.id;
-      this.success = true;
-     /* if (this.prestador.avaliacao === undefined || this.valorValido === null) {
-        this.valorValido = "...";
-        console.log('Condição vazia testada ' + this.valorValido);
-      }
-      else {
-          this.valorValido = this.prestador.avaliacao.toString();
-      }
-      this.validadorService
-      .validarInteger(this.valorValido)
-      .subscribe(response => {
-      }, errorResponse => {
-        this.success = false;
-        this.errors = errorResponse.error.errors;
-        this.errors.forEach( (erro) =>{
-           this.notificationService.showToasterError(erro, "erro");
-        })
-      });
-
-      if (!this.success){
-        console.log('this.success ' + this.success);
-        return false;
-      }
-*/
-      if (this.id) {
-        this.service
-          .atualizar(this.prestador)
-          .subscribe(response => {
+      else if (this.id) {
+          this.validaCampoProfissao();
+          this.service
+            .atualizar(this.prestador)
+            .subscribe(response => {
+                this.success = true;
+                this.router.navigate(['/prestador/lista']);
+                            this.notificationService.showToasterSuccessWithTitle(response.mensagem,
+                  response.titulo);
+                this.errors = null;
+            }, errorResponse => {
+              this.errors = errorResponse.error.errors;
+                this.errors.forEach( (erro) =>{
+                  this.notificationService.showToasterError(erro, "erro");
+                })
+            })
+        } else {
+          this.validaCampoProfissao();
+          this.service
+            .salvar(this.prestador)
+            .subscribe(response => {
               this.success = true;
               this.router.navigate(['/prestador/lista']);
-                           this.notificationService.showToasterSuccessWithTitle(response.mensagem,
-                response.titulo);
+                this.notificationService.showToasterSuccessWithTitle(response.infoResponseDTO.mensagem,
+                response.infoResponseDTO.titulo);
               this.errors = null;
-          }, errorResponse => {
-            this.errors = errorResponse.error.errors;
+              this.prestador = new Prestador();
+            } , errorResponse => {
+              this.success = false;
+              this.errors = errorResponse.error.errors;
               this.errors.forEach( (erro) =>{
                 this.notificationService.showToasterError(erro, "erro");
               })
-          })
-      } else {
-      this.service
-        .salvar(this.prestador)
-        .subscribe(response => {
-          this.success = true;
-          this.router.navigate(['/prestador/lista']);
-            this.notificationService.showToasterSuccessWithTitle(response.infoResponseDTO.mensagem,
-            response.infoResponseDTO.titulo);
-          this.errors = null;
-          this.prestador = new Prestador();
-        } , errorResponse => {
-          this.success = false;
-          this.errors = errorResponse.error.errors;
-          this.errors.forEach( (erro) =>{
-            this.notificationService.showToasterError(erro, "erro");
-          })
-        })
-      }
+            })
+          }
     }
 
     apagar() {
@@ -180,6 +182,36 @@ export class PrestadorFormComponent implements OnInit {
       this.prestador.dataCadastro = "";
       this.prestador.profissao = new Profissao();
       this.prestador.email = "";
+      this.limparProfissao();
+    }
+
+    onItemSelect(item: any) {
+      this.prestador.profissao.id = item.id;
+    }
+
+    onItemDeSelect(item: any){
+      this.limparProfissao();
+    }
+
+    onSelectAll(items: any) {
+      console.log('onSelectAll: ' + items);
+    }
+
+    onFilterChange(item: any){
+      if (item.length < 3) {
+        this.profissao = [];
+      }
+      else {
+        this.profissaoService
+        .obterProfissoes(item)
+        .subscribe(resposta => {
+          this.profissao = resposta;
+        });
+      }
+    }
+
+    limparProfissao() {
+      this.profissaoSelecionada = [];
     }
 
 }

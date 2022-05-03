@@ -13,8 +13,11 @@ export class ProfissaoService {
 
   constructor(private http: HttpClient) { }
 
-  obterProfissoes(): Observable<Profissao[]> {
-    return this.http.get<Profissao[]>(this.apiURL);
+  obterProfissoes(pesquisaParcial: String): Observable<Profissao[]> {
+    return this.http.get<Profissao[]>(`${this.apiURL}/descricao/${pesquisaParcial}`);
   }
 
+  obterProfissaoPorId(id: number): Observable<Profissao>{
+    return this.http.get<Profissao>(`${this.apiURL}/${id}`);
+ }
 }

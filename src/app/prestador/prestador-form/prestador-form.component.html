@@ -130,15 +130,19 @@
         <div class="col-md-12">
             <div class="form-group">
                 <label>Profissão: *</label>
-                <select class="form-control"
-                        [ngModelOptions]="{standalone: true}"
-                        [(ngModel)]="prestador.profissao.id">
-                    <option value="">Selecione...</option>
-                    <option *ngFor="let profissao of profissoes"
-                            [ngValue]="profissao.id">
-                        {{ profissao.descricao }}
-                    </option>
-                </select>
+                <div>
+                  <ng-multiselect-dropdown class="multiselect-dropdown"
+                  name="multiselect_profissao"
+                  [placeholder]="'Selecione a Profissão'"
+                  [settings]="dropdownSettings"
+                  [data]="profissao"
+                  [(ngModel)]="profissaoSelecionada"
+                  (onSelect)="onItemSelect($event)"
+                  (onDeSelect)="onItemDeSelect($event)"
+                  (onSelectAll)="onSelectAll($event)"
+                  (onFilterChange)="onFilterChange($event)">
+                </ng-multiselect-dropdown>
+              </div>
             </div>
         </div>
     </div>
