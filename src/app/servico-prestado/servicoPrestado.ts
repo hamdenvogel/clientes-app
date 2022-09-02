@@ -1,3 +1,4 @@
+import { Natureza } from './../natureza';
 import { InfoResponse } from "../infoResponse";
 import { Prestador } from "../prestador/prestador";
 
@@ -13,4 +14,6 @@ export class ServicoPrestado {
     idPrestador: number;
     prestador: Prestador;
     tipo: string;
+    idNatureza: number;
+    natureza: Natureza;
 }

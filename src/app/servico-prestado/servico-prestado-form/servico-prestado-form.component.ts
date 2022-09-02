@@ -1,3 +1,5 @@
+import { NaturezaFiltro } from './../../naturezaFiltro';
+import { Natureza } from './../../natureza';
 import { PrestadorService } from './../../prestador.service';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Cliente } from '../../clientes/cliente';
@@ -13,6 +15,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import GoogleCaptchaService from 'src/app/google-captcha.service';
 import { GoogleCaptcha } from 'src/app/googleCaptcha';
 import { Prestador } from 'src/app/prestador/prestador';
+import NaturezaService from 'src/app/natureza.service';
 defineLocale('pt-br', ptBrLocale);
 
 @Component({
@@ -32,6 +35,7 @@ export class ServicoPrestadoFormComponent implements OnInit {
   googlecaptcha: GoogleCaptcha;
   @ViewChild('inputData', {static: true}) inputData: ElementRef;
   prestadores: Prestador[] = [];
+  natureza: Natureza[] = [];
 
   constructor(
     private clienteService: ClientesService,
@@ -41,7 +45,8 @@ export class ServicoPrestadoFormComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private googleCaptchaService: GoogleCaptchaService,
     private router: Router,
-    private prestadorService: PrestadorService
+    private prestadorService: PrestadorService,
+    private naturezaService: NaturezaService
   ) {
     ptBrLocale.invalidDate = '';
     defineLocale('custom locale', ptBrLocale);
@@ -49,6 +54,7 @@ export class ServicoPrestadoFormComponent implements OnInit {
     this.servico = new ServicoPrestado();
     this.captcha = "";
     this.servico.prestador = new Prestador();
+    this.servico.natureza = new Natureza();
   }
 
   ngOnInit(): void {
@@ -67,7 +73,8 @@ export class ServicoPrestadoFormComponent implements OnInit {
               this.servico.status = response.status,
               this.servico.idPrestador = response.prestador == null ? undefined:  response.prestador.id,
               this.servico.prestador.id = this.servico.idPrestador,
-              this.servico.tipo = response.tipo
+              this.servico.tipo = response.tipo,
+              this.servico.idNatureza = response.natureza == null ? undefined:  response.natureza.id
            },
             errorResponse => this.servico = new ServicoPrestado()
           );
@@ -89,6 +96,12 @@ export class ServicoPrestadoFormComponent implements OnInit {
       .obterTodos()
       .subscribe(resposta => {
         this.prestadores = resposta;
+      });
+
+    this.naturezaService
+      .obterTodos()
+      .subscribe(resposta => {
+        this.natureza = resposta.content;
       });
   }
 

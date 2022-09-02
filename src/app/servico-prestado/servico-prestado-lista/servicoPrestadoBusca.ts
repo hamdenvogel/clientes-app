@@ -1,3 +1,4 @@
+import { Natureza } from './../../natureza';
 import { Prestador } from 'src/app/prestador/prestador';
 import { Cliente } from '../../clientes/cliente';
 
@@ -9,4 +10,5 @@ export class ServicoPrestadoBusca {
     status: string;
     prestador: Prestador;
     tipo: string;
+    natureza: Natureza;
 }
