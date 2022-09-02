@@ -36,10 +36,11 @@ export class PacoteService {
     return this.http.get<Pacote>(`${this.apiURL}/${idPacote}`);
   }
 
-  obterPesquisaPaginada(page, size): Observable<PaginaPacote> {
+  obterPesquisaPaginada(page, size, descricao): Observable<PaginaPacote> {
     const params = new HttpParams()
     .set('page', page)
     .set('size', size)
+    .set('descricao', descricao)
     return this.http.get<any>(`${this.apiURL}/pesquisa-paginada?${params.toString()}`);
   }
 

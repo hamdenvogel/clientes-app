@@ -36,10 +36,11 @@ export class PrestadorService {
     return this.http.get<Prestador>(`${this.apiURL}/${idPrestador}`);
   }
 
-  obterPesquisaPaginada(page, size): Observable<PaginaPrestador> {
+  obterPesquisaPaginada(page, size, nome): Observable<PaginaPrestador> {
     const params = new HttpParams()
     .set('page', page)
     .set('size', size)
+    .set('nome', nome)
     return this.http.get<any>(`${this.apiURL}/pesquisa-paginada?${params.toString()}`);
   }
 

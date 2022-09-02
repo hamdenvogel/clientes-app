@@ -1,44 +1,18 @@
-<h1 class="mt-4">Clientes</h1>
-<ol class="breadcrumb mb-4">
-    <li class="breadcrumb-item active">{{ cliente.id ? 'Altera&ccedil;&atilde;o' : 'Novo' }}</li>
-</ol>
-<div class="container">
-   <form #clienteForm="ngForm" (ngSubmit)="onSubmit()" >
-    <div class="row">
+<div class="how-section1">
+  <div class="row">
       <div class="col-md-12">
-        <div class="card">
-          <div class="card-body">
-            <div class="d-flex justify-content-between px-md-1">
-              <div>
-                <h3 class="text-success">{{ cliente.id ? cliente.nome : 'Novo Cliente' }}</h3>
-                <p class="mb-0">Ficha cadastro dados pessoais.</p>
-              </div>
-              <div class="align-self-center">
-                <i class="far fa-user text-success fa-3x"></i>
-              </div>
-            </div>
-          </div>
-        </div>
+          <h4>Gerenciamento de Clientes</h4>
+                      <h4 class="subheading">M&oacute;dulo de Administra&ccedil;&atilde;o de Clientes do Sistema. </h4>
+      <p class="text-muted">Utilize esta p&aacute;gina para realizar o cadastro completo do cliente.
+        O Cliente &eacute; o respons&aacute;vel por gerenciar todo o ciclo de vida de um servi&ccedil;o. Ele pode ter quantos
+        servi&ccedil;os desejar, com diferentes hist&oacute;ricos, associados &aacute; v&aacute;rios prestadores, tudo simultaneamente.
+      </p>
       </div>
-    </div>
-
-    <div class="how-section1">
-      <div class="row">
-          <div class="col-md-6 how-img">
-              <img src="http://hvogel.com.br/img/people1.jpg" class="rounded-circle img-fluid" alt=""/>
-          </div>
-          <div class="col-md-6">
-              <h4>Gerenciamento de Clientes</h4>
-                          <h4 class="subheading">M&oacute;dulo de Administra&ccedil;&atilde;o de Clientes do Sistema. </h4>
-          <p class="text-muted">Utilize esta p&aacute;gina para realizar o cadastro completo do cliente.
-            O Cliente &eacute; o respons&aacute;vel por gerenciar todo o ciclo de vida de um servi&ccedil;o. Ele pode ter quantos
-            servi&ccedil;os desejar, com diferentes hist&oacute;ricos, associados &aacute; v&aacute;rios prestadores, tudo simultaneamente.
-          </p>
-          </div>
-      </div>
+  </div>
 </div>
 
-
+<div class="container">
+   <form #clienteForm="ngForm" (ngSubmit)="onSubmit()" >
 
     <div class="row">
       <div class="col-md-12">

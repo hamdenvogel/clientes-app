@@ -42,10 +42,11 @@ export class ClientesService {
     return this.http.get<TotalClientes>(`${this.apiURL}/totalClientes`);
   }
 
-  obterPesquisaPaginada(page, size): Observable<PaginaCliente> {
+  obterPesquisaPaginada(page, size, nome): Observable<PaginaCliente> {
     const params = new HttpParams()
     .set('page', page)
-    .set('size', size);
+    .set('size', size)
+    .set('nome', nome)
     return this.http.get<any>(`${this.apiURL}/pesquisa-paginada?${params.toString()}`);
   }
 

@@ -3,8 +3,8 @@ import { Prestador } from "../prestador/prestador";
 
 export class ServicoPrestado {
     id: number;
-    descricao:  string;
-    preco:  string;
+    descricao: string;
+    preco: string;
     data: string;
     idCliente: number;
     status: string;

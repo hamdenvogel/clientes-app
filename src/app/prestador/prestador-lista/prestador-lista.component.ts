@@ -51,13 +51,13 @@ export class PrestadorListaComponent implements OnInit {
     this.carregaPrestadores();
   }
 
-  carregaPrestadores( pagina = 0, tamanho = 4){
+  carregaPrestadores( pagina = 0){
     this.service
       .totalPrestadores()
       .subscribe(resposta => {
         this.totalPrestadores = resposta;
         this.totalPrestadoresCadastrados = (this.totalPrestadores.totalPrestadores == 0) ? 1 :  this.totalPrestadores.totalPrestadores;
-        this.service.obterPesquisaPaginada(pagina,  this.totalPrestadoresCadastrados)
+        this.service.obterPesquisaPaginada(pagina,  this.totalPrestadoresCadastrados, this.campoPesquisa.trim())
         .subscribe(response => {
           this.prestadores = response.content;
           this.collection.data = this.prestadores;
@@ -92,10 +92,8 @@ ngOnInit(): void {
 }
 
 pesquisarNome(){
+  /*
   this.collectionCustomPagination = {...this.collectionCopy};
- /* var data2 =  this.collectionCustomPagination.data.filter(function(data) {
-    return data.descricao == "teste XXX";
-  }); */
 
   if ( this.campoPesquisa.trim() == "") {
     this.collectionCustomPagination = {...this.collectionCopy};
@@ -104,7 +102,8 @@ pesquisarNome(){
     var dataPesquisa = this.collectionCustomPagination.data.filter
       (x => x.nome.toLowerCase().includes(this.campoPesquisa.toLowerCase()));
     this.collectionCustomPagination.data = dataPesquisa;
-  }
+  } */
+  this.consultar();
 }
 
 onKeyUp(evento: KeyboardEvent){

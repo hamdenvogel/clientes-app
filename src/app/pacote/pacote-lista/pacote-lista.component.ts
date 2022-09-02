@@ -58,7 +58,7 @@ export class PacoteListaComponent implements OnInit {
         .subscribe(resposta => {
           this.totalPacotes = resposta;
           this.totalPacotesCadastrados = (this.totalPacotes.totalPacotes == 0) ? 1 :  this.totalPacotes.totalPacotes;
-          this.service.obterPesquisaPaginada(pagina,  this.totalPacotesCadastrados)
+          this.service.obterPesquisaPaginada(pagina,  this.totalPacotesCadastrados, this.campoPesquisa.trim())
           .subscribe(response => {
             this.pacotes = response.content;
             this.collection.data = this.pacotes;
@@ -93,6 +93,7 @@ export class PacoteListaComponent implements OnInit {
   }
 
   pesquisarDescricao(){
+    /*
     this.collectionCustomPagination = {...this.collectionCopy};
 
     if ( this.campoPesquisa.trim() == "") {
@@ -102,7 +103,8 @@ export class PacoteListaComponent implements OnInit {
       var dataPesquisa = this.collectionCustomPagination.data.filter
         (x => x.descricao.toLowerCase().includes(this.campoPesquisa.toLowerCase()));
       this.collectionCustomPagination.data = dataPesquisa;
-    }
+    } */
+    this.consultar();
   }
 
   onKeyUp(evento: KeyboardEvent){

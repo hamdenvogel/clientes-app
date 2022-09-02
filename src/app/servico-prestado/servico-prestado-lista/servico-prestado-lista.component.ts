@@ -112,6 +112,7 @@ export class ServicoPrestadoListaComponent implements OnInit {
      this.servicoPrestado.idCliente = -1;
      this.servicoPrestado.descricao = "";
      this.servicoPrestado.status = "";
+     this.campoPesquisa = "";
      this.consultar();
   }
 
@@ -119,6 +120,7 @@ export class ServicoPrestadoListaComponent implements OnInit {
      this.servicoPrestado.idCliente = -1;
      this.servicoPrestado.descricao = "";
      this.servicoPrestado.status = "";
+     this.campoPesquisa = "";
   }
 
   consultar(){
@@ -134,12 +136,17 @@ export class ServicoPrestadoListaComponent implements OnInit {
     if (this.servicoPrestado.descricao) {
       this.servicoFiltro.descricao = this.servicoPrestado.descricao;
     }
-
-    this.carregaServicos(0,4,'cliente.nome,asc', this.servicoFiltro);
+    if ( this.campoPesquisa.trim() != "" && this.campoPesquisa != undefined) {
+      this.servicoFiltro.clienteNome = this.campoPesquisa.trim();
+      this.carregaServicos(0,4,'descricao,asc', this.servicoFiltro);
+    }
+    else {
+      this.carregaServicos(0,4,'cliente.nome,asc', this.servicoFiltro);
+    }
   }
 
   pesquisarDescricao(){
-    this.collectionCustomPagination = {...this.collectionCopy};
+   /* this.collectionCustomPagination = {...this.collectionCopy};
 
     if ( this.campoPesquisa.trim() == "") {
       this.collectionCustomPagination = {...this.collectionCopy};
@@ -148,7 +155,12 @@ export class ServicoPrestadoListaComponent implements OnInit {
       var dataPesquisa = this.collectionCustomPagination.data.filter
         (x => x.descricao.toLowerCase().includes(this.campoPesquisa.toLowerCase()));
       this.collectionCustomPagination.data = dataPesquisa;
-    }
+    } */
+
+    this.servicoPrestado.idCliente = -1;
+    this.servicoPrestado.descricao = "";
+    this.servicoPrestado.status = "";
+    this.consultar();
   }
 
   onKeyUp(evento: KeyboardEvent){

@@ -21,7 +21,6 @@
   </div>
   </div>
 
-
 <div class="container">
     <form #consultaForm="ngForm" (submit)="consultar()">
       <div class="row">
@@ -51,7 +50,6 @@
                  <option value="F">Finalizado</option>
              </select>
             </div>
-
     </div>
 
         <div class="row">
@@ -101,7 +99,7 @@
                 <input
                   type="text"
                   class="form-control"
-                  placeholder="Pesquisar por Descri&ccedil;&atilde;o"
+                  placeholder="Pesquisar pelo nome do cliente"
                   (keyup)="onKeyUp($event)"
                   [(ngModel)]="campoPesquisa"/>
                 <div class="input-group-append">

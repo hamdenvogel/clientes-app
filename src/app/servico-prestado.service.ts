@@ -74,12 +74,15 @@ export class ServicoPrestadoService {
       if (servicoFiltro.cliente > -1) {
         filtroPrincipal = `${filtroPrincipal}&cliente=${servicoFiltro.cliente}`;
       }
-    }
+    };
     if (servicoFiltro.status) {
         filtroPrincipal = `${filtroPrincipal}&status=${servicoFiltro.status}`;
-    }
+    };
     if (servicoFiltro.descricao) {
         filtroPrincipal = `${filtroPrincipal}&descricao=${servicoFiltro.descricao}`;
+    };
+    if (servicoFiltro.clienteNome) {
+        filtroPrincipal = `${filtroPrincipal}&cliente.nome=${servicoFiltro.clienteNome}`;
     }
     return this.http.get<any>(filtroPrincipal);
   }

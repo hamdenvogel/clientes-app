@@ -46,13 +46,13 @@ export class ClientesListaComponent implements OnInit {
       this.totalClientes = new TotalClientes();
     }
 
-  carregaClientes( pagina = 0, tamanho = 10){
+  carregaClientes( pagina = 0){
       this.service
         .totalClientes()
         .subscribe(resposta => {
           this.totalClientes = resposta;
           this.totalClientesCadastrados = (this.totalClientes.totalClientes == 0) ? 1 : this.totalClientes.totalClientes;
-          this.service.obterPesquisaPaginada(pagina,  this.totalClientesCadastrados)
+          this.service.obterPesquisaPaginada(pagina,  this.totalClientesCadastrados, this.campoPesquisa.trim())
           .subscribe(response => {
             this.clientes = response.content;
             this.collection.data = this.clientes;
@@ -72,7 +72,7 @@ export class ClientesListaComponent implements OnInit {
       .getClientes()
       .subscribe(resposta => this.clientes = resposta); */
 
-    this.carregaClientes(0,10);
+    this.carregaClientes(0);
 
     this.collectionCustomPagination = this.collection;
     this.config = {
@@ -90,10 +90,8 @@ export class ClientesListaComponent implements OnInit {
   }
 
   pesquisarNome(){
+    /*
     this.collectionCustomPagination = {...this.collectionCopy};
-   /* var data2 =  this.collectionCustomPagination.data.filter(function(data) {
-      return data.descricao == "teste XXX";
-    }); */
 
     if ( this.campoPesquisa.trim() == "") {
       this.collectionCustomPagination = {...this.collectionCopy};
@@ -102,7 +100,8 @@ export class ClientesListaComponent implements OnInit {
       var dataPesquisa = this.collectionCustomPagination.data.filter
         (x => x.nome.toLowerCase().includes(this.campoPesquisa.toLowerCase()));
       this.collectionCustomPagination.data = dataPesquisa;
-    }
+    } */
+    this.carregaClientes();
   }
 
   onKeyUp(evento: KeyboardEvent){
