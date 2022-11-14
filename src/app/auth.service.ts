@@ -26,16 +26,16 @@ export class AuthService {
   ) { }
 
   obterToken(){
-    const tokenString = localStorage.getItem('access_token')
+    const tokenString = localStorage.getItem('token')
     if(tokenString){
-      const token = JSON.parse(tokenString).access_token
+      const token = JSON.parse(tokenString).token;
       return token;
     }
     return null;
   }
 
   encerrarSessao(){
-    localStorage.removeItem('access_token')
+    localStorage.removeItem('token');
   }
 
   getUsuarioAutenticado(){
@@ -63,11 +63,11 @@ export class AuthService {
     return this.http.post<UsuarioCadastro>(this.apiURL, usuarioCadastro);
   }
 
-  tentarLogar2(usuario: Usuario) : Observable<any> {
+  tentarLogar(usuario: Usuario) : Observable<any> {
     return this.http.post<Usuario>(this.tokenURL, usuario);
   }
 
-  tentarLogar( username: string, password: string ) : Observable<any> {
+  /*tentarLogar( username: string, password: string ) : Observable<any> {
     const params = new HttpParams()
                         .set('login', username)
                         .set('senha', password);
@@ -78,8 +78,9 @@ export class AuthService {
       'Authorization': 'Basic ' + btoa(`${this.clientID}:${this.clientSecret}`),
       'Content-Type': 'application/x-www-form-urlencoded'
     } */
-     return this.http.post<Usuario>(this.tokenURL, {params});
-  }
+ //    return this.http.post<Usuario>(this.tokenURL, {params});
+ // }
+ // */
 
 
 }

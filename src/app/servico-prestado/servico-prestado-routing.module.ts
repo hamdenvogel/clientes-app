@@ -10,12 +10,13 @@ const routes: Routes = [
   { path: 'servicos-prestados', canActivate: [AuthGuard], component: LayoutComponent, children: [
     { path: 'form', component: ServicoPrestadoFormComponent },
     { path: 'form/:id', component: ServicoPrestadoFormComponent },
+    { path: 'form/:id/:acao', component: ServicoPrestadoFormComponent },
+    { path: 'form/redireciona', component: ServicoPrestadoFormComponent },
     { path: 'lista', component: ServicoPrestadoListaComponent },
     //{ path: 'remover/', component: ServicoPrestadoRemoverComponent },
     //{ path: 'remover/:id', component: ServicoPrestadoRemoverComponent },
     { path: '', redirectTo: '/servicos-prestados/lista', pathMatch: 'full' },
     { path: '**', component: ServicoPrestadoListaComponent }
-
   ]}
 ];
 

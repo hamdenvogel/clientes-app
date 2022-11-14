@@ -3,5 +3,5 @@ export const environment = {
   apiURLBase: 'https://clientes-hvogel-api.herokuapp.com',
   clientId: 'my-angular-app',
   clientSecret: '@321',
-  obterTokenUrl: '/oauth/token'
+  obterTokenUrl: '/api/auth/signin'
 };

@@ -36,6 +36,7 @@ export class ServicoPrestadoFormComponent implements OnInit {
   @ViewChild('inputData', {static: true}) inputData: ElementRef;
   prestadores: Prestador[] = [];
   natureza: Natureza[] = [];
+  acao: string;
 
   constructor(
     private clienteService: ClientesService,
@@ -58,31 +59,38 @@ export class ServicoPrestadoFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    let params : Observable<Params> = this.activatedRoute.params;
-    params.subscribe( urlParams => {
-        this.id = urlParams['id'];
-        if (this.id) {
-          this.service.obterServicoPorId(this.id)
-          .subscribe(
-            response => {
-              this.servico.id =  this.id,
-              this.servico.descricao = response.descricao,
-              this.servico.preco = response.valor.toString().replace(".",","),
-              this.servico.data = response.data,
-              this.servico.idCliente = response.cliente.id,
-              this.servico.status = response.status,
-              this.servico.idPrestador = response.prestador == null ? undefined:  response.prestador.id,
-              this.servico.prestador.id = this.servico.idPrestador,
-              this.servico.tipo = response.tipo,
-              this.servico.idNatureza = response.natureza == null ? undefined:  response.natureza.id
-           },
-            errorResponse => this.servico = new ServicoPrestado()
-          );
-        }
-        else {
-          console.log('on init this.servico.data ' + this.inputData.nativeElement.value);
-        }
-    });
+    console.log('this.router.url ' + this.router.url);
+
+    this.activatedRoute.paramMap.subscribe(result =>
+      {
+          this.id = parseInt(result.get('id'));
+          console.log('id: ' + this.id);
+          this.acao = result.get('acao');
+          console.log('acao: ' + this.acao);
+          if (this.id) {
+            this.service.obterServicoPorId(this.id)
+            .subscribe(
+              response => {
+                this.servico.id =  this.id,
+                this.servico.descricao = response.descricao,
+                this.servico.preco = response.valor.toString().replace(".",","),
+                this.servico.data = response.data,
+                this.servico.idCliente = response.cliente.id,
+                this.servico.status = response.status,
+                this.servico.idPrestador = response.prestador == null ? undefined:  response.prestador.id,
+                this.servico.prestador.id = this.servico.idPrestador,
+                this.servico.tipo = response.tipo,
+                this.servico.idNatureza = response.natureza == null ? undefined:  response.natureza.id
+             },
+              errorResponse => this.servico = new ServicoPrestado()
+            );
+          }
+      });
+
+    if (this.router.url.substring(1) == 'servicos-prestados/form/redireciona') {
+      console.log('condição satisfeita ==> ' + this.router.url.substring(1));
+      this.acao = 'redireciona';
+    }
 
     this.clienteService
       .getClientes()
@@ -126,8 +134,13 @@ export class ServicoPrestadoFormComponent implements OnInit {
           .atualizar(this.servico)
           .subscribe(response => {
               this.success = true;
-              this.router.navigate(['/servicos-prestados/lista']);
-                           this.notificationService.showToasterSuccessWithTitle(response.mensagem,
+
+              if (this.acao != null && this.acao == 'pacoteform') {
+                this.router.navigate(['/pacote/form']);
+              } else {
+                this.router.navigate(['/servicos-prestados/lista']);
+              }
+              this.notificationService.showToasterSuccessWithTitle(response.mensagem,
                 response.titulo);
               this.errors = null;
           }, errorResponse => {
@@ -141,8 +154,12 @@ export class ServicoPrestadoFormComponent implements OnInit {
         .salvar(this.servico)
         .subscribe(response => {
           this.success = true;
-          this.router.navigate(['/servicos-prestados/lista']);
-            this.notificationService.showToasterSuccessWithTitle(response.infoResponseDTO.mensagem,
+          if (this.acao == 'redireciona') {
+            this.router.navigate(['/pacote/form']);
+          } else {
+            this.router.navigate(['/servicos-prestados/lista']);
+          }
+          this.notificationService.showToasterSuccessWithTitle(response.infoResponseDTO.mensagem,
             response.infoResponseDTO.titulo);
           this.errors = null;
           this.servico = new ServicoPrestado();
@@ -187,6 +204,18 @@ export class ServicoPrestadoFormComponent implements OnInit {
          // this.notificationService.showToasterError(erro, "erro");
         })
       })
+    }
+
+    voltar() {
+      if (this.acao != null && this.acao == 'pacoteform') {
+        this.router.navigate(['/pacote/form']);
+      }
+      else if (this.acao != null && this.acao == 'redireciona') {
+        this.router.navigate(['/pacote/form']);
+      }
+      else {
+        this.router.navigate(['/servicos-prestados/lista']);
+      }
     }
 
 }

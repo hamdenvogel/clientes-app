@@ -154,4 +154,107 @@
   </div>
 
 </div>
+
+<br />
+<div class="row">
+  <div class="how-section1">
+  <div class="col-md-12">
+   <h4 class="subheading">Relacionar Serviços abaixo:</h4>
+  </div>
+  </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+
+      <div class="list row">
+        <div class="col-md-12">
+          <div class="input-group mb-3">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Pesquisar pelo nome do cliente"
+              (keyup)="onKeyUp($event)"
+              [(ngModel)]="campoPesquisa" [ngModelOptions]="{standalone: true}"/>
+            <div class="input-group-append">
+              <button
+                class="btn btn-primary"
+                (click)="pesquisarDescricao()"
+                type="button">
+                Pesquisar
+              </button>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="row">
+            <div class="col-md-12">
+            <div class="table-responsive">
+            <table class="table table-hover table-striped">
+              <thead>
+                <tr class="thead-dark">
+                  <th><input type="checkbox" [checked]="isAllCheckBoxChecked()" (change)="checkAllCheckBox($event)"></th>
+                  <th>Cliente</th>
+                  <th>Descri&ccedil;&atilde;o</th>
+                  <th>Pre&ccedil;o</th>
+                  <th>Data</th>
+                  <th>Status</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of collectionCustomPagination.data | paginate: configCustomPagination">
+                  <td><input type="checkbox" value="{{item.id}}" [(ngModel)]="item.checked" [ngModelOptions]="{standalone: true}"></td>
+                  <td>
+                    <em class="text-item-grid">
+                      {{ item.cliente.nome }}
+                     </em>
+                   </td>
+                  <td>{{ item.descricao }} </td>
+                  <td>{{ item.valor }} </td>
+                  <td>{{ item.data }} </td>
+                  <td>{{ statusDetalhado[item.status] }}</td>
+                  <td>
+                    <button class="btn btn-primary"
+                            routerLink="/servicos-prestados/form/{{item.id}}/pacoteform">
+                        <i class="fa fa-edit"></i>
+                    </button>
+                    &nbsp;
+                       <button class="btn btn-danger"
+                          (click)="openModal(template, item.id)">
+                          <i class="fa fa-trash"></i>
+                       </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+            <pagination-controls id="customPaginate" [maxSize]="maxSize" (pageChange)="onPageChange($event)"
+              [previousLabel]="labels.previousLabel" [nextLabel]="labels.nextLabel">
+            </pagination-controls>
+          </div>
+        </div>
+        </div>
+    </div>
+</div>
+</div>
+<button type="button"
+   class="btn btn-success ml-1" (click)="novoServico()">
+  <i class="fa fa-plus"></i> Novo Serviço
+</button>
+
+<button type="button"
+  class="btn btn-primary ml-1" (click)="vincularServico()"> <i class="fa fa-save"></i> Vincular Serviço
+</button>
 </form>
+
+<div class="container">
+  <div class="row">
+    <ng-template #template>
+      <div class="modal-body text-center">
+        <p>Confirma a exclus&atilde;o?</p>
+        <button type="button" class="btn btn-default" (click)="confirm()" >Sim</button>
+        <button type="button" class="btn btn-primary" (click)="decline()" >N&atilde;o</button>
+      </div>
+    </ng-template>
+  </div>
+</div>

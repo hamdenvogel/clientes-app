@@ -29,12 +29,12 @@ export class LoginComponent  {
     usuario.login = this.username;
     usuario.senha = this.password;
     this.authService
-          .tentarLogar2(usuario)
+          .tentarLogar(usuario)
           .subscribe(response => {
-            const access_token = JSON.stringify(response);
-            localStorage.setItem('access_token', access_token);
-			localStorage.setItem('username', usuario.login);
-            this.router.navigate(['/home'])
+              const token = JSON.stringify(response);
+              localStorage.setItem('token', token);
+              localStorage.setItem('username', usuario.login);
+              this.router.navigate(['/home'])
           }, errorResponse => {
             //this.errors = ['Usuário e/ou senha incorreto(s).']
             this.notificationService.showToasterError("Usuário e/ou senha incorreto(s)",
@@ -44,7 +44,8 @@ export class LoginComponent  {
 
   preparaCadastrar(event){
     event.preventDefault();
-    this.cadastrando = true;
+    this.notificationService.showToasterSuccess("Operação desativada no momento. Contate o suporte");
+    //this.cadastrando = true;
   }
 
   cancelaCadastro(){

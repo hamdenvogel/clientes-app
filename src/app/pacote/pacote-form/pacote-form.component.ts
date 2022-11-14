@@ -1,9 +1,16 @@
+import { ItemPacoteService } from './../../item-pacote.service';
+import { ServicoPrestadoService } from 'src/app/servico-prestado.service';
 import { PacoteService } from './../../pacote.service';
 import { Pacote } from './../pacote';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { NotificationService } from 'src/app/notification.service';
-import { Observable } from 'rxjs';
+import { EMPTY, from, Observable, of } from 'rxjs';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { TotalServicos } from 'src/app/clientes/totalServicos';
+import { ServicoPrestado } from 'src/app/servico-prestado/servicoPrestado';
+import { ServicoFiltro } from 'src/app/servicoFiltro';
+import { filter, isEmpty } from 'rxjs/operators';
 
 @Component({
   selector: 'app-pacote-form',
@@ -20,13 +27,41 @@ export class PacoteFormComponent implements OnInit {
   tempDatePrevisao: Date;
   tempDateConclusao: Date;
 
+  status: string;
+  servicoPrestadoLista: ServicoPrestado[] = [];
+  servicoFiltro: ServicoFiltro;
+  statusDetalhado = {'E': 'Em Atendimento', 'C': 'Cancelado', 'F': 'Finalizado' };
+  totalServicos: TotalServicos;
+  totalServicosCadastrados: number;
+
+  campoPesquisa: string = "";
+  config: any;
+  collection = { count: 0, data: [] };
+  configCustomPagination: any;
+  collectionCustomPagination = { count: 0, data: [] };
+  collectionCopy = { count: 0, data: [] };
+  maxSize: number = 7;
+  labels: any = {
+    previousLabel: '<-Anterior',
+    nextLabel: 'Proxima-->',
+    screenReaderPaginationLabel: 'Paginacao',
+    screenReaderPageLabel: 'pagina',
+    screenReaderCurrentLabel: `Voce esta na pagina`
+  };
+  modalRef?: BsModalRef;
+  idExclusaoServico: number = 0;
+
   constructor(
-    private service: PacoteService,
+    private pacoteService: PacoteService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private servicoPrestadoService: ServicoPrestadoService,
+    private modalService: BsModalService,
+    private itemPacoteService: ItemPacoteService
   ) {
     this.pacote = new Pacote();
+    this.totalServicos = new TotalServicos();
    }
 
   convertDate(dateString){
@@ -41,7 +76,7 @@ export class PacoteFormComponent implements OnInit {
     params.subscribe( urlParams => {
       this.id = urlParams['id'];
       if (this.id) {
-        this.service
+        this.pacoteService
           .obterPorId(this.id)
           .subscribe(
             response => {
@@ -51,10 +86,14 @@ export class PacoteFormComponent implements OnInit {
             },
             errorResponse => this.pacote = new Pacote()
           );
+
       } else {
         this.pacote.descricao = "";
       }
-  });
+    });
+
+    this.campoPesquisa = "";
+    this.consultarServicosEmAtendimento();
   }
 
   voltarParaListagem(){
@@ -63,17 +102,18 @@ export class PacoteFormComponent implements OnInit {
 
   onSubmit(){
     this.success = true;
-    if (this.pacote.data_previsao == 'Invalid Date' || this.pacote.data_previsao == null)
-        { this.pacote.data_previsao  = ""};
-
+    if (this.idExclusaoServico != 0) { return };
+    if (this.pacote.data_previsao == 'Invalid Date' || this.pacote.data_previsao == null) {
+       this.pacote.data_previsao  = "";
+    };
 
     if (this.id) {
-      this.service
+      this.pacoteService
         .atualizar(this.pacote)
         .subscribe(response => {
             this.success = true;
-            this.router.navigate(['/pacote/lista']);
-                         this.notificationService.showToasterSuccessWithTitle(response.mensagem,
+           // this.router.navigate(['/pacote/lista']);
+            this.notificationService.showToasterSuccessWithTitle(response.mensagem,
               response.titulo);
             this.errors = null;
         }, errorResponse => {
@@ -83,12 +123,12 @@ export class PacoteFormComponent implements OnInit {
             })
         })
     } else {
-    this.service
+    this.pacoteService
       .salvar(this.pacote)
       .subscribe(response => {
         this.success = true;
-        this.router.navigate(['/pacote/lista']);
-          this.notificationService.showToasterSuccessWithTitle(response.infoResponseDTO.mensagem,
+        //this.router.navigate(['/pacote/lista']);
+        this.notificationService.showToasterSuccessWithTitle(response.infoResponseDTO.mensagem,
           response.infoResponseDTO.titulo);
         this.errors = null;
         this.pacote = new Pacote();
@@ -142,5 +182,142 @@ dataServicoFormatadaConclusao(){
       this.tempDateConclusao = new Date(value);
       this.pacote.data_conclusao = this.dataServicoFormatadaConclusao();
     }
+  }
+
+  carregaServicos( pagina = 0, tamanho = 4, servicoFiltro: ServicoFiltro){
+
+    this.collection = { count: 0, data: [] };
+    this.collectionCustomPagination = { count: 0, data: [] };
+    this.collectionCopy = { count: 0, data: [] };
+
+    this.servicoPrestadoService
+        .totalServicos()
+        .subscribe(resposta => {
+          this.totalServicos = resposta;
+          this.totalServicosCadastrados = (this.totalServicos.totalServicos == 0) ? 1: this.totalServicos.totalServicos;
+          this.servicoPrestadoService.obterPesquisaServicosPrestadosEmAtendimento
+            (pagina, this.totalServicosCadastrados, servicoFiltro)
+              .subscribe(response => {
+                this.servicoPrestadoLista = response.content;
+                this.collection.data = this.servicoPrestadoLista;
+                this.collection.count = response.totalElements;
+                this.collectionCopy = {...this.collection};
+              })
+     });
+
+    this.collectionCustomPagination = this.collection;
+    this.config = {
+      id: 'basicPaginate',
+      itemsPerPage: 5,
+      currentPage: 1,
+      totalItems: this.collection.count
+    };
+    this.configCustomPagination = {
+      id: 'customPaginate',
+      itemsPerPage: 5,
+      currentPage: 1,
+      totalItems: this.collection.count
+    };
+  }
+
+  consultarServicosEmAtendimento(){
+    this.servicoFiltro = new ServicoFiltro;
+
+    if (this.campoPesquisa.trim() != "" && this.campoPesquisa != undefined) {
+      this.servicoFiltro.clienteNome = this.campoPesquisa.trim();
+    }
+      this.carregaServicos(0,4, this.servicoFiltro);
+  }
+
+  pesquisarDescricao(){
+     this.consultarServicosEmAtendimento();
+   }
+
+  onKeyUp(evento: KeyboardEvent){
+    //console.log('onKeyUp ' + (<HTMLInputElement>evento.target).value);
+    this.pesquisarDescricao();
+  }
+
+  pageChanged(event) {
+    this.config.currentPage = event;
+  }
+
+  onPageChange(event) {
+    this.configCustomPagination.currentPage = event;
+  }
+
+  checkAllCheckBox(ev) {
+		this.servicoPrestadoLista.forEach(x => x.checked = ev.target.checked)
+	}
+
+	isAllCheckBoxChecked() {
+		return this.servicoPrestadoLista.every(p => p.checked);
+	}
+
+  vincularServico(){
+   var itenscheckados = from(this.servicoPrestadoLista)
+      .pipe(
+        filter(val => {
+          return val.checked;
+        })
+      )
+      .subscribe(resposta => {
+        console.log('itens checkados ' + resposta.id + " " + resposta.descricao);
+    });
+
+    let algumItemCheckado: boolean = false;
+    for (let i in this.servicoPrestadoLista){
+      let item = this.servicoPrestadoLista[i];
+      let itemCheckado = item.checked;
+      if (itemCheckado) {
+        algumItemCheckado = true;
+        break;
+      }
+    }
+    if (!algumItemCheckado) {
+      this.notificationService.showToasterError('Favor selecionar algum Serviço!','Erro');
+    } else {
+      console.log('algum item foi checkado');
+    }
+  }
+
+  openModal(template: TemplateRef<any>, idServico: number) {
+    this.idExclusaoServico = idServico;
+    this.modalRef = this.modalService.show(template, {class: 'modal-sm'});
+  }
+
+  confirm(): void {
+    if (this.idExclusaoServico == 0) { return };
+      this.servicoPrestadoService
+        .deletar(this.idExclusaoServico)
+        .subscribe(
+          response => {
+            this.notificationService.showToasterSuccessWithTitle(response.mensagem,
+              response.titulo);
+            this.errors = null;
+            this.idExclusaoServico = 0;
+            this.consultarServicosEmAtendimento();
+          },
+           errorResponse => {
+            this.errors = errorResponse.error.errors;
+              this.errors.forEach( (erro) =>{
+                this.notificationService.showToasterError(erro, "erro");
+              })
+          }
+        )
+    this.modalRef?.hide();
+  }
+
+  decline(): void {
+    this.idExclusaoServico = 0;
+    this.modalRef?.hide();
+  }
+
+  novoServico(){
+    this.router.navigate(['/servicos-prestados/form/redireciona']);
+  }
+
+  carregaItemPacote(pagina = 0, tamanho = 4, pacote) {
+    this.itemPacoteService.obterPesquisaPaginada(pagina, tamanho, pacote);
   }
 }

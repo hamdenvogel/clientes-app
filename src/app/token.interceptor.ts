@@ -14,13 +14,13 @@ export class TokenInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
 
-    const tokenString = localStorage.getItem('access_token');
+    const tokenString = localStorage.getItem('token');
 
     const url = request.url;
 
-    if( tokenString && !url.endsWith('/oauth/token') ){
+    if( tokenString && ( !url.endsWith('/api/auth/signin') || !url.endsWith('/api/auth/signup') )){
       const token = JSON.parse(tokenString);
-      const jwt = token.access_token;
+      const jwt = token.token;
       request = request.clone({
         setHeaders : {
           Authorization: 'Bearer ' + jwt

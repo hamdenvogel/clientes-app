@@ -16,4 +16,5 @@ export class ServicoPrestado {
     tipo: string;
     idNatureza: number;
     natureza: Natureza;
+    checked: boolean;
 }
