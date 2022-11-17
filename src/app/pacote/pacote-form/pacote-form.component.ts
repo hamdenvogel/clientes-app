@@ -43,10 +43,10 @@ export class PacoteFormComponent implements OnInit {
   maxSize: number = 7;
   labels: any = {
     previousLabel: '<-Anterior',
-    nextLabel: 'Proxima-->',
-    screenReaderPaginationLabel: 'Paginacao',
-    screenReaderPageLabel: 'pagina',
-    screenReaderCurrentLabel: `Voce esta na pagina`
+    nextLabel: 'Próxima-->',
+    screenReaderPaginationLabel: 'Paginação',
+    screenReaderPageLabel: 'página',
+    screenReaderCurrentLabel: `Voce está na página`
   };
   modalRef?: BsModalRef;
   idExclusaoServico: number = 0;
