@@ -37,6 +37,7 @@ export class ServicoPrestadoFormComponent implements OnInit {
   prestadores: Prestador[] = [];
   natureza: Natureza[] = [];
   acao: string;
+  pacote: string;
 
   constructor(
     private clienteService: ClientesService,
@@ -67,6 +68,8 @@ export class ServicoPrestadoFormComponent implements OnInit {
           console.log('id: ' + this.id);
           this.acao = result.get('acao');
           console.log('acao: ' + this.acao);
+          this.pacote = result.get('pacote');
+          console.log('pacote '+ this.pacote);
           if (this.id) {
             this.service.obterServicoPorId(this.id)
             .subscribe(
@@ -86,11 +89,6 @@ export class ServicoPrestadoFormComponent implements OnInit {
             );
           }
       });
-
-    if (this.router.url.substring(1) == 'servicos-prestados/form/redireciona') {
-      console.log('condição satisfeita ==> ' + this.router.url.substring(1));
-      this.acao = 'redireciona';
-    }
 
     this.clienteService
       .getClientes()
@@ -135,9 +133,13 @@ export class ServicoPrestadoFormComponent implements OnInit {
           .subscribe(response => {
               this.success = true;
 
-              if (this.acao != null && this.acao == 'pacoteform') {
-                this.router.navigate(['/pacote/form']);
-              } else {
+              if (this.acao != null && this.acao == 'pacoteform' && this.pacote != null) {
+                this.router.navigate([`/pacote/form/${this.pacote}`]);
+              }
+              else if (this.acao == 'redireciona') {
+                this.router.navigate([`/pacote/form/${this.pacote}`]);
+              }
+              else {
                 this.router.navigate(['/servicos-prestados/lista']);
               }
               this.notificationService.showToasterSuccessWithTitle(response.mensagem,
@@ -155,7 +157,7 @@ export class ServicoPrestadoFormComponent implements OnInit {
         .subscribe(response => {
           this.success = true;
           if (this.acao == 'redireciona') {
-            this.router.navigate(['/pacote/form']);
+            this.router.navigate([`/pacote/form/${this.pacote}`]);
           } else {
             this.router.navigate(['/servicos-prestados/lista']);
           }
@@ -207,11 +209,11 @@ export class ServicoPrestadoFormComponent implements OnInit {
     }
 
     voltar() {
-      if (this.acao != null && this.acao == 'pacoteform') {
-        this.router.navigate(['/pacote/form']);
+      if (this.acao != null && this.acao == 'pacoteform' && this.pacote != null) {
+        this.router.navigate([`/pacote/form/${this.pacote}`]);
       }
       else if (this.acao != null && this.acao == 'redireciona') {
-        this.router.navigate(['/pacote/form']);
+        this.router.navigate([`/pacote/form/${this.pacote}`]);
       }
       else {
         this.router.navigate(['/servicos-prestados/lista']);

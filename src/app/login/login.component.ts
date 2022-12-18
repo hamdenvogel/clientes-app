@@ -44,7 +44,7 @@ export class LoginComponent  {
 
   preparaCadastrar(event){
     event.preventDefault();
-    this.notificationService.showToasterSuccess("Operação desativada no momento. Contate o suporte");
+    this.notificationService.showToasterError("Operação desativada no momento. Contate o suporte","Desabilitado");
     //this.cadastrando = true;
   }
 

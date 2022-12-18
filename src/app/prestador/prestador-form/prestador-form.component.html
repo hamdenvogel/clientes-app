@@ -47,6 +47,52 @@
             </div>
         </div>
 
+        <div class="row" *ngIf="prestador.id && filename;else notfound">
+          <div class="col-md-6">
+              <div class="form-group">
+                  <label>Foto</label>
+                  <img id="myimage" class="form-control" [src]='foto' />
+              </div>
+          </div>
+        </div>
+
+        <ng-template #notfound>
+          <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Foto</label>
+                    <img id="myimage" class="form-control" [src]='fotoNotFound' />
+                </div>
+            </div>
+          </div>
+        </ng-template>
+
+        <div class="row" *ngIf="prestador.id && filename">
+          <div class="col-md-12">
+          <div class="badge bg-primary text-wrap" style="width: 20rem;">
+            Arquivo salvo "{{originalFileName}}"
+          </div>
+        </div>
+      </div>
+      &nbsp;
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <input type="file" name="file" id="file" #inputFile (change)="selectFile($event)" />
+          </div>
+        </div>
+
+        <div class="col-md-6" *ngIf="prestador.id && filename">
+          <div class="form-group">
+            <button type="button" class="btn btn-danger ml-1" (click)="deletarImagem()">
+              <i class="fas fa-trash"></i>
+              Apagar Imagem
+            </button>
+          </div>
+        </div>
+      </div>
+
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">

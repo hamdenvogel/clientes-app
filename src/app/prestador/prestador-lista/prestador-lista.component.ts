@@ -1,3 +1,4 @@
+import { ImagemService } from './../../imagem.service';
 import { PrestadorService } from './../../prestador.service';
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { NotificationService } from './../../notification.service';
@@ -5,6 +6,7 @@ import { Router } from '@angular/router';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { Prestador } from '../prestador';
 import { TotalPrestadores } from '../totalPrestadores';
+import { Constants } from 'src/app/shared/constants';
 
 
 @Component({
@@ -28,10 +30,10 @@ export class PrestadorListaComponent implements OnInit {
   maxSize: number = 7;
   labels: any = {
     previousLabel: '<-Anterior',
-    nextLabel: 'Próxima-->',
-    screenReaderPaginationLabel: 'Paginação',
-    screenReaderPageLabel: 'página',
-    screenReaderCurrentLabel: `Voce está na página`
+    nextLabel: 'Prï¿½xima-->',
+    screenReaderPaginationLabel: 'Paginaï¿½ï¿½o',
+    screenReaderPageLabel: 'pï¿½gina',
+    screenReaderCurrentLabel: `Voce estï¿½ na pï¿½gina`
   };
   totalPrestadores: TotalPrestadores;
   totalPrestadoresCadastrados: number;
@@ -42,7 +44,8 @@ export class PrestadorListaComponent implements OnInit {
     private service: PrestadorService,
     private router: Router,
     private notificationService: NotificationService,
-    private modalService: BsModalService
+    private modalService: BsModalService,
+    private imagemService: ImagemService
   ) {
     this.totalPrestadores = new TotalPrestadores();
   }
@@ -89,6 +92,14 @@ ngOnInit(): void {
     currentPage: 1,
     totalItems: this.collection.count
   };
+  let strProximo_Windows1252 = "PrÃ³xima-->";
+    this.labels.nextLabel = strProximo_Windows1252;
+    let strPaginacao_Windows1252 = "PaginaÃ§Ã£o";
+    this.labels.screenReaderPaginationLabel = strPaginacao_Windows1252;
+    let strPagina_Windows1252 = "PÃ¡gina";
+    this.labels.screenReaderPageLabel = strPagina_Windows1252;
+    let strPaginaAtual_Windows1252 = "VocÃª estÃ¡ na pÃ¡gina";
+    this.labels.screenReaderCurrentLabel = strPaginaAtual_Windows1252;
 }
 
 pesquisarNome(){
@@ -148,7 +159,6 @@ deletarPrestador(idPrestador: number){
         this.notificationService.showToasterError(this.mensagemErro,
         'Erro')
       }
-
     )
 }
 
@@ -158,12 +168,16 @@ ok(): void {
 
 confirm(): void {
   if (this.idExclusaoPrestador == 0) { return };
+  let codigoPrestadorDocumento: number = Constants.CodigoPrestadorDocumento;
     this.service
       .deletar(this.idExclusaoPrestador)
       .subscribe(
         response => {
           this.notificationService.showToasterSuccessWithTitle(response.mensagem,
             response.titulo);
+            this.imagemService
+              .deletar(codigoPrestadorDocumento, this.idExclusaoPrestador)
+              .subscribe();
           this.errors = null;
           this.consultar();
         },

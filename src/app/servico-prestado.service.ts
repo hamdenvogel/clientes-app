@@ -88,7 +88,7 @@ export class ServicoPrestadoService {
   }
 
   obterPesquisaServicosPrestadosEmAtendimento(page, size, servicoFiltro: ServicoFiltro): Observable<PaginaServico> {
-    let params = `page=${page}&size=${size}&sort=id,desc&sort=cliente.nome,asc&status=E`;
+    let params = `page=${page}&size=${size}&sort=id,desc&sort=cliente.nome,asc&status=E&orfaos=sim`;
     let filtroPrincipal: string = `${this.apiURL}/pesquisa-avancada?${params}`;
     if (servicoFiltro.clienteNome) {
       filtroPrincipal = `${filtroPrincipal}&cliente.nome=${servicoFiltro.clienteNome}`;

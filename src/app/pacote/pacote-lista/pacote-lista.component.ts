@@ -27,10 +27,10 @@ export class PacoteListaComponent implements OnInit {
   maxSize: number = 7;
   labels: any = {
     previousLabel: '<-Anterior',
-    nextLabel: 'PrÛxima-->',
-    screenReaderPaginationLabel: 'PaginaÁ„o',
-    screenReaderPageLabel: 'p·gina',
-    screenReaderCurrentLabel: `Voce est· na p·gina`
+    nextLabel: 'Pr&oacute;xima-->',
+    screenReaderPaginationLabel: 'PaginaÔøΩÔøΩo',
+    screenReaderPageLabel: 'pÔøΩgina',
+    screenReaderCurrentLabel: `Voce estÔøΩ na pÔøΩgina`
   };
   totalPacotes: TotalPacotes;
   totalPacotesCadastrados: number;
@@ -90,6 +90,15 @@ export class PacoteListaComponent implements OnInit {
       currentPage: 1,
       totalItems: this.collection.count
     };
+
+    let strProximo_Windows1252 = "Pr√≥xima-->";
+    this.labels.nextLabel = strProximo_Windows1252;
+    let strPaginacao_Windows1252 = "Pagina√ß√£o";
+    this.labels.screenReaderPaginationLabel = strPaginacao_Windows1252;
+    let strPagina_Windows1252 = "P√°gina";
+    this.labels.screenReaderPageLabel = strPagina_Windows1252;
+    let strPaginaAtual_Windows1252 = "Voc√™ est√° na p√°gina";
+    this.labels.screenReaderCurrentLabel = strPaginaAtual_Windows1252;
   }
 
   pesquisarDescricao(){

@@ -1,6 +1,7 @@
-import { ItemPacote } from './item-pacote/item-pacote';
+import { ItemPacoteConsulta } from './item-pacote/item-pacoteConsulta';
+
 export class PaginaItemPacote {
-  content: ItemPacote[];
+  content: ItemPacoteConsulta[];
   totalElements: number;
   size: number;
   number: number;

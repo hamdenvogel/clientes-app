@@ -1,7 +1,8 @@
+import { ImagemService } from './../../imagem.service';
 import { ValidadorService } from './../../validador.service';
 import { ProfissaoService } from './../../profissao.service';
 import { PrestadorService } from './../../prestador.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import GoogleCaptchaService from 'src/app/google-captcha.service';
 import { GoogleCaptcha } from 'src/app/googleCaptcha';
 import { NotificationService } from '../../notification.service';
@@ -10,6 +11,8 @@ import { Prestador } from '../prestador';
 import { Observable } from 'rxjs';
 import { Profissao } from 'src/app/profissao';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
+import { Constants } from 'src/app/shared/constants';
+import { Imagem } from 'src/app/imagem';
 
 @Component({
   selector: 'app-prestador-form',
@@ -31,6 +34,16 @@ export class PrestadorFormComponent implements OnInit {
   dropdownSettings: IDropdownSettings = {};
   profissaoSelecionada = [];
 
+  foto: any;
+  filename: string = "";
+  files: any[] = [];
+  @ViewChild('inputFile', { static: true }) inputFile: ElementRef;
+  fileList: File[] = [];
+  codigoPrestadorDocumento: number = Constants.CodigoPrestadorDocumento;
+  imagem: Imagem[] = [];
+  originalFileName: string = "";
+  fotoNotFound: string = Constants.fotoNotFound;
+
   constructor(
     private service: PrestadorService,
     private router: Router,
@@ -38,7 +51,8 @@ export class PrestadorFormComponent implements OnInit {
     private notificationService: NotificationService,
     private googleCaptchaService: GoogleCaptchaService,
     private profissaoService: ProfissaoService,
-    private validadorService: ValidadorService
+    private validadorService: ValidadorService,
+    private imagemService: ImagemService
   ) {
     this.prestador = new Prestador();
     this.prestador.profissao = new Profissao();
@@ -61,11 +75,12 @@ export class PrestadorFormComponent implements OnInit {
                      this.profissaoSelecionada = [{ id: resposta.id,
                           descricao: resposta.descricao
                         }];
-                     
+
                   })
             },
             errorResponse => this.prestador = new Prestador()
           );
+          this.obterImagem(this.id);
       } else {
         this.prestador.nome = "";
       }
@@ -96,6 +111,79 @@ export class PrestadorFormComponent implements OnInit {
       this.isReadonly = true;
     }
   }
+
+  obterImagem(idChave: number = 0) {
+    this.foto = [];
+    this.filename = "";
+    this.originalFileName = "";
+    if (idChave != undefined) {
+      this.imagemService.obterPorDocumentoEChave(this.codigoPrestadorDocumento, idChave)
+      .subscribe(resposta => {
+         this.imagem = resposta;
+            if (this.imagem[0] != undefined) {
+              this.foto = 'data:image/jpeg;base64,' + this.imagem[0].data;
+              this.filename = this.imagem[0].fileName;
+              this.originalFileName = this.imagem[0].originalFileName;
+            }
+      });
+    }
+   }
+
+ onFileChanged(event: any) {
+    this.files = event.target.files;
+  }
+
+ selectFile(event: any) {
+    for (var i = 0; i <= event.target.files.length - 1; i++) {
+        var selectedFile = event.target.files[i];
+        this.fileList.push(selectedFile);
+        this.filename = selectedFile;
+    }
+    if (this.filename != "") { //se é alteração então já salva logo, porque já tem o id do objeto.
+       this.alterarImagem();
+    }
+ }
+
+ deleteFile(index: number, nome: any) {
+    // remover item do array File[] FileList
+    this.fileList.splice(index, 1);
+ }
+
+ salvarImagem() {
+  if (this.fileList != undefined) {
+     if (this.fileList.length) {
+         for (let i = 0; i < this.fileList.length; i++) {
+                const formData: FormData = new FormData();
+                formData.append('files', this.fileList[i], this.fileList[i].name);
+                let item: File = this.fileList[i];
+                this.imagemService.salvar(this.codigoPrestadorDocumento, this.prestador.id, item)
+                .subscribe(resposta => {
+                  this.obterImagem(this.prestador.id);
+                });
+         }
+     }
+ }
+}
+
+alterarImagem() {
+  this.imagemService
+      .deletar(this.codigoPrestadorDocumento, this.prestador.id)
+      .subscribe(resposta => {
+        this.salvarImagem();
+      }, error => {
+        if (error.status === 404) {
+          this.salvarImagem();
+        }
+      });
+}
+
+deletarImagem() {
+      this.imagemService
+      .deletar(this.codigoPrestadorDocumento, this.prestador.id)
+      .subscribe(resposta => {
+        this.obterImagem();
+      });
+ }
 
   resetStars($event) {
     this.isReadonly = !this.isReadonly;
@@ -142,7 +230,7 @@ export class PrestadorFormComponent implements OnInit {
           this.service
             .atualizar(this.prestador)
             .subscribe(response => {
-                this.success = true;
+                  this.success = true;
                 this.router.navigate(['/prestador/lista']);
                             this.notificationService.showToasterSuccessWithTitle(response.mensagem,
                   response.titulo);
@@ -158,6 +246,8 @@ export class PrestadorFormComponent implements OnInit {
           this.service
             .salvar(this.prestador)
             .subscribe(response => {
+              this.prestador.id = response.id;
+              this.salvarImagem();
               this.success = true;
               this.router.navigate(['/prestador/lista']);
                 this.notificationService.showToasterSuccessWithTitle(response.infoResponseDTO.mensagem,

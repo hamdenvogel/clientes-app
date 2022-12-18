@@ -1,9 +1,11 @@
+import { ProdutoModule } from './produto/produto.module';
+import { SharedModule } from './shared/shared.module';
 import { PacoteModule } from './pacote/pacote.module';
 import { PrestadorModule } from './prestador/prestador.module';
 import { SistemaInfoModule } from './sistema-info/sistema-info.module';
 import { RecaptchaModule } from "ng-recaptcha";
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA  } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA, ErrorHandler  } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'
 import { FormsModule } from '@angular/forms'
 
@@ -25,6 +27,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { NgxPaginationModule } from 'ngx-pagination';
 import {LocationStrategy, HashLocationStrategy, DatePipe} from '@angular/common';
 import { ChartsModule } from 'ng2-charts';
+import { GlobalErrorHandler } from './global-error-handler';
 
 
 @NgModule({
@@ -45,11 +48,13 @@ import { ChartsModule } from 'ng2-charts';
     ClientesModule,
     ServicoPrestadoModule,
     PrestadorModule,
+    ProdutoModule,
     BrowserAnimationsModule, // required animations module
     ToastrModule.forRoot(), // ToastrModule added
     SistemaInfoModule,
     ChartsModule,
-    PacoteModule
+    PacoteModule,
+    SharedModule
   ],
 
   providers: [
@@ -61,6 +66,7 @@ import { ChartsModule } from 'ng2-charts';
       useClass: TokenInterceptor,
       multi: true
     },
+    { provide: ErrorHandler, useClass: GlobalErrorHandler },
     {provide: LocationStrategy, useClass: HashLocationStrategy},
     DatePipe
   ],

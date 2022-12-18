@@ -13,6 +13,9 @@ import { EMPTY } from 'rxjs';
 import { Endereco } from 'src/app/endereco';
 import GoogleCaptchaService from 'src/app/google-captcha.service';
 import { GoogleCaptcha } from 'src/app/googleCaptcha';
+import { Constants } from 'src/app/shared/constants';
+import { Imagem } from 'src/app/imagem';
+import { ImagemService } from 'src/app/imagem.service';
 
 @Component({
   selector: 'app-clientes-form',
@@ -36,13 +39,24 @@ export class ClientesFormComponent implements OnInit {
   captcha: string;
   googlecaptcha: GoogleCaptcha;
 
+  foto: any;
+  filename: string = "";
+  files: any[] = [];
+  @ViewChild('inputFile', { static: true }) inputFile: ElementRef;
+  fileList: File[] = [];
+  codigoClienteDocumento: number = Constants.CodigoClienteDocumento;
+  imagem: Imagem[] = [];
+  originalFileName: string = "";
+  fotoNotFound: string = Constants.fotoNotFound;
+
   constructor(
       private service: ClientesService ,
       private router: Router,
       private activatedRoute: ActivatedRoute,
       private notificationService: NotificationService,
       private cepService: CepService,
-      private googleCaptchaService: GoogleCaptchaService
+      private googleCaptchaService: GoogleCaptchaService,
+      private imagemService: ImagemService
       ) {
     this.cliente = new Cliente();
     this.cliente.nome = "";
@@ -69,6 +83,7 @@ export class ClientesFormComponent implements OnInit {
               },
               errorResponse => this.cliente = new Cliente()
             );
+            this.obterImagem(this.id);
         } else {
           this.cliente.uf = "";
           this.cliente.cidade = "";
@@ -115,6 +130,79 @@ export class ClientesFormComponent implements OnInit {
         .subscribe(response => {});
   }
 
+  obterImagem(idChave: number = 0) {
+    this.foto = [];
+    this.filename = "";
+    this.originalFileName = "";
+    if (idChave != undefined) {
+      this.imagemService.obterPorDocumentoEChave(this.codigoClienteDocumento, idChave)
+      .subscribe(resposta => {
+         this.imagem = resposta;
+            if (this.imagem[0] != undefined) {
+              this.foto = 'data:image/jpeg;base64,' + this.imagem[0].data;
+              this.filename = this.imagem[0].fileName;
+              this.originalFileName = this.imagem[0].originalFileName;
+            }
+      });
+    }
+   }
+
+ onFileChanged(event: any) {
+    this.files = event.target.files;
+  }
+
+ selectFile(event: any) {
+    for (var i = 0; i <= event.target.files.length - 1; i++) {
+        var selectedFile = event.target.files[i];
+        this.fileList.push(selectedFile);
+        this.filename = selectedFile;
+    }
+    if (this.filename != "") { //se é alteração então já salva logo, porque já tem o id do objeto.
+       this.alterarImagem();
+    }
+ }
+
+ deleteFile(index: number, nome: any) {
+    // remover item do array File[] FileList
+    this.fileList.splice(index, 1);
+ }
+
+ salvarImagem() {
+  if (this.fileList != undefined) {
+     if (this.fileList.length) {
+         for (let i = 0; i < this.fileList.length; i++) {
+                const formData: FormData = new FormData();
+                formData.append('files', this.fileList[i], this.fileList[i].name);
+                let item: File = this.fileList[i];
+                this.imagemService.salvar(this.codigoClienteDocumento, this.cliente.id, item)
+                .subscribe(resposta => {
+                  this.obterImagem(this.cliente.id);
+                });
+         }
+     }
+ }
+}
+
+alterarImagem() {
+  this.imagemService
+      .deletar(this.codigoClienteDocumento, this.cliente.id)
+      .subscribe(resposta => {
+        this.salvarImagem();
+      }, error => {
+        if (error.status === 404) {
+          this.salvarImagem();
+        }
+      });
+}
+
+deletarImagem() {
+      this.imagemService
+      .deletar(this.codigoClienteDocumento, this.cliente.id)
+      .subscribe(resposta => {
+        this.obterImagem();
+      });
+ }
+
   voltarParaListagem(){
     this.router.navigate(['/clientes/lista'])
   }
@@ -143,6 +231,8 @@ export class ClientesFormComponent implements OnInit {
         .salvar(this.cliente)
           .subscribe( response => {
             this.success = true;
+            this.cliente.id = response.id;
+            this.salvarImagem();
             this.router.navigate(['/clientes/lista']);
             //this.notificationService.showToasterSuccess("Cliente salvo com sucesso!");
             this.notificationService.showToasterSuccessWithTitle(response.infoResponseDTO.mensagem,

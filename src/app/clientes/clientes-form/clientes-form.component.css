@@ -166,4 +166,9 @@ a:hover, a:focus {
   font-size: 20px;
 }
 
+img {
+  width: 100%;
+  max-width: 250px;
+  height: auto;
+}
 
