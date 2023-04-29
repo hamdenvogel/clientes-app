@@ -9,6 +9,8 @@ import { ServicoPrestado } from '../servicoPrestado';
 import { ServicoFiltro } from 'src/app/servicoFiltro';
 import { TotalServicos } from 'src/app/clientes/totalServicos';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { Constants } from 'src/app/shared/constants';
+import { Alert } from 'src/app/alert';
 
 @Component({
   selector: 'app-servico-prestado-lista',
@@ -51,6 +53,8 @@ export class ServicoPrestadoListaComponent implements OnInit {
   };
   modalRef?: BsModalRef;
   idExclusaoServico: number = 0;
+  TimeOut = Constants.TIMEOUT2;
+  listAlerts: Alert[] = [];
 
   constructor(
     private service: ServicoPrestadoService,
@@ -103,7 +107,14 @@ export class ServicoPrestadoListaComponent implements OnInit {
                     this.listaNomes = dados
                  });
                  */
-
+    const { mensagem } = window.history.state;
+    if (mensagem) {
+      this.listAlerts.push({
+        "msg": mensagem,
+        "timeout": this.TimeOut,
+        "type": "success"
+      });
+    }
     this.clienteService
       .getClientes()
       .subscribe(response => this.clientes = response);

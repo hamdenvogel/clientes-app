@@ -3,7 +3,8 @@ import { Router } from '@angular/router';
 import { Usuario } from './usuario';
 import { UsuarioCadastro } from './usuarioCadastro';
 import { AuthService } from '../auth.service';
-import { NotificationService } from '../notification.service';
+import { Alert } from '../alert';
+import { Constants } from '../shared/constants';
 
 @Component({
   selector: 'app-login',
@@ -17,11 +18,13 @@ export class LoginComponent  {
   cadastrando: boolean;
   mensagemSucesso: string;
   errors: string[];
+  listAlerts: Alert[] = [];
+  TimeOut = Constants.TIMEOUT;
 
   constructor(
     private router: Router,
     private authService: AuthService,
-    private notificationService: NotificationService
+    // private notificationService: NotificationService
   ) {}
 
   onSubmit(){
@@ -36,15 +39,25 @@ export class LoginComponent  {
               localStorage.setItem('username', usuario.login);
               this.router.navigate(['/home'])
           }, errorResponse => {
-            //this.errors = ['Usuário e/ou senha incorreto(s).']
-            this.notificationService.showToasterError("Usuário e/ou senha incorreto(s)",
-             "Erro");
+            // this.errors = ['Usuário e/ou senha incorreto(s).']
+            // this.notificationService.showToasterError("Usuário e/ou senha incorreto(s)",
+            // "Erro");
+             this.listAlerts.push({
+              "msg": "Usuário e/ou senha incorreto(s)!",
+              "timeout": this.TimeOut,
+              "type": "danger"
+            });
           })
   }
 
   preparaCadastrar(event){
     event.preventDefault();
-    this.notificationService.showToasterError("Operação desativada no momento. Contate o suporte","Desabilitado");
+    // this.notificationService.showToasterError("Operação desativada no momento. Contate o suporte","Desabilitado");
+    this.listAlerts.push({
+      "msg": "Operação desativada no momento. Contate o suporte!",
+      "timeout": this.TimeOut,
+      "type": "danger"
+    });
     //this.cadastrando = true;
   }
 
@@ -59,8 +72,13 @@ export class LoginComponent  {
     this.authService
         .salvar(usuarioCadastro)
         .subscribe( response => {
-            this.mensagemSucesso = "Cadastro realizado com sucesso! Efetue o login.";
-            this.notificationService.showToasterSuccess(this.mensagemSucesso);
+            // this.mensagemSucesso = "Cadastro realizado com sucesso! Efetue o login.";
+            // this.notificationService.showToasterSuccess(this.mensagemSucesso);
+            this.listAlerts.push({
+              "msg": "Cadastro realizado com sucesso! Efetue o login",
+              "timeout": this.TimeOut,
+              "type": "success"
+            });
             this.cadastrando = false;
             this.username = '';
             this.password = '';
@@ -69,7 +87,12 @@ export class LoginComponent  {
             this.mensagemSucesso = null;
             this.errors = errorResponse.error.errors;
             this.errors.forEach( (erro) =>{
-              this.notificationService.showToasterError(erro, "erro");
+              // this.notificationService.showToasterError(erro, "erro");
+              this.listAlerts.push({
+                "msg": erro,
+                "timeout": this.TimeOut,
+                "type": "danger"
+              });
             })
         })
   }

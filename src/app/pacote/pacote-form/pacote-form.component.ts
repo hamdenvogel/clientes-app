@@ -16,6 +16,8 @@ import { PaginaItemPacote } from 'src/app/paginaItemPacote';
 import { ItemPacoteConsulta } from 'src/app/item-pacote/item-pacoteConsulta';
 import { ItemPacote } from 'src/app/item-pacote/item-pacote';
 import { HttpClient } from '@angular/common/http';
+import { Constants } from 'src/app/shared/constants';
+import { Alert } from 'src/app/alert';
 
 @Component({
   selector: 'app-pacote-form',
@@ -75,12 +77,14 @@ export class PacoteFormComponent implements OnInit {
   };
   totalItensPacotes: TotalItensPacotes;
   totaltensPacotesCadastrados: number;
+  TimeOut = Constants.TIMEOUT;
+  listAlerts: Alert[] = [];
 
   constructor(
     private pacoteService: PacoteService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private notificationService: NotificationService,
+    // private notificationService: NotificationService,
     private servicoPrestadoService: ServicoPrestadoService,
     private modalService: BsModalService,
     private itemPacoteService: ItemPacoteService,
@@ -208,13 +212,24 @@ export class PacoteFormComponent implements OnInit {
         .subscribe(response => {
             this.success = true;
            // this.router.navigate(['/pacote/lista']);
-            this.notificationService.showToasterSuccessWithTitle(response.mensagem,
-              response.titulo);
+           // this.notificationService.showToasterSuccessWithTitle(response.mensagem,
+           //   response.titulo);
+              this.listAlerts.push({
+                "msg": response.mensagem,
+                "timeout": this.TimeOut,
+                "type": "success"
+              });
+
             this.errors = null;
         }, errorResponse => {
           this.errors = errorResponse.error.errors;
             this.errors.forEach( (erro) =>{
-              this.notificationService.showToasterError(erro, "erro");
+              // this.notificationService.showToasterError(erro, "erro");
+              this.listAlerts.push({
+                "msg": erro,
+                "timeout": this.TimeOut,
+                "type": "danger"
+              });
             })
         })
     } else {
@@ -223,8 +238,13 @@ export class PacoteFormComponent implements OnInit {
       .subscribe(response => {
         this.success = true;
         //this.router.navigate(['/pacote/lista']);
-        this.notificationService.showToasterSuccessWithTitle(response.infoResponseDTO.mensagem,
-          response.infoResponseDTO.titulo);
+        //this.notificationService.showToasterSuccessWithTitle(response.infoResponseDTO.mensagem,
+        //  response.infoResponseDTO.titulo);
+          this.listAlerts.push({
+            "msg": response.infoResponseDTO.mensagem,
+            "timeout": this.TimeOut,
+            "type": "success"
+          });
         this.errors = null;
         this.pacote = new Pacote();
         this.router.navigate([`/pacote/form/${response.id}`]);
@@ -232,7 +252,12 @@ export class PacoteFormComponent implements OnInit {
         this.success = false;
         this.errors = errorResponse.error.errors;
         this.errors.forEach( (erro) =>{
-          this.notificationService.showToasterError(erro, "erro");
+        // this.notificationService.showToasterError(erro, "erro");
+          this.listAlerts.push({
+            "msg": erro,
+            "timeout": this.TimeOut,
+            "type": "danger"
+          });
         })
       })
     }
@@ -383,8 +408,13 @@ dataServicoFormatadaConclusao(){
         this.itemPacoteService.salvar(this.itemPacote)
         .subscribe(
           response => {
-            this.notificationService.showToasterSuccessWithTitle(response.infoResponseDTO.mensagem,
-              response.infoResponseDTO.titulo);
+            // this.notificationService.showToasterSuccessWithTitle(response.infoResponseDTO.mensagem,
+            // response.infoResponseDTO.titulo);
+              this.listAlerts.push({
+                "msg": response.infoResponseDTO.mensagem,
+                "timeout": this.TimeOut,
+                "type": "success"
+              });
             this.errors = null;
             this.idExclusaoServico = 0;
             this.carregaItensPacote();
@@ -393,7 +423,12 @@ dataServicoFormatadaConclusao(){
            errorResponse => {
             this.errors = errorResponse.error.errors;
               this.errors.forEach( (erro) =>{
-                this.notificationService.showToasterError(erro, "erro");
+              // this.notificationService.showToasterError(erro, "erro");
+                this.listAlerts.push({
+                  "msg": erro,
+                  "timeout": this.TimeOut,
+                  "type": "danger"
+                });
               })
           }
         )
@@ -409,7 +444,13 @@ dataServicoFormatadaConclusao(){
       }
     }
     if (!algumItemCheckado) {
-      this.notificationService.showToasterError('Favor selecionar algum Serviço!','Erro');
+      // this.notificationService.showToasterError('Favor selecionar algum Serviço!','Erro');
+      this.listAlerts.push({
+        "msg": 'Favor selecionar algum Serviço!',
+        "timeout": this.TimeOut,
+        "type": "danger"
+      });
+
     } else {
       console.log('algum item foi checkado');
     }
@@ -426,8 +467,13 @@ dataServicoFormatadaConclusao(){
         .deletar(this.idExclusaoServico)
         .subscribe(
           response => {
-            this.notificationService.showToasterSuccessWithTitle(response.mensagem,
-              response.titulo);
+            // this.notificationService.showToasterSuccessWithTitle(response.mensagem,
+            //  response.titulo);
+              this.listAlerts.push({
+                "msg": response.mensagem,
+                "timeout": this.TimeOut,
+                "type": "success"
+              });
             this.errors = null;
             this.idExclusaoServico = 0;
             this.consultarServicosEmAtendimento();
@@ -435,7 +481,12 @@ dataServicoFormatadaConclusao(){
            errorResponse => {
             this.errors = errorResponse.error.errors;
               this.errors.forEach( (erro) =>{
-                this.notificationService.showToasterError(erro, "erro");
+                // this.notificationService.showToasterError(erro, "erro");
+                this.listAlerts.push({
+                  "msg": erro,
+                  "timeout": this.TimeOut,
+                  "type": "danger"
+                });
               })
           }
         )
@@ -457,13 +508,23 @@ dataServicoFormatadaConclusao(){
         this.success = true;
         this.carregaItensPacote();
         this.consultarServicosEmAtendimento();
-        this.notificationService.showToasterSuccessWithTitle(response.mensagem,
-          response.titulo);
+        // this.notificationService.showToasterSuccessWithTitle(response.mensagem,
+        //  response.titulo);
+          this.listAlerts.push({
+            "msg": response.mensagem,
+            "timeout": this.TimeOut,
+            "type": "success"
+          });
         this.errors = null;
     }, errorResponse => {
       this.errors = errorResponse.error.errors;
         this.errors.forEach( (erro) =>{
-          this.notificationService.showToasterError(erro, "erro");
+          // this.notificationService.showToasterError(erro, "erro");
+          this.listAlerts.push({
+            "msg": erro,
+            "timeout": this.TimeOut,
+            "type": "danger"
+          });
         })
     })
     //e.preventDefault();

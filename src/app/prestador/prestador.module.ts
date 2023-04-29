@@ -12,6 +12,7 @@ import { PrestadorListaComponent } from './prestador-lista/prestador-lista.compo
 import { BsDatepickerModule } from "ngx-bootstrap/datepicker";
 import { RatingModule } from 'ngx-bootstrap/rating';
 import { NgMultiSelectDropDownModule } from "ng-multiselect-dropdown";
+import { AlertMessageModule } from "../alert-message/alert-message.module";
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { NgMultiSelectDropDownModule } from "ng-multiselect-dropdown";
     ModalModule.forRoot(),
     RatingModule.forRoot(),
     NgMultiSelectDropDownModule.forRoot(),
+    AlertMessageModule
   ], exports: [
     PrestadorFormComponent,
     PrestadorListaComponent

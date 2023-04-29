@@ -13,6 +13,7 @@ import { Profissao } from 'src/app/profissao';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { Constants } from 'src/app/shared/constants';
 import { Imagem } from 'src/app/imagem';
+import { Alert } from 'src/app/alert';
 
 @Component({
   selector: 'app-prestador-form',
@@ -43,12 +44,14 @@ export class PrestadorFormComponent implements OnInit {
   imagem: Imagem[] = [];
   originalFileName: string = "";
   fotoNotFound: string = Constants.fotoNotFound;
+  TimeOut = Constants.TIMEOUT;
+  listAlerts: Alert[] = [];
 
   constructor(
     private service: PrestadorService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private notificationService: NotificationService,
+    // private notificationService: NotificationService,
     private googleCaptchaService: GoogleCaptchaService,
     private profissaoService: ProfissaoService,
     private validadorService: ValidadorService,
@@ -223,7 +226,12 @@ deletarImagem() {
     onSubmit(){
       this.prestador.captcha = this.captcha;
       if (this.profissaoSelecionada[0] == undefined) {
-          this.notificationService.showToasterError("Favor selecionar uma Profissão", "Erro");
+          // this.notificationService.showToasterError("Favor selecionar uma Profissão", "Erro");
+          this.listAlerts.push({
+            "msg": "Favor selecionar uma Profissão",
+            "timeout": this.TimeOut,
+            "type": "danger"
+          });
       }
       else if (this.id) {
           this.validaCampoProfissao();
@@ -231,14 +239,21 @@ deletarImagem() {
             .atualizar(this.prestador)
             .subscribe(response => {
                   this.success = true;
-                this.router.navigate(['/prestador/lista']);
-                            this.notificationService.showToasterSuccessWithTitle(response.mensagem,
-                  response.titulo);
+                // this.router.navigate(['/prestador/lista']);
+                this.router.navigate(['/prestador/lista'], { state: {mensagem: response.mensagem }});
+                // this.notificationService.showToasterSuccessWithTitle(response.mensagem,
+                //  response.titulo);
+
                 this.errors = null;
             }, errorResponse => {
               this.errors = errorResponse.error.errors;
                 this.errors.forEach( (erro) =>{
-                  this.notificationService.showToasterError(erro, "erro");
+                  // this.notificationService.showToasterError(erro, "erro");
+                  this.listAlerts.push({
+                    "msg": erro,
+                    "timeout": this.TimeOut,
+                    "type": "danger"
+                  });
                 })
             })
         } else {
@@ -249,16 +264,22 @@ deletarImagem() {
               this.prestador.id = response.id;
               this.salvarImagem();
               this.success = true;
-              this.router.navigate(['/prestador/lista']);
-                this.notificationService.showToasterSuccessWithTitle(response.infoResponseDTO.mensagem,
-                response.infoResponseDTO.titulo);
+              // this.router.navigate(['/prestador/lista']);
+              this.router.navigate(['/prestador/lista'], { state: {mensagem: response.infoResponseDTO.mensagem }});
+              //  this.notificationService.showToasterSuccessWithTitle(response.infoResponseDTO.mensagem,
+              //  response.infoResponseDTO.titulo);
               this.errors = null;
               this.prestador = new Prestador();
             } , errorResponse => {
               this.success = false;
               this.errors = errorResponse.error.errors;
               this.errors.forEach( (erro) =>{
-                this.notificationService.showToasterError(erro, "erro");
+              // this.notificationService.showToasterError(erro, "erro");
+                this.listAlerts.push({
+                  "msg": erro,
+                  "timeout": this.TimeOut,
+                  "type": "danger"
+                });
               })
             })
           }

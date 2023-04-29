@@ -1,0 +1,5 @@
+<div class="form-group">
+  <div *ngFor="let alert of listAlerts">
+    <alert [type]="alert.type" [dismissOnTimeout]="alert.timeout" [dismissible]="dismissible">{{ alert.msg }}</alert>
+  </div>
+</div>

@@ -12,8 +12,8 @@
                                   </h3>
                               </div>
                               <div class="card-body">
-
                                   <form #loginForm="ngForm" (submit)="onSubmit();">
+                                      <app-alert-message-form [listAlerts]="listAlerts"></app-alert-message-form>
                                       <div class="form-group">
                                           <label class="small mb-1">Login</label>
                                           <input type="text" name="username"

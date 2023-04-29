@@ -7,15 +7,15 @@ import { Router, ActivatedRoute, Params } from '@angular/router'
 import { Cliente } from '../cliente'
 import { ClientesService } from '../../clientes.service'
 import { empty, fromEvent, Observable } from 'rxjs';
-import { catchError, debounceTime, distinctUntilChanged, filter, map, switchMap, tap } from 'rxjs/operators';
-import { NotificationService } from '../../notification.service';
-import { EMPTY } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, map, switchMap, tap } from 'rxjs/operators';
 import { Endereco } from 'src/app/endereco';
 import GoogleCaptchaService from 'src/app/google-captcha.service';
 import { GoogleCaptcha } from 'src/app/googleCaptcha';
 import { Constants } from 'src/app/shared/constants';
 import { Imagem } from 'src/app/imagem';
 import { ImagemService } from 'src/app/imagem.service';
+import { Alert } from 'src/app/alert';
+import { state } from '@angular/animations';
 
 @Component({
   selector: 'app-clientes-form',
@@ -48,12 +48,14 @@ export class ClientesFormComponent implements OnInit {
   imagem: Imagem[] = [];
   originalFileName: string = "";
   fotoNotFound: string = Constants.fotoNotFound;
+  TimeOut = Constants.TIMEOUT;
+  listAlerts: Alert[] = [];
 
   constructor(
       private service: ClientesService ,
       private router: Router,
       private activatedRoute: ActivatedRoute,
-      private notificationService: NotificationService,
+      // private notificationService: NotificationService,
       private cepService: CepService,
       private googleCaptchaService: GoogleCaptchaService,
       private imagemService: ImagemService
@@ -215,15 +217,25 @@ deletarImagem() {
         .atualizar(this.cliente)
         .subscribe(response => {
             this.success = true;
-            this.router.navigate(['/clientes/lista']);
+            this.router.navigate(['/clientes/lista'], { state: {mensagem: response.mensagem }});
             //this.notificationService.showToasterSuccess("Cliente atualizado com sucesso!");
-            this.notificationService.showToasterSuccessWithTitle(response.mensagem,
-              response.titulo);
+            // this.notificationService.showToasterSuccessWithTitle(response.mensagem,
+            //  response.titulo);
+            /*  this.listAlerts.push({
+                "msg": response.mensagem,
+                "timeout": this.TimeOut,
+                "type": "success"
+              }); */
             this.errors = null;
         }, errorResponse => {
           this.errors = errorResponse.error.errors;
             this.errors.forEach( (erro) =>{
-              this.notificationService.showToasterError(erro, "erro");
+              // this.notificationService.showToasterError(erro, "erro");
+              this.listAlerts.push({
+                "msg": erro,
+                "timeout": this.TimeOut,
+                "type": "danger"
+              });
             })
         })
     } else {
@@ -234,16 +246,27 @@ deletarImagem() {
             this.cliente.id = response.id;
             this.salvarImagem();
             this.router.navigate(['/clientes/lista']);
+            this.router.navigate(['/clientes/lista'], { state: {mensagem: response.infoResponseDTO.mensagem }});
             //this.notificationService.showToasterSuccess("Cliente salvo com sucesso!");
-            this.notificationService.showToasterSuccessWithTitle(response.infoResponseDTO.mensagem,
-              response.infoResponseDTO.titulo);
+            // this.notificationService.showToasterSuccessWithTitle(response.infoResponseDTO.mensagem,
+            //  response.infoResponseDTO.titulo);
+            /*  this.listAlerts.push({
+                "msg": response.infoResponseDTO.mensagem,
+                "timeout": this.TimeOut,
+                "type": "success"
+              }); */
             this.errors = null;
             this.cliente = response;
           }, errorResponse => {
             this.success = false;
             this.errors = errorResponse.error.errors;
             this.errors.forEach( (erro) =>{
-              this.notificationService.showToasterError(erro, "erro");
+              // this.notificationService.showToasterError(erro, "erro");
+              this.listAlerts.push({
+                "msg": erro,
+                "timeout": this.TimeOut,
+                "type": "danger"
+              });
             })
           })
     }
@@ -279,4 +302,4 @@ deletarImagem() {
       }
    }
 
-    }
+}

@@ -6,6 +6,9 @@ import { Cliente } from '../cliente';
 import { ClientesService } from '../../clientes.service';
 import { TotalClientes } from '../totalClientes';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { of } from 'rxjs';
+import { Constants } from 'src/app/shared/constants';
+import { Alert } from 'src/app/alert';
 
 
 @Component({
@@ -37,6 +40,8 @@ export class ClientesListaComponent implements OnInit {
   totalClientes: TotalClientes;
   totalClientesCadastrados: number;
   modalRef?: BsModalRef;
+  TimeOut = Constants.TIMEOUT2;
+  listAlerts: Alert[] = [];
 
   constructor(
     private service: ClientesService,
@@ -71,6 +76,14 @@ export class ClientesListaComponent implements OnInit {
    /* this.service
       .getClientes()
       .subscribe(resposta => this.clientes = resposta); */
+    const { mensagem } = window.history.state;
+    if (mensagem) {
+      this.listAlerts.push({
+        "msg": mensagem,
+        "timeout": this.TimeOut,
+        "type": "success"
+      });
+    }
 
     this.carregaClientes(0);
 

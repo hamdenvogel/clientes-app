@@ -7,6 +7,7 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { Prestador } from '../prestador';
 import { TotalPrestadores } from '../totalPrestadores';
 import { Constants } from 'src/app/shared/constants';
+import { Alert } from 'src/app/alert';
 
 
 @Component({
@@ -39,6 +40,8 @@ export class PrestadorListaComponent implements OnInit {
   totalPrestadoresCadastrados: number;
   modalRef?: BsModalRef;
   idExclusaoPrestador: number = 0;
+  TimeOut = Constants.TIMEOUT2;
+  listAlerts: Alert[] = [];
 
   constructor(
     private service: PrestadorService,
@@ -77,6 +80,14 @@ export class PrestadorListaComponent implements OnInit {
   }
 
 ngOnInit(): void {
+  const { mensagem } = window.history.state;
+    if (mensagem) {
+      this.listAlerts.push({
+        "msg": mensagem,
+        "timeout": this.TimeOut,
+        "type": "success"
+      });
+    }
   this.carregaPrestadores();
 
   this.collectionCustomPagination = this.collection;

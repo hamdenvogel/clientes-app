@@ -10,6 +10,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { PacoteVisualizacaoComponent } from './pacote-visualizacao/pacote-visualizacao.component';
+import { AlertMessageModule } from '../alert-message/alert-message.module';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import { PacoteVisualizacaoComponent } from './pacote-visualizacao/pacote-visual
     BrowserAnimationsModule,
     BsDatepickerModule.forRoot(),
     NgxPaginationModule,
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    AlertMessageModule
   ], exports: [
     PacoteFormComponent,
     PacoteListaComponent

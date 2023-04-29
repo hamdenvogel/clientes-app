@@ -16,6 +16,8 @@ import GoogleCaptchaService from 'src/app/google-captcha.service';
 import { GoogleCaptcha } from 'src/app/googleCaptcha';
 import { Prestador } from 'src/app/prestador/prestador';
 import NaturezaService from 'src/app/natureza.service';
+import { Constants } from 'src/app/shared/constants';
+import { Alert } from 'src/app/alert';
 defineLocale('pt-br', ptBrLocale);
 
 @Component({
@@ -38,11 +40,13 @@ export class ServicoPrestadoFormComponent implements OnInit {
   natureza: Natureza[] = [];
   acao: string;
   pacote: string;
+  TimeOut = Constants.TIMEOUT;
+  listAlerts: Alert[] = [];
 
   constructor(
     private clienteService: ClientesService,
     private service: ServicoPrestadoService,
-    private notificationService: NotificationService,
+    // private notificationService: NotificationService,
     private localeService: BsLocaleService,
     private activatedRoute: ActivatedRoute,
     private googleCaptchaService: GoogleCaptchaService,
@@ -140,15 +144,21 @@ export class ServicoPrestadoFormComponent implements OnInit {
                 this.router.navigate([`/pacote/form/${this.pacote}`]);
               }
               else {
-                this.router.navigate(['/servicos-prestados/lista']);
+                // this.router.navigate(['/servicos-prestados/lista']);
+                this.router.navigate(['/servicos-prestados/lista'], { state: {mensagem: response.mensagem }});
               }
-              this.notificationService.showToasterSuccessWithTitle(response.mensagem,
-                response.titulo);
+             // this.notificationService.showToasterSuccessWithTitle(response.mensagem,
+             //   response.titulo);
               this.errors = null;
           }, errorResponse => {
             this.errors = errorResponse.error.errors;
               this.errors.forEach( (erro) =>{
-                this.notificationService.showToasterError(erro, "erro");
+                // this.notificationService.showToasterError(erro, "erro");
+                this.listAlerts.push({
+                  "msg": erro,
+                  "timeout": this.TimeOut,
+                  "type": "danger"
+                });
               })
           })
       } else {
@@ -159,17 +169,23 @@ export class ServicoPrestadoFormComponent implements OnInit {
           if (this.acao == 'redireciona') {
             this.router.navigate([`/pacote/form/${this.pacote}`]);
           } else {
-            this.router.navigate(['/servicos-prestados/lista']);
+            // this.router.navigate(['/servicos-prestados/lista']);
+            this.router.navigate(['/servicos-prestados/lista'], { state: { mensagem: response.infoResponseDTO.mensagem }});
           }
-          this.notificationService.showToasterSuccessWithTitle(response.infoResponseDTO.mensagem,
-            response.infoResponseDTO.titulo);
+          // this.notificationService.showToasterSuccessWithTitle(response.infoResponseDTO.mensagem,
+         //   response.infoResponseDTO.titulo);
           this.errors = null;
           this.servico = new ServicoPrestado();
         } , errorResponse => {
           this.success = false;
           this.errors = errorResponse.error.errors;
           this.errors.forEach( (erro) =>{
-            this.notificationService.showToasterError(erro, "erro");
+            // this.notificationService.showToasterError(erro, "erro");
+            this.listAlerts.push({
+              "msg": erro,
+              "timeout": this.TimeOut,
+              "type": "danger"
+            });
           })
         })
       }

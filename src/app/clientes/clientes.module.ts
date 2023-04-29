@@ -9,12 +9,13 @@ import { ClientesListaComponent } from './clientes-lista/clientes-lista.componen
 import { ClientesRemoverComponent } from './clientes-remover/clientes-remover.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { AlertMessageModule } from '../alert-message/alert-message.module';
 
 @NgModule({
   declarations: [
     ClientesFormComponent,
     ClientesListaComponent,
-    ClientesRemoverComponent,
+    ClientesRemoverComponent
   ],
   imports: [
     CommonModule,
@@ -23,7 +24,9 @@ import { ModalModule } from 'ngx-bootstrap/modal';
     NgxPaginationModule,
     RecaptchaModule,
     RecaptchaFormsModule,
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    AlertMessageModule
+
   ], exports: [
     ClientesFormComponent,
     ClientesListaComponent,

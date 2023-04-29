@@ -29,13 +29,16 @@ import {LocationStrategy, HashLocationStrategy, DatePipe} from '@angular/common'
 import { ChartsModule } from 'ng2-charts';
 import { GlobalErrorHandler } from './global-error-handler';
 
+import { AlertModule } from 'ngx-bootstrap/alert';
+import { AlertMessageFormComponent } from './alert-message-form/alert-message-form.component';
+import { AlertMessageModule } from './alert-message/alert-message.module';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     LoginComponent,
-    LayoutComponent
+    LayoutComponent,
   ],
   imports: [
     BrowserModule,
@@ -54,7 +57,8 @@ import { GlobalErrorHandler } from './global-error-handler';
     SistemaInfoModule,
     ChartsModule,
     PacoteModule,
-    SharedModule
+    SharedModule,
+    AlertMessageModule
   ],
 
   providers: [
