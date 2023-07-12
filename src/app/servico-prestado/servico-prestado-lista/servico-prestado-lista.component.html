@@ -115,14 +115,22 @@
               <div class="row">
                 <div class="col-md-10">
                 <div class="table-responsive">
-                <table class="table table-hover table-striped">
+                <table id="tbl_servicos_prestados" class="table table-hover table-striped">
                   <thead>
                     <tr class="thead-dark">
-                      <th>Cliente</th>
-                      <th>Descri&ccedil;&atilde;o</th>
-                      <th>Pre&ccedil;o</th>
-                      <th>Data</th>
-                      <th>Status</th>
+                     <!--
+                       <th>Cliente</th>
+                       <th>Descri&ccedil;&atilde;o</th>
+                       <th>Pre&ccedil;o</th>
+                       <th>Data</th>
+                       <th>Status</th>
+                     -->
+
+                      <th id="clienteNome" scope="col" sortable="clienteNome" (click)="onSort('clienteNome')">Cliente <img *ngIf="orderFields[0].current" [src]="orderFields[0].arrow" /></th>
+                      <th id="descricao" scope="col" sortable="descricao" (click)="onSort('descricao')">Descri&ccedil;&atilde;o <img *ngIf="orderFields[1].current" [src]="orderFields[1].arrow" /></th>
+                      <th id="valor" scope="col" sortable="valor" (click)="onSort('valor')">Pre&ccedil;o<img *ngIf="orderFields[2].current" [src]="orderFields[2].arrow" /></th>
+                      <th id="dataServico" scope="col" sortable="dataServico" (click)="onSort('dataServico')">Data<img *ngIf="orderFields[3].current" [src]="orderFields[3].arrow" /></th>
+                      <th id="status" scope="col" sortable="status" (click)="onSort('status')">Status<img *ngIf="orderFields[4].current" [src]="orderFields[4].arrow" /></th>
                       <th></th>
                     </tr>
                   </thead>

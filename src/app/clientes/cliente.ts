@@ -13,4 +13,5 @@ export class Cliente {
     cidade: string;
     infoResponseDTO: InfoResponse;
     captcha: string;
+    data: number;
 }

@@ -6,7 +6,7 @@ import { Pacote } from './../pacote';
 import { Component, ElementRef, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { NotificationService } from 'src/app/notification.service';
-import { EMPTY, from, Observable, of } from 'rxjs';
+import { from, Observable } from 'rxjs';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { TotalServicos } from 'src/app/clientes/totalServicos';
 import { ServicoPrestado } from 'src/app/servico-prestado/servicoPrestado';

@@ -8,6 +8,7 @@ import { Prestador } from '../prestador';
 import { TotalPrestadores } from '../totalPrestadores';
 import { Constants } from 'src/app/shared/constants';
 import { Alert } from 'src/app/alert';
+import { OrderFields } from 'src/app/order-fields';
 
 
 @Component({
@@ -42,6 +43,10 @@ export class PrestadorListaComponent implements OnInit {
   idExclusaoPrestador: number = 0;
   TimeOut = Constants.TIMEOUT2;
   listAlerts: Alert[] = [];
+  headers: any;
+  orderFields: OrderFields[] = [];
+  imgAsc = "../assets/arrow-asc.png";
+  imgDesc = "../assets/arrow-desc.png";
 
   constructor(
     private service: PrestadorService,
@@ -70,7 +75,15 @@ export class PrestadorListaComponent implements OnInit {
           this.collection.count = response.totalElements;
           this.collectionCopy = {...this.collection};
           //this.pagina = response.number;
-         })
+         }).add(() => {
+          for (let i = 0; i < this.collectionCopy.data.length; i++) {
+            let dataCadastro = this.collectionCopy.data[i].dataCadastro;
+            const [dia, mes, ano] = dataCadastro.split('/');
+            const date = new Date(+ano, +mes - 1, +dia);
+            console.log(date);
+            this.collectionCopy.data[i].data = date;
+          }
+        }).add(() => this.onSort('nome'));
       });
   }
 
@@ -111,6 +124,44 @@ ngOnInit(): void {
     this.labels.screenReaderPageLabel = strPagina_Windows1252;
     let strPaginaAtual_Windows1252 = "Você está na página";
     this.labels.screenReaderCurrentLabel = strPaginaAtual_Windows1252;
+
+    const table = document.getElementById('tbl_prestadores');
+    this.headers = table?.querySelectorAll('th');
+    this.headers?.forEach((header: any, index: any) => {
+     // window.console.log(header.innerHTML + ' ' + header.id + ' ' + index);
+      this.orderFields.push({
+        "field": header.id,
+        "sortAsc": false,
+        "current": false,
+        "arrow": this.imgAsc,
+        index
+      })
+    });
+}
+
+compare = (
+  v1: string | number | boolean | Date,
+  v2: string | number | boolean | Date
+) => (v1 < v2 ? -1 : v1 > v2 ? 1 : 0);
+
+onSort(column: string) {
+  console.log('onSort column ' + column);
+  this.orderFields.forEach(o => o.current = false);
+  const objIndex = this.orderFields.findIndex(obj => obj.field === column);
+  if (objIndex !== -1) {
+      this.orderFields[objIndex].sortAsc = !this.orderFields[objIndex].sortAsc;
+  }
+  if (column === '') {
+    this.collectionCustomPagination = this.collectionCopy;
+  } else {
+      this.collectionCustomPagination.data = [...this.collectionCopy.data].sort((a, b) => {
+      let res = this.compare(a[column], b[column]);
+      this.orderFields[objIndex].current = true;
+      const isAsc = this.orderFields[objIndex].sortAsc;
+      isAsc ? this.orderFields[objIndex].arrow = this.imgAsc : this.orderFields[objIndex].arrow = this.imgDesc;
+      return isAsc ? res : -res;
+    });
+  }
 }
 
 pesquisarNome(){

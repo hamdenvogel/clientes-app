@@ -65,12 +65,12 @@
             <div class="row">
               <div class="col-md-10">
                 <div class="table-responsive">
-                <table class="table table-hover table-striped">
+                <table id="tbl_clientes" class="table table-hover table-striped">
                 <thead>
                   <tr class="thead-dark">
-                    <th>Nome</th>
-                    <th>CPF</th>
-                    <th>Data Cadastro</th>
+                    <th id="nome" scope="col" sortable="nome" (click)="onSort('nome')">Nome <img *ngIf="orderFields[0].current" [src]="orderFields[0].arrow" /></th>
+                    <th id="cpf" scope="col" sortable="cpf" (click)="onSort('cpf')">CPF <img *ngIf="orderFields[1].current" [src]="orderFields[1].arrow" /></th>
+                    <th id="data" scope="col" sortable="data" (click)="onSort('data')">Data Cadastro <img *ngIf="orderFields[2].current" [src]="orderFields[2].arrow" /></th>
                     <th></th>
                   </tr>
                 </thead>

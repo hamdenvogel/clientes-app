@@ -17,4 +17,6 @@ export class ServicoPrestado {
     idNatureza: number;
     natureza: Natureza;
     checked: boolean;
+    clienteNome: string;
+    dataServico: number;
 }

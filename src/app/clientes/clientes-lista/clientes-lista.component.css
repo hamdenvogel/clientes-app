@@ -357,3 +357,14 @@ body {
   color:#14043f;
   font-weight: bold;
 }
+table tr th:nth-child(1){
+  width: 40%;
+}
+
+table tr th:nth-child(2){
+  width: 20%;
+}
+
+table tr th:nth-child(3){
+  width: 20%;
+}

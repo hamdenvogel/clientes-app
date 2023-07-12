@@ -13,4 +13,5 @@ export class Prestador {
   captcha: string;
   profissao: Profissao;
   email: string;
+  data: number;
 }
