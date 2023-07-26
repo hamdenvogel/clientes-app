@@ -8,6 +8,7 @@ import { environment } from '../environments/environment'
 import { ServicoPrestadoBusca } from './servico-prestado/servico-prestado-lista/servicoPrestadoBusca';
 import { InfoResponse } from './infoResponse';
 import { ServicoFiltro } from './servicoFiltro';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -96,4 +97,11 @@ export class ServicoPrestadoService {
     return this.http.get<PaginaServico>(filtroPrincipal);
   }
 
+  obterRelatorio(dataInicio: string, dataFim: string): Observable<Blob> {
+    return this.http.get(`${this.apiURL}/relatorio?inicio=${dataInicio}&fim=${dataFim}`,
+     { responseType: 'blob'}).pipe(map(
+      (res) => {
+          return new Blob([res], { type: 'application/pdf' });
+      }));
+  }
 }

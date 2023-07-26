@@ -8,6 +8,7 @@ import { environment } from '../environments/environment'
 import { TotalClientes } from './clientes/totalClientes';
 import { InfoResponse } from './infoResponse';
 import { ListaNomes } from './listaNomes';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -52,6 +53,14 @@ export class ClientesService {
 
   getListaNomes(): Observable<ListaNomes[]>{
     return this.http.get<ListaNomes[]>(`${this.apiURL}/lista-nomes`);
+  }
+
+  obterRelatorio(dataInicio: string, dataFim: string): Observable<Blob> {
+    return this.http.get(`${this.apiURL}/relatorio?inicio=${dataInicio}&fim=${dataFim}`,
+     { responseType: 'blob'}).pipe(map(
+      (res) => {
+          return new Blob([res], { type: 'application/pdf' });
+      }));
   }
 
 }

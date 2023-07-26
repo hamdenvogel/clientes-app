@@ -42,14 +42,18 @@ export class ClientesListaComponent implements OnInit {
   totalClientesCadastrados: number;
   modalRef?: BsModalRef;
   TimeOut = Constants.TIMEOUT2;
+  TimeOut3 = Constants.TIMEOUT3;
   listAlerts: Alert[] = [];
   headers: any;
   orderFields: OrderFields[] = [];
   imgAsc = "../assets/arrow-asc.png";
   imgDesc = "../assets/arrow-desc.png";
+  listAlertsReport: Alert[] = [];
+  dtInicioConsulta = "";
+  dtFimConsulta = "";
 
   constructor(
-    private service: ClientesService,
+    private clienteService: ClientesService,
     private router: Router,
     private notificationService: NotificationService,
     private modalService: BsModalService) {
@@ -57,12 +61,12 @@ export class ClientesListaComponent implements OnInit {
     }
 
   carregaClientes( pagina = 0){
-      this.service
+      this.clienteService
         .totalClientes()
         .subscribe(resposta => {
           this.totalClientes = resposta;
           this.totalClientesCadastrados = (this.totalClientes.totalClientes == 0) ? 1 : this.totalClientes.totalClientes;
-          this.service.obterPesquisaPaginada(pagina,  this.totalClientesCadastrados, this.campoPesquisa.trim())
+          this.clienteService.obterPesquisaPaginada(pagina,  this.totalClientesCadastrados, this.campoPesquisa.trim())
           .subscribe(response => {
             this.clientes = response.content;
             this.collection.data = this.clientes;
@@ -207,7 +211,7 @@ export class ClientesListaComponent implements OnInit {
   }
 
   deletarCliente(idCliente: number){
-    this.service
+    this.clienteService
       .deletar(idCliente)
       .subscribe(
         response => {
@@ -225,5 +229,74 @@ export class ClientesListaComponent implements OnInit {
 
   ok(): void {
     this.modalRef?.hide();
+  }
+
+  gerarRelatorio(dataInicio: string, dataFim: string) {
+    this.clienteService.obterRelatorio(dataInicio, dataFim)
+      .subscribe((blob: Blob) => {
+        window.console.log('report is downloaded');
+        const fileName = "relatório-clientes.pdf";
+            let link = document.createElement("a");
+            if (link.download !== undefined)
+            {
+                let url = URL.createObjectURL(blob);
+                link.setAttribute("href", url);
+                link.setAttribute("download", fileName);
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                window.open(url, '_blank');
+            }
+            else
+            {
+                //html5 download not supported
+            }
+          });
+  }
+
+  pesquisar(): void {
+    window.console.log('dtInicioConsulta ' + this.dtInicioConsulta);
+    window.console.log('dtFimConsulta ' + this.dtFimConsulta);
+    let dtInicio, dtFim;
+    if (this.dtInicioConsulta === "" || this.dtInicioConsulta === undefined ||
+        this.dtFimConsulta === "" || this.dtFimConsulta === undefined) {
+          this.listAlertsReport.push({
+            "msg": "Data Inválida",
+            "timeout": this.TimeOut3,
+            "type": "danger"
+          });
+    } else
+    {
+        dtInicio = new Date(this.dtInicioConsulta).toISOString().split('T')[0];
+        const anoDtInicio = dtInicio.split("-")[0];
+        const mesDtInicio = dtInicio.split("-")[1];
+        const diaDtInicio = dtInicio.split("-")[2];
+        const dtInicioStr = diaDtInicio + "/" + mesDtInicio + "/" + anoDtInicio;
+
+        dtFim = new Date(this.dtFimConsulta).toISOString().split('T')[0];
+        const anoDtFim = dtFim.split("-")[0];
+        const mesDtFim = dtFim.split("-")[1];
+        const diaDtFim = dtFim.split("-")[2];
+        const dtFimStr = diaDtFim + "/" + mesDtFim + "/" + anoDtFim;
+
+        window.console.log('dtInicio ' + dtInicio + ' dtFim ' + dtFim);
+
+        if (dtInicio > dtFim) {
+          this.listAlertsReport.push({
+            "msg": "Data Inicial não pode ser maior que a Data Final",
+            "timeout": this.TimeOut3,
+            "type": "danger"
+          });
+        }
+        else {
+          this.gerarRelatorio(dtInicioStr, dtFimStr);
+        }
+    }
+  }
+
+  limparPesquisa(): void {
+    this.dtInicioConsulta = "";
+    this.dtFimConsulta = "";
   }
 }

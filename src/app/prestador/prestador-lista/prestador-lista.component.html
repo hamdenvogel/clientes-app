@@ -36,8 +36,72 @@
                         class="btn btn-success ml-1"
                         routerLink="/home">
                     <i class="fa fa-home"></i> Voltar
-                </button>
+            </button>
+            <button class="btn btn-info ml-1" (click)="staticModal.show()" >
+              <i class="fa fa-search"></i> Relatório
+          </button>
         </div>
+
+        <div class="modal fade" bsModal #staticModal="bs-modal" [config]="{backdrop: 'static', keyboard: false}"
+             tabindex="-1" role="dialog" aria-labelledby="dialog-static-name">
+             <div class="h-100 d-flex align-items-center justify-content-center">
+                <div class="modal-lg modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="container">
+                      <div class="row">
+                          <div class="col-md-12">
+                            <app-alert-message-form [listAlerts]="listAlertsReport"></app-alert-message-form>
+                          </div>
+                      </div>
+                    </div>
+                    <div class="modal-header">
+                      <h4 id="dialog-static-name" class="modal-title pull-left">Gerar Relatório</h4>
+                      <button type="button" class="btn-close close pull-right" aria-label="Close"
+                        (click)="staticModal.hide()">
+                        <span aria-hidden="true" class="visually-hidden">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                          <div class="col-md-6">
+                              <div class="form-group">
+                                  <label>Data Início: *</label>
+                                  <input type="date" class="form-control" style="font-size: 13px;"
+                                      name="dt" id="dt"
+                                      [(ngModel)]="dtInicioConsulta"
+                                      placeholder="dd/mm/yyyy" value=""
+                                      min="2020-01-01" max="2030-12-31">
+                              </div>
+                          </div>
+                          <div class="col-md-6">
+                              <div class="form-group">
+                                  <label>Data Fim: *</label>
+                                  <input type="date" class="form-control" style="font-size: 13px;"
+                                      name="dt" id="dt"
+                                      [(ngModel)]="dtFimConsulta"
+                                      placeholder="dd/mm/yyyy" value=""
+                                      min="2020-01-01" max="2030-12-31">
+                              </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6">
+                              <button type="submit" class="btn btn-success" (click)="pesquisar()">
+                                  <i class="fa fa-search" ></i> Pesquisar
+                              </button>
+                          </div>
+                          <div class="col-md-6">
+                              <button type="button" class="btn btn-warning ml-1" (click)="limparPesquisa()">
+                               <i class="fa fa-eraser"></i> Limpar
+                             </button>
+                         </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+
     </div>
     <br />
     <div class="row">

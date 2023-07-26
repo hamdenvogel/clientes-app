@@ -1,11 +1,12 @@
 import { PaginaPrestador } from './prestador/paginaPrestador';
 import { InfoResponse } from './infoResponse';
 import { Prestador } from './prestador/prestador';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../environments/environment';
 import { Observable } from 'rxjs';
 import { TotalPrestadores } from './prestador/totalPrestadores';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -46,6 +47,30 @@ export class PrestadorService {
 
   totalPrestadores(): Observable<TotalPrestadores>{
     return this.http.get<TotalPrestadores>(`${this.apiURL}/totalPrestadores`);
+  }
+
+  /* obterRelatorio(dataInicio: string, dataFim: string): Observable<Blob> {
+    return this.http.get<Blob>(`${this.apiURL}/relatorio?inicio=${dataInicio}&fim=${dataFim}`);
+  } */
+
+  obterRelatorio(dataInicio: string, dataFim: string): Observable<HttpResponse<ArrayBuffer>> {
+    return this.http.get<ArrayBuffer>(`${this.apiURL}/relatorio?inicio=${dataInicio}&fim=${dataFim}`, {
+        observe: 'response',
+        responseType: 'arraybuffer' as 'json'
+    });
+  }
+
+  obterRelatorio2(dataInicio: string, dataFim: string): Observable<Blob> {
+    return this.http.get(`${this.apiURL}/relatorio?inicio=${dataInicio}&fim=${dataFim}`,
+     { responseType: 'blob'});
+  }
+
+  obterRelatorio3(dataInicio: string, dataFim: string): Observable<Blob> {
+    return this.http.get(`${this.apiURL}/relatorio?inicio=${dataInicio}&fim=${dataFim}`,
+     { responseType: 'blob'}).pipe(map(
+      (res) => {
+          return new Blob([res], { type: 'application/pdf' });
+      }));
   }
 
 }

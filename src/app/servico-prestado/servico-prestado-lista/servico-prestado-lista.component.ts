@@ -55,14 +55,18 @@ export class ServicoPrestadoListaComponent implements OnInit {
   modalRef?: BsModalRef;
   idExclusaoServico: number = 0;
   TimeOut = Constants.TIMEOUT2;
+  TimeOut3 = Constants.TIMEOUT3;
   listAlerts: Alert[] = [];
   headers: any;
   orderFields: OrderFields[] = [];
   imgAsc = "../assets/arrow-asc.png";
   imgDesc = "../assets/arrow-desc.png";
+  listAlertsReport: Alert[] = [];
+  dtInicioConsulta = "";
+  dtFimConsulta = "";
 
   constructor(
-    private service: ServicoPrestadoService,
+    private servicoPrestadoService: ServicoPrestadoService,
     private notificationService: NotificationService,
     private clienteService: ClientesService,
     private modalService: BsModalService
@@ -76,12 +80,12 @@ export class ServicoPrestadoListaComponent implements OnInit {
     this.collectionCustomPagination = { count: 0, data: [] };
     this.collectionCopy = { count: 0, data: [] };
 
-    this.service
+    this.servicoPrestadoService
         .totalServicos()
         .subscribe(resposta => {
           this.totalServicos = resposta;
           this.totalServicosCadastrados = (this.totalServicos.totalServicos == 0) ? 1: this.totalServicos.totalServicos;
-          this.service.obterPesquisaAvancada(pagina, this.totalServicosCadastrados, sort, servicoFiltro)
+          this.servicoPrestadoService.obterPesquisaAvancada(pagina, this.totalServicosCadastrados, sort, servicoFiltro)
             .subscribe(response => {
               this.servicoPrestadoLista = response.content;
               this.collection.data = this.servicoPrestadoLista;
@@ -255,7 +259,7 @@ export class ServicoPrestadoListaComponent implements OnInit {
 
   confirm(): void {
     if (this.idExclusaoServico == 0) { return };
-      this.service
+      this.servicoPrestadoService
         .deletar(this.idExclusaoServico)
         .subscribe(
           response => {
@@ -277,5 +281,74 @@ export class ServicoPrestadoListaComponent implements OnInit {
 
   decline(): void {
     this.modalRef?.hide();
+  }
+
+  gerarRelatorio(dataInicio: string, dataFim: string) {
+    this.servicoPrestadoService.obterRelatorio(dataInicio, dataFim)
+      .subscribe((blob: Blob) => {
+        window.console.log('report is downloaded');
+        const fileName = "relatório-serviços-prestados.pdf";
+            let link = document.createElement("a");
+            if (link.download !== undefined)
+            {
+                let url = URL.createObjectURL(blob);
+                link.setAttribute("href", url);
+                link.setAttribute("download", fileName);
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                window.open(url, '_blank');
+            }
+            else
+            {
+                //html5 download not supported
+            }
+          });
+  }
+
+  pesquisar(): void {
+    window.console.log('dtInicioConsulta ' + this.dtInicioConsulta);
+    window.console.log('dtFimConsulta ' + this.dtFimConsulta);
+    let dtInicio, dtFim;
+    if (this.dtInicioConsulta === "" || this.dtInicioConsulta === undefined ||
+        this.dtFimConsulta === "" || this.dtFimConsulta === undefined) {
+          this.listAlertsReport.push({
+            "msg": "Data Inválida",
+            "timeout": this.TimeOut3,
+            "type": "danger"
+          });
+    } else
+    {
+        dtInicio = new Date(this.dtInicioConsulta).toISOString().split('T')[0];
+        const anoDtInicio = dtInicio.split("-")[0];
+        const mesDtInicio = dtInicio.split("-")[1];
+        const diaDtInicio = dtInicio.split("-")[2];
+        const dtInicioStr = diaDtInicio + "/" + mesDtInicio + "/" + anoDtInicio;
+
+        dtFim = new Date(this.dtFimConsulta).toISOString().split('T')[0];
+        const anoDtFim = dtFim.split("-")[0];
+        const mesDtFim = dtFim.split("-")[1];
+        const diaDtFim = dtFim.split("-")[2];
+        const dtFimStr = diaDtFim + "/" + mesDtFim + "/" + anoDtFim;
+
+        window.console.log('dtInicio ' + dtInicio + ' dtFim ' + dtFim);
+
+        if (dtInicio > dtFim) {
+          this.listAlertsReport.push({
+            "msg": "Data Inicial não pode ser maior que a Data Final",
+            "timeout": this.TimeOut3,
+            "type": "danger"
+          });
+        }
+        else {
+          this.gerarRelatorio(dtInicioStr, dtFimStr);
+        }
+    }
+  }
+
+  limparPesquisa(): void {
+    this.dtInicioConsulta = "";
+    this.dtFimConsulta = "";
   }
 }
