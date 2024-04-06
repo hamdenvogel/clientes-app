@@ -64,6 +64,7 @@ export class ServicoPrestadoListaComponent implements OnInit {
   listAlertsReport: Alert[] = [];
   dtInicioConsulta = "";
   dtFimConsulta = "";
+  loading = true;
 
   constructor(
     private servicoPrestadoService: ServicoPrestadoService,
@@ -72,52 +73,6 @@ export class ServicoPrestadoListaComponent implements OnInit {
     private modalService: BsModalService
   ) {
     this.totalServicos = new TotalServicos();
-  }
-
-  carregaServicos( pagina = 0, tamanho = 4, sort = 'cliente.nome,asc', servicoFiltro: ServicoFiltro){
-
-    this.collection = { count: 0, data: [] };
-    this.collectionCustomPagination = { count: 0, data: [] };
-    this.collectionCopy = { count: 0, data: [] };
-
-    this.servicoPrestadoService
-        .totalServicos()
-        .subscribe(resposta => {
-          this.totalServicos = resposta;
-          this.totalServicosCadastrados = (this.totalServicos.totalServicos == 0) ? 1: this.totalServicos.totalServicos;
-          this.servicoPrestadoService.obterPesquisaAvancada(pagina, this.totalServicosCadastrados, sort, servicoFiltro)
-            .subscribe(response => {
-              this.servicoPrestadoLista = response.content;
-              this.collection.data = this.servicoPrestadoLista;
-              this.collection.count = response.totalElements;
-              this.collectionCopy = {...this.collection};
-              //this.pagina = response.number;
-            }).add(() => {
-              for (let i = 0; i < this.collectionCopy.data.length; i++) {
-                let dataServico = this.collectionCopy.data[i].data;
-                window.console.log('dataCadastro ' + dataServico);
-                const [dia, mes, ano] = dataServico.split('/');
-                const date = new Date(+ano, +mes - 1, +dia);
-                console.log(date);
-                this.collectionCopy.data[i].dataServico = date;
-                this.collectionCopy.data[i].clienteNome = this.collectionCopy.data[i].cliente.nome;
-              }
-            }).add(() => this.onSort('clienteNome'));
-        });
-
-    this.collectionCustomPagination = this.collection;
-    this.config = {
-      id: 'basicPaginate',
-      itemsPerPage: 5,
-      currentPage: 1,
-      totalItems: this.collection.count
-    };
-    this.configCustomPagination = {
-      id: 'customPaginate',
-      itemsPerPage: 5,
-      currentPage: 1,
-      totalItems: this.collection.count
-    };
   }
 
   ngOnInit(): void {
@@ -350,5 +305,52 @@ export class ServicoPrestadoListaComponent implements OnInit {
   limparPesquisa(): void {
     this.dtInicioConsulta = "";
     this.dtFimConsulta = "";
+  }
+
+  carregaServicos( pagina = 0, tamanho = 4, sort = 'cliente.nome,asc', servicoFiltro: ServicoFiltro){
+    this.collection = { count: 0, data: [] };
+    this.collectionCustomPagination = { count: 0, data: [] };
+    this.collectionCopy = { count: 0, data: [] };
+    this.loading = true;
+
+    this.servicoPrestadoService
+        .totalServicos()
+        .subscribe(resposta => {
+          this.totalServicos = resposta;
+          this.totalServicosCadastrados = (this.totalServicos.totalServicos == 0) ? 1: this.totalServicos.totalServicos;
+          this.servicoPrestadoService.obterPesquisaAvancada(pagina, this.totalServicosCadastrados, sort, servicoFiltro)
+            .subscribe(response => {
+              this.servicoPrestadoLista = response.content;
+              this.collection.data = this.servicoPrestadoLista;
+              this.collection.count = response.totalElements;
+              this.collectionCopy = {...this.collection};
+              //this.pagina = response.number;
+            }).add(() => {
+              for (let i = 0; i < this.collectionCopy.data.length; i++) {
+                let dataServico = this.collectionCopy.data[i].data;
+                window.console.log('dataCadastro ' + dataServico);
+                const [dia, mes, ano] = dataServico.split('/');
+                const date = new Date(+ano, +mes - 1, +dia);
+                console.log(date);
+                this.collectionCopy.data[i].dataServico = date;
+                this.collectionCopy.data[i].clienteNome = this.collectionCopy.data[i].cliente.nome;
+              }
+            }).add(() => this.onSort('clienteNome'))
+            .add(() => this.loading = false);
+        });
+
+    this.collectionCustomPagination = this.collection;
+    this.config = {
+      id: 'basicPaginate',
+      itemsPerPage: 5,
+      currentPage: 1,
+      totalItems: this.collection.count
+    };
+    this.configCustomPagination = {
+      id: 'customPaginate',
+      itemsPerPage: 5,
+      currentPage: 1,
+      totalItems: this.collection.count
+    };
   }
 }

@@ -51,6 +51,7 @@ export class ClientesListaComponent implements OnInit {
   listAlertsReport: Alert[] = [];
   dtInicioConsulta = "";
   dtFimConsulta = "";
+  loading = true;
 
   constructor(
     private clienteService: ClientesService,
@@ -58,36 +59,6 @@ export class ClientesListaComponent implements OnInit {
     private notificationService: NotificationService,
     private modalService: BsModalService) {
       this.totalClientes = new TotalClientes();
-    }
-
-  carregaClientes( pagina = 0){
-      this.clienteService
-        .totalClientes()
-        .subscribe(resposta => {
-          this.totalClientes = resposta;
-          this.totalClientesCadastrados = (this.totalClientes.totalClientes == 0) ? 1 : this.totalClientes.totalClientes;
-          this.clienteService.obterPesquisaPaginada(pagina,  this.totalClientesCadastrados, this.campoPesquisa.trim())
-          .subscribe(response => {
-            this.clientes = response.content;
-            this.collection.data = this.clientes;
-            this.collection.count = response.totalElements;
-            this.collectionCopy = {...this.collection};
-            //this.pagina = response.number;
-           }).add(() => {
-            for (let i = 0; i < this.collectionCopy.data.length; i++) {
-              let dataCadastro = this.collectionCopy.data[i].dataCadastro;
-              window.console.log('dataCadastro ' + dataCadastro);
-              const [dia, mes, ano] = dataCadastro.split('/');
-              const date = new Date(+ano, +mes - 1, +dia);
-              console.log(date);
-              this.collectionCopy.data[i].data = date;
-            }
-          }).add(() => this.onSort('nome'));
-        });
-    }
-
-    openModal(template: TemplateRef<any>, id: number) {
-      this.modalRef = this.modalService.show(template, {class: 'modal-sm'});
     }
 
   ngOnInit(): void {
@@ -164,6 +135,10 @@ export class ClientesListaComponent implements OnInit {
         return isAsc ? res : -res;
       });
     }
+  }
+
+  openModal(template: TemplateRef<any>, id: number) {
+    this.modalRef = this.modalService.show(template, {class: 'modal-sm'});
   }
 
   pesquisarNome(){
@@ -299,4 +274,33 @@ export class ClientesListaComponent implements OnInit {
     this.dtInicioConsulta = "";
     this.dtFimConsulta = "";
   }
+
+  carregaClientes( pagina = 0){
+    this.loading = true;
+    this.clienteService
+      .totalClientes()
+      .subscribe(resposta => {
+        this.totalClientes = resposta;
+        this.totalClientesCadastrados = (this.totalClientes.totalClientes == 0) ? 1 : this.totalClientes.totalClientes;
+        this.clienteService.obterPesquisaPaginada(pagina,  this.totalClientesCadastrados, this.campoPesquisa.trim())
+        .subscribe(response => {
+          this.clientes = response.content;
+          this.collection.data = this.clientes;
+          this.collection.count = response.totalElements;
+          this.collectionCopy = {...this.collection};
+          //this.pagina = response.number;
+         }).add(() => {
+          for (let i = 0; i < this.collectionCopy.data.length; i++) {
+            let dataCadastro = this.collectionCopy.data[i].dataCadastro;
+            window.console.log('dataCadastro ' + dataCadastro);
+            const [dia, mes, ano] = dataCadastro.split('/');
+            const date = new Date(+ano, +mes - 1, +dia);
+            console.log(date);
+            this.collectionCopy.data[i].data = date;
+          }
+        }).add(() => this.onSort('nome'))
+        .add(() => this.loading = false);
+      });
+  }
+
 }

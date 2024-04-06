@@ -51,6 +51,7 @@ export class PrestadorListaComponent implements OnInit {
   listAlertsReport: Alert[] = [];
   dtInicioConsulta = "";
   dtFimConsulta = "";
+  loading = true;
 
   constructor(
     private prestadorService: PrestadorService,
@@ -60,40 +61,6 @@ export class PrestadorListaComponent implements OnInit {
     private imagemService: ImagemService
   ) {
     this.totalPrestadores = new TotalPrestadores();
-  }
-
-  consultar(){
-    this.carregaPrestadores();
-  }
-
-  carregaPrestadores( pagina = 0){
-    this.prestadorService
-      .totalPrestadores()
-      .subscribe(resposta => {
-        this.totalPrestadores = resposta;
-        this.totalPrestadoresCadastrados = (this.totalPrestadores.totalPrestadores == 0) ? 1 :  this.totalPrestadores.totalPrestadores;
-        this.prestadorService.obterPesquisaPaginada(pagina,  this.totalPrestadoresCadastrados, this.campoPesquisa.trim())
-        .subscribe(response => {
-          this.prestadores = response.content;
-          this.collection.data = this.prestadores;
-          this.collection.count = response.totalElements;
-          this.collectionCopy = {...this.collection};
-          //this.pagina = response.number;
-         }).add(() => {
-          for (let i = 0; i < this.collectionCopy.data.length; i++) {
-            let dataCadastro = this.collectionCopy.data[i].dataCadastro;
-            const [dia, mes, ano] = dataCadastro.split('/');
-            const date = new Date(+ano, +mes - 1, +dia);
-            console.log(date);
-            this.collectionCopy.data[i].data = date;
-          }
-        }).add(() => this.onSort('nome'));
-      });
-  }
-
-  openModal(template: TemplateRef<any>, idPrestador: number) {
-    this.idExclusaoPrestador = idPrestador;
-    this.modalRef = this.modalService.show(template, {class: 'modal-sm'});
   }
 
 ngOnInit(): void {
@@ -329,6 +296,42 @@ pesquisar(): void {
 limparPesquisa(): void {
   this.dtInicioConsulta = "";
   this.dtFimConsulta = "";
+}
+
+consultar(){
+  this.carregaPrestadores();
+}
+
+carregaPrestadores( pagina = 0){
+  this.loading = true;
+  this.prestadorService
+    .totalPrestadores()
+    .subscribe(resposta => {
+      this.totalPrestadores = resposta;
+      this.totalPrestadoresCadastrados = (this.totalPrestadores.totalPrestadores == 0) ? 1 :  this.totalPrestadores.totalPrestadores;
+      this.prestadorService.obterPesquisaPaginada(pagina,  this.totalPrestadoresCadastrados, this.campoPesquisa.trim())
+      .subscribe(response => {
+        this.prestadores = response.content;
+        this.collection.data = this.prestadores;
+        this.collection.count = response.totalElements;
+        this.collectionCopy = {...this.collection};
+        //this.pagina = response.number;
+       }).add(() => {
+        for (let i = 0; i < this.collectionCopy.data.length; i++) {
+          let dataCadastro = this.collectionCopy.data[i].dataCadastro;
+          const [dia, mes, ano] = dataCadastro.split('/');
+          const date = new Date(+ano, +mes - 1, +dia);
+          console.log(date);
+          this.collectionCopy.data[i].data = date;
+        }
+      }).add(() => this.onSort('nome'))
+      .add(() => this.loading = false);
+    });
+}
+
+openModal(template: TemplateRef<any>, idPrestador: number) {
+  this.idExclusaoPrestador = idPrestador;
+  this.modalRef = this.modalService.show(template, {class: 'modal-sm'});
 }
 
 }
